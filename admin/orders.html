@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders — Momently Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="admin-shell">
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <p class="wordmark">Momently</p>
+      <p class="tag">Admin</p>
+      <nav class="admin-nav">
+        <a href="orders.html" class="active">☰ Orders</a>
+      </nav>
+      <div class="signout">
+        <button type="button" class="btn btn-ghost btn-sm btn-block" id="admin-signout" style="color:#fff;">Sign Out</button>
+      </div>
+    </aside>
+
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <button type="button" class="nav-toggle" id="admin-menu-toggle" aria-label="Toggle menu" style="display:none;"><span></span><span></span><span></span></button>
+        <h1 style="font-size:19px; font-family:var(--font-body); font-weight:600;" id="admin-page-title">Orders</h1>
+        <span id="admin-name" style="font-size:13.5px; color:rgba(18,16,15,0.55);"></span>
+      </div>
+
+      <div class="admin-content">
+        <div id="form-banner"></div>
+
+        <!-- ==================== LIST VIEW ==================== -->
+        <section id="orders-list-view">
+          <div class="filter-group">
+            <div id="status-filters"></div>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Template</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Payment</th>
+                <th>Amount</th>
+                <th>Placed</th>
+              </tr>
+            </thead>
+            <tbody id="orders-table-body">
+              <tr><td colspan="7">Loading orders…</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ==================== DETAIL VIEW ==================== -->
+        <section id="order-detail-view" style="display:none;">
+          <a href="orders.html" style="font-size:13.5px; color:var(--color-love); display:inline-block; margin-bottom:18px;">← Back to Orders</a>
+
+          <div class="admin-panel">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+              <div>
+                <h3 style="margin-bottom:4px;" id="detail-customer-name"></h3>
+                <p style="font-size:13px; color:rgba(18,16,15,0.55);" id="detail-customer-email"></p>
+              </div>
+              <span id="detail-status-badge"></span>
+            </div>
+          </div>
+
+          <div class="admin-detail-grid">
+            <!-- Left column: submitted info + media + status -->
+            <div>
+              <div class="admin-panel">
+                <h3>Customer Information</h3>
+                <div class="detail-row"><span class="label">Template</span><span id="detail-template"></span></div>
+                <div class="detail-row"><span class="label">For</span><span id="detail-recipient"></span></div>
+                <div class="detail-row"><span class="label">Memory title</span><span id="detail-title"></span></div>
+                <div class="detail-row"><span class="label">Important date</span><span id="detail-date"></span></div>
+                <div class="detail-row"><span class="label">Amount</span><span id="detail-amount"></span></div>
+                <p style="font-size:13px; color:rgba(18,16,15,0.5); margin-top:14px; margin-bottom:6px;">Personal message</p>
+                <p style="font-size:14px; white-space:pre-wrap;" id="detail-message"></p>
+              </div>
+
+              <div class="admin-panel">
+                <h3>Uploaded Media</h3>
+                <div class="media-thumb-grid" id="detail-media"></div>
+              </div>
+
+              <div class="admin-panel">
+                <h3>Order Status</h3>
+                <div class="field">
+                  <select id="status-select">
+                    <option value="PENDING">Pending</option>
+                    <option value="PAID">Paid</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="READY">Ready</option>
+                  </select>
+                </div>
+                <button type="button" class="btn btn-outline btn-block" id="save-status-btn">Update Status</button>
+              </div>
+            </div>
+
+            <!-- Right column: build + publish the memory -->
+            <div>
+              <div class="admin-panel">
+                <h3>Build the Memory</h3>
+                <div class="field">
+                  <label for="memory-title-input">Memory title</label>
+                  <input type="text" id="memory-title-input">
+                </div>
+                <div class="field">
+                  <label for="memory-subtitle-input">Subtitle</label>
+                  <input type="text" id="memory-subtitle-input" placeholder="A short line under the title">
+                </div>
+                <div class="field">
+                  <label for="memory-closing-input">Closing message</label>
+                  <textarea id="memory-closing-input" rows="4"></textarea>
+                </div>
+                <div class="field" style="display:flex; gap:10px;">
+                  <div style="flex:1;">
+                    <label for="song-title-input">Song title (optional)</label>
+                    <input type="text" id="song-title-input">
+                  </div>
+                  <div style="flex:1;">
+                    <label for="song-artist-input">Artist (optional)</label>
+                    <input type="text" id="song-artist-input">
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>Our Story timeline</label>
+                  <div id="timeline-editor"></div>
+                  <button type="button" class="btn btn-ghost btn-sm" id="add-timeline-row">+ Add timeline entry</button>
+                </div>
+
+                <button type="button" class="btn btn-outline btn-block" id="save-memory-btn">Save Draft</button>
+              </div>
+
+              <div class="admin-panel">
+                <h3>Publish</h3>
+                <p style="font-size:13px; color:rgba(18,16,15,0.55); margin-bottom:14px;">Publishing makes the memory link live and emails the customer. Requires payment to be marked Paid.</p>
+                <button type="button" class="btn btn-primary btn-block" id="publish-btn">Publish Memory</button>
+                <p id="publish-result" style="font-size:13px; margin-top:12px;"></p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

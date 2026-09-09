@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momently — Every Memory Deserves Its Own Place</title>
+<meta name="description" content="Momently turns your favorite memory into a beautifully designed, personal page — handcrafted by Momently and shared with a single link.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Intro overlay: shown once per 24h, staged reveal, matches homepage hero headline -->
+  <div class="intro-overlay">
+    <div class="intro-overlay-content">
+      <div class="intro-line show" style="transition-delay:0s;">Every Memory</div>
+      <div class="intro-line"><span class="italic">Deserves Its Own Place</span></div>
+      <div class="intro-line">On The Internet</div>
+      <div class="intro-cta">
+        <a href="templates.html" class="btn btn-primary">Create Yours →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="wordmark">Momently</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="templates.html">Marketplace</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#how-it-works">How It Works</a>
+      </nav>
+      <div class="nav-actions">
+        <span data-auth-slot><a href="login.html" class="btn btn-ghost btn-sm">Login</a></span>
+        <a href="templates.html" class="btn btn-primary btn-sm">Create Memory</a>
+            <span data-auth-slot-mobile></span>
+        <button class="nav-toggle" type="button" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="templates.html">Marketplace</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="index.html#how-it-works">How It Works</a>
+    <a href="login.html">Login</a>
+    <a href="templates.html" class="btn btn-primary">Create Memory</a>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hearts-layer"></div>
+    <div class="bloom-corners">
+      <div class="bloom top-left"></div>
+      <div class="bloom bottom-right"></div>
+    </div>
+    <div class="container hero-inner">
+      <div>
+        <span class="eyebrow">Momently</span>
+        <h1 class="hero-title">Every Memory Deserves<br>Its Own Place<br><span class="italic">On The Internet.</span></h1>
+        <p class="hero-subtitle">Tell us the story, send the photos, and Momently personally designs a page to hold it — a birthday, a proposal, an anniversary, a goodbye. Ready to share with one link.</p>
+        <div class="hero-actions">
+          <a href="templates.html" class="btn btn-primary">Create Yours →</a>
+          <a href="templates.html" class="btn btn-outline">Explore Templates</a>
+        </div>
+      </div>
+      <div class="hero-stack" aria-hidden="true">
+        <div class="hero-card">
+          <img src="https://picsum.photos/seed/momently-hero-1/300/225" alt="">
+          <p class="hero-card-caption">Happy Anniversary, Love</p>
+        </div>
+        <div class="hero-card">
+          <img src="https://picsum.photos/seed/momently-hero-2/300/225" alt="">
+          <p class="hero-card-caption">To My Best Friend</p>
+        </div>
+        <div class="hero-card">
+          <img src="https://picsum.photos/seed/momently-hero-3/300/225" alt="">
+          <p class="hero-card-caption">Will You Marry Me?</p>
+        </div>
+        <div class="hero-card">
+          <img src="https://picsum.photos/seed/momently-hero-4/300/225" alt="">
+          <p class="hero-card-caption">Forever & Always</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose us -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why Momently</span>
+        <h2 class="section-title">Not a template you fill in. A memory someone builds for you.</h2>
+      </div>
+      <div class="card-grid">
+        <div class="feature-card">
+          <div class="icon">✦</div>
+          <h3>Handcrafted templates</h3>
+          <p>Every template is designed in-house for a specific kind of moment — a proposal reads nothing like a birthday.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">✎</div>
+          <h3>Personally put together</h3>
+          <p>You send the story and the photos. Our team lays it out by hand — nothing here is auto-generated.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">⚿</div>
+          <h3>Private until it's ready</h3>
+          <p>Your photos stay private the whole way through. Only Momently can see them while your memory is being made.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">♥</div>
+          <h3>One link, forever</h3>
+          <p>A single, permanent page you can send in a text, print on a card, or read from on the day itself.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works" style="background:#fff;">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">How It Works</span>
+        <h2 class="section-title">From an idea to a link, in four steps</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <h3>Choose a template</h3>
+          <p>Pick the design that matches your occasion — birthday, anniversary, proposal, and more.</p>
+        </div>
+        <div class="step-card">
+          <h3>Share your story</h3>
+          <p>A few details, a personal message, and the photos or video you want featured.</p>
+        </div>
+        <div class="step-card">
+          <h3>We craft it by hand</h3>
+          <p>Momently personally builds your page on the chosen template — no auto-generation.</p>
+        </div>
+        <div class="step-card">
+          <h3>Get your link</h3>
+          <p>We publish your memory and email you the link, ready to open or share.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured templates -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Templates</span>
+        <h2 class="section-title">A few of our favorites</h2>
+        <p class="section-subtitle">Every template on Momently is made once by us, then personalized for you.</p>
+      </div>
+      <div class="template-grid" id="featured-templates-grid">
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+        <div class="skeleton" style="aspect-ratio:4/3;"></div>
+      </div>
+      <div class="text-center mt-24">
+        <a href="templates.html" class="btn btn-outline">View All Templates</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="section" style="background:#fff;">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Stories</span>
+        <h2 class="section-title">What people made with Momently</h2>
+      </div>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"I sent five photos and a paragraph. What came back felt like something a close friend made, not a company."</p>
+          <p class="testimonial-name">Ananya R.</p>
+          <p class="testimonial-role">Anniversary memory</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"I used it to propose. Watching her scroll through it, on her phone, still gets me."</p>
+          <p class="testimonial-name">Karan S.</p>
+          <p class="testimonial-role">Proposal memory</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">"My mom cried. That's genuinely the whole review."</p>
+          <p class="testimonial-name">Meera D.</p>
+          <p class="testimonial-role">Birthday memory</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Pricing</span>
+        <h2 class="section-title">Simple, per-memory pricing</h2>
+        <p class="section-subtitle">No subscriptions. You pay once for the template you choose — the price is always shown up front.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <p class="pricing-name">Starter templates</p>
+          <p class="pricing-amount">Free</p>
+          <p class="pricing-note">A small set of simple, beautifully made templates</p>
+          <ul class="pricing-features">
+            <li>✓ Handcrafted layout</li>
+            <li>✓ Up to 10 photos</li>
+            <li>✓ One published link</li>
+          </ul>
+          <a href="templates.html" class="btn btn-outline btn-block">Browse Free Templates</a>
+        </div>
+        <div class="pricing-card featured">
+          <p class="pricing-name">Signature templates</p>
+          <p class="pricing-amount">₹499–₹799</p>
+          <p class="pricing-note">Our most-loved designs for anniversaries and proposals</p>
+          <ul class="pricing-features">
+            <li>✓ Everything in Starter</li>
+            <li>✓ Timeline & gallery sections</li>
+            <li>✓ Optional song pairing</li>
+          </ul>
+          <a href="templates.html" class="btn btn-primary btn-block">Browse Signature Templates</a>
+        </div>
+        <div class="pricing-card">
+          <p class="pricing-name">Premium templates</p>
+          <p class="pricing-amount">₹999+</p>
+          <p class="pricing-note">Our most detailed designs, for weddings and milestones</p>
+          <ul class="pricing-features">
+            <li>✓ Everything in Signature</li>
+            <li>✓ Extended story timeline</li>
+            <li>✓ Priority turnaround</li>
+          </ul>
+          <a href="templates.html" class="btn btn-outline btn-block">Browse Premium Templates</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" style="background:#fff;">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="section-title">Good to know</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question" type="button">Who actually builds the memory page? <span class="chev">⌄</span></button>
+          <div class="faq-answer">A real person on the Momently team, using the template you chose and the story and photos you send us. Nothing here is auto-generated.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" type="button">How long does it take? <span class="chev">⌄</span></button>
+          <div class="faq-answer">Most memories are ready within a few days of payment. You'll get an email the moment yours is published.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" type="button">Are my photos private? <span class="chev">⌄</span></button>
+          <div class="faq-answer">Yes. Your photos are only visible to you and Momently while your memory is being built. Nothing is public until you're the one asking us to publish it.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" type="button">Can I choose what goes into the page? <span class="chev">⌄</span></button>
+          <div class="faq-answer">Absolutely — the personal message, photos, and important date you provide are what the page is built around.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="wordmark">Momently</a>
+          <p class="footer-tagline">Every memory deserves its own place on the internet. Handcrafted, one page at a time.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Product</h5>
+          <ul>
+            <li><a href="templates.html">Templates</a></li>
+            <li><a href="index.html#pricing">Pricing</a></li>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Account</h5>
+          <ul>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span data-year>2026</span> Momently. All rights reserved.</span>
+        <span>Made with ♥</span>
+      </div>
+    </div>
+  </footer>
+<script>
+  // Dynamic header visibility check
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = localStorage.getItem('momently_user_email');
+    const profileLink = document.getElementById('nav-profile-link');
+    const authBtn = document.getElementById('nav-auth-btn');
+
+    if (userEmail && profileLink && authBtn) {
+      profileLink.style.display = 'inline-block';
+      authBtn.textContent = 'Logout';
+      authBtn.href = '#';
+      authBtn.onclick = async (e) => {
+        e.preventDefault();
+        try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch (_) {}
+        localStorage.removeItem('momently_user_email');
+        window.location.href = 'login.html';
+      };
+    }
+  });
+</script>
+  <script src="js/main.js"></script>
+  <script src="js/templates.js"></script>
+</body>
+</html>

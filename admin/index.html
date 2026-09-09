@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Momently</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <main class="admin-login-shell">
+    <div class="auth-card">
+      <p class="wordmark" style="color:var(--color-love);">Momently Admin</p>
+      <h1>Admin sign in</h1>
+      <p class="subtitle">This area is for authorized Momently staff only.</p>
+
+      <div id="form-banner"></div>
+
+      <form id="admin-login-form">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required autocomplete="username">
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Sign In</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

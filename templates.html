@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choose a Template — Momently</title>
+<meta name="description" content="Browse Momently's handcrafted memory page templates for birthdays, anniversaries, proposals, and more.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <header class="navbar scrolled">
+    <div class="container navbar-inner">
+      <a href="index.html" class="wordmark">Momently</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="templates.html">Marketplace</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#how-it-works">How It Works</a>
+      </nav>
+      <div class="nav-actions">
+        <span data-auth-slot><a href="login.html" class="btn btn-ghost btn-sm">Login</a></span>
+        <a href="templates.html" class="btn btn-primary btn-sm">Create Memory</a>
+        <a href="profile.html" id="nav-profile-link" style="display: none;">Profile</a>
+        <button class="nav-toggle" type="button" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="templates.html">Marketplace</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="login.html">Login</a>
+        <span data-auth-slot-mobile></span>
+  </div>
+
+  <main class="section" style="padding-top: calc(var(--nav-height) + 48px);">
+    <div class="container">
+      <div class="section-head" style="margin-bottom:36px;">
+        <span class="eyebrow">Templates</span>
+        <h1 class="section-title">Choose your template</h1>
+        <p class="section-subtitle">Every design here is made once by Momently, then personalized just for you.</p>
+      </div>
+
+      <div class="search-bar">
+        <input type="search" id="marketplace-search" placeholder="Search templates by name or occasion…" aria-label="Search templates">
+      </div>
+
+      <div class="marketplace-layout">
+        <aside class="filters-sidebar">
+          <div class="filter-group">
+            <h4>Occasion</h4>
+            <div id="occasion-filters"></div>
+          </div>
+        </aside>
+
+        <div>
+          <div class="template-grid" id="marketplace-grid">
+            <div class="skeleton" style="aspect-ratio:4/3;"></div>
+            <div class="skeleton" style="aspect-ratio:4/3;"></div>
+            <div class="skeleton" style="aspect-ratio:4/3;"></div>
+          </div>
+          <div class="empty-state" id="marketplace-empty" style="display:none;">
+            <p>No templates match those filters yet. Try clearing the search or picking "All".</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Preview modal -->
+  <div class="modal-overlay" id="template-preview-modal">
+    <div class="modal-box">
+      <button class="modal-close" type="button" data-close-preview aria-label="Close preview">✕</button>
+      <img data-preview-image src="" alt="">
+      <div class="modal-box-body">
+        <h3 data-preview-name></h3>
+        <p class="meta" data-preview-meta></p>
+        <p class="price" data-preview-price></p>
+        <button type="button" class="btn btn-primary btn-block" data-preview-use data-use-template="">Use This Template</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-bottom" style="border-top:none; padding-top:0;">
+      <span>© <span data-year>2026</span> Momently. All rights reserved.</span>
+      <span>Made with ♥</span>
+    </div>
+  </footer>
+<script>
+  // Dynamic header visibility check
+  document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = localStorage.getItem('momently_user_email');
+    const profileLink = document.getElementById('nav-profile-link');
+    const authBtn = document.getElementById('nav-auth-btn');
+
+    if (userEmail && profileLink && authBtn) {
+      profileLink.style.display = 'inline-block';
+      authBtn.textContent = 'Logout';
+      authBtn.href = '#';
+      authBtn.onclick = async (e) => {
+        e.preventDefault();
+        try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch (_) {}
+        localStorage.removeItem('momently_user_email');
+        window.location.href = 'login.html';
+      };
+    }
+  });
+</script>
+  <script src="js/main.js"></script>
+  <script src="js/templates.js"></script>
+</body>
+</html>

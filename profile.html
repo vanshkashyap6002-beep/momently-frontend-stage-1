@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Profile — Momently</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <header class="navbar scrolled">
+    <div class="container navbar-inner">
+      <a href="index.html" class="wordmark">Momently</a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="templates.html">Marketplace</a>
+      </nav>
+      <div class="nav-actions">
+        <span data-auth-slot></span>
+        <button class="nav-toggle" type="button" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="templates.html">Marketplace</a>
+    <span data-auth-slot-mobile></span>
+  </div>
+
+  <main class="section" style="padding-top: calc(var(--nav-height) + 40px);">
+    <div class="container" style="max-width: 720px;">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar"></div>
+        <div>
+          <h1 id="profile-name" style="font-size:24px;"></h1>
+          <p id="profile-email" style="color:rgba(18,16,15,0.55); font-size:14px;"></p>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" id="profile-signout" style="margin-left:auto;">Sign Out</button>
+      </div>
+
+      <div class="section-head" style="text-align:left; margin: 40px 0 24px;">
+        <h2 class="section-title" style="font-size:22px;">Your Memories</h2>
+      </div>
+      <div id="profile-orders">
+        <div class="skeleton" style="height:90px; margin-bottom:14px;"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmed — Momently</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <header class="navbar scrolled">
+    <div class="container navbar-inner">
+      <a href="index.html" class="wordmark">Momently</a>
+      <nav class="nav-links"></nav>
+      <div class="nav-actions"><span data-auth-slot></span></div>
+    </div>
+  </header>
+
+  <main class="success-shell">
+    <div class="success-icon">❤️</div>
+    <h1>Your Momently is on its way</h1>
+    <p id="success-detail">We've received your order and Momently is starting on it.</p>
+    <p>You'll get an email at your account address the moment your memory is published.</p>
+    <div class="order-ref" id="order-ref"></div>
+    <div class="hero-actions" style="justify-content:center; margin-top:32px;">
+      <a href="templates.html" class="btn btn-outline">Create Another Memory</a>
+      <a href="index.html" class="btn btn-ghost">Back Home</a>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+  <script>
+    (function () {
+      document.addEventListener("DOMContentLoaded", async function () {
+        var params = new URLSearchParams(window.location.search);
+        var orderId = params.get("order");
+        var refEl = document.getElementById("order-ref");
+        var detailEl = document.getElementById("success-detail");
+        if (!orderId) return;
+        refEl.textContent = "Order ref: " + orderId;
+        try {
+          var res = await window.Momently.apiFetch("/api/orders/" + orderId);
+          var o = res.order;
+          if (o.memoryTitle) {
+            detailEl.textContent = '"' + o.memoryTitle + '" is in Momently\u2019s queue and will be handcrafted soon.';
+          }
+        } catch (e) {
+          /* Order summary is a nice-to-have here — the confirmation itself doesn't depend on it. */
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

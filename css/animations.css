@@ -1,0 +1,91 @@
+/* ============================================================================
+   Momently Stage 1 — animations.css
+   Reproduces components/animations/* from the reference project 1:1:
+   FloatingHearts, BloomCorners, HeartLoader, IntroOverlay, WelcomeTransition.
+   All respect prefers-reduced-motion via the global rule in style.css.
+   ========================================================================== */
+
+/* ------------------------------ Floating hearts ----------------------------- */
+/* Hearts are injected by js/main.js (20-30 of them, randomized left/size/
+   color/duration/delay) — this just defines the shared look + motion. */
+.hearts-layer {
+  position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0;
+}
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  animation-name: float-heart;
+  animation-timing-function: ease-in;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+@keyframes float-heart {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: var(--heart-opacity, 0.2); }
+  90%  { opacity: var(--heart-opacity, 0.2); }
+  100% { transform: translate(var(--heart-drift, 20px), -110vh) rotate(var(--heart-rotate, 45deg)); opacity: 0; }
+}
+
+/* -------------------------------- Bloom corners ------------------------------ */
+.bloom-corners { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.bloom {
+  position: absolute; width: 384px; height: 384px; border-radius: 50%;
+  filter: blur(120px); animation: bloom-pulse 8s ease-in-out infinite;
+}
+.bloom.top-left { top: -120px; left: -120px; background: rgba(244, 63, 94, 0.05); }
+.bloom.bottom-right { bottom: -120px; right: -120px; background: rgba(245, 158, 11, 0.05); animation-delay: 2s; }
+@keyframes bloom-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+/* -------------------------------- Heart loader -------------------------------- */
+.heart-loader { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.heart-loader svg { width: 46px; height: 46px; overflow: visible; }
+.heart-loader path {
+  fill: none; stroke: var(--color-love, #7A1E2B); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 300; stroke-dashoffset: 300; animation: heart-draw 1.4s ease-in-out infinite;
+}
+@keyframes heart-draw {
+  0%   { stroke-dashoffset: 300; fill: rgba(122,30,43,0); }
+  60%  { stroke-dashoffset: 0; fill: rgba(122,30,43,0); }
+  100% { stroke-dashoffset: 0; fill: rgba(122,30,43,0.9); }
+}
+.heart-loader-label { font-size: 13.5px; color: rgba(18,16,15,0.55); letter-spacing: 0.02em; }
+
+/* -------------------------------- Intro overlay -------------------------------- */
+.intro-overlay {
+  position: fixed; inset: 0; z-index: 200; background: var(--color-paper);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  opacity: 1; transition: opacity 0.5s ease;
+}
+.intro-overlay.hidden { opacity: 0; pointer-events: none; }
+.intro-overlay-content { padding: 24px; }
+.intro-line {
+  font-family: var(--font-display); font-size: clamp(28px, 6vw, 48px); line-height: 1.2;
+  opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.intro-line.show { opacity: 1; transform: translateY(0); }
+.intro-cta {
+  margin-top: 30px; opacity: 0; transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.intro-cta.show { opacity: 1; transform: translateY(0); }
+
+/* -------------------------------- Welcome transition ---------------------------- */
+.welcome-transition {
+  position: fixed; inset: 0; z-index: 300; background: var(--color-paper);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  animation: fade-in 0.4s ease;
+}
+.welcome-transition.fade-out { animation: fade-out 0.4s ease forwards; }
+.welcome-heart { font-size: 40px; margin-bottom: 14px; animation: heartbeat 1s ease-in-out infinite; }
+.welcome-transition h2 { font-size: 22px; margin-bottom: 8px; }
+.welcome-transition p { font-size: 14px; color: rgba(18,16,15,0.55); }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+@keyframes card-pop-in { to { opacity: 1; transform: translateY(0) scale(1); } }

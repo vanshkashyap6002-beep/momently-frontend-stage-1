@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Momently Memory</title>
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/animations.css">
+</head>
+<body class="memory-page">
+
+  <!-- Loading state -->
+  <div id="memory-loading" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+    <div class="heart-loader">
+      <svg viewBox="0 0 32 29" aria-hidden="true">
+        <path d="M16 27S3 19 3 10.5C3 5.8 6.8 2 11.5 2c2.6 0 4.9 1.2 6.5 3.1C19.6 3.2 21.9 2 24.5 2 29.2 2 33 5.8 33 10.5 33 19 20 27 20 27h-4z" transform="translate(-3,0)"/>
+      </svg>
+      <p class="heart-loader-label">Loading this memory…</p>
+    </div>
+  </div>
+
+  <!-- Not found / not published -->
+  <div id="memory-not-found" style="display:none; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px;">
+    <h1 style="font-size:24px; margin-bottom:10px;">This memory isn't ready yet</h1>
+    <p style="color:rgba(18,16,15,0.6); max-width:400px;">The link may be incomplete, or Momently hasn't published this one yet. Please check the link and try again.</p>
+    <a href="../index.html" class="btn btn-outline mt-24">Go to Momently</a>
+  </div>
+
+  <!-- Memory content -->
+  <div id="memory-content" style="display:none;">
+    <section class="memory-hero">
+      <div class="memory-hero-media" id="memory-hero-media"></div>
+      <div class="memory-hero-content">
+        <span class="memory-hero-date" id="memory-date" style="display:none;"></span>
+        <h1 id="memory-title"></h1>
+        <p class="subtitle" id="memory-subtitle"></p>
+      </div>
+    </section>
+
+    <div class="music-bar" id="memory-music" style="display:none;">
+      <span class="note">♪</span>
+      <span id="memory-song"></span>
+    </div>
+
+    <section class="memory-section" id="memory-timeline-section" style="display:none;">
+      <div class="container">
+        <h2 class="memory-section-title">Our Story</h2>
+        <div class="timeline" id="memory-timeline"></div>
+      </div>
+    </section>
+
+    <section class="memory-section" id="memory-gallery-section" style="display:none; background:#fff;">
+      <div class="container">
+        <h2 class="memory-section-title">Gallery</h2>
+        <div class="gallery" id="memory-gallery"></div>
+      </div>
+    </section>
+
+    <section class="memory-closing">
+      <div class="heart-icon">❤</div>
+      <p id="memory-closing-message"></p>
+      <a href="../templates.html" class="btn">Made with love, on Momently</a>
+    </section>
+
+    <footer class="memory-footer">
+      <span id="memory-footer-text">A memory made on Momently</span>
+    </footer>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/memory.js"></script>
+</body>
+</html>
