@@ -12,11 +12,11 @@
   /** Only ever allow a same-site relative path as a redirect target — never
    * an absolute/external URL from the query string (open-redirect guard). */
   function sanitizeNextUrl(raw) {
-    if (!raw) return null;
-    if (!raw.startsWith("/") && !/^[a-z0-9_-]+\.html/i.test(raw)) return null;
-    if (raw.startsWith("//") || raw.includes("://")) return null;
-    return raw;
-  }
+  if (!raw) return null;
+  if (!raw.startsWith("/") && !/^[a-z0-9_-]+\.html/i.test(raw)) return null;
+  if (raw.startsWith("//") || raw.includes("://")) return null;
+  return raw;
+}
 
   function getNextUrl(fallback) {
     const params = new URLSearchParams(window.location.search);
@@ -30,22 +30,29 @@
   }
 
   async function initGoogleButton() {
-    const btn = document.getElementById("google-btn");
-    const divider = document.getElementById("google-divider");
-    if (!btn) return;
-    try {
-      const { available } = await apiFetch("/api/auth/google/available");
-      if (!available) return; // stays hidden — never shown as a dead button
-      const nextUrl = getNextUrl("templates.html");
-      btn.style.display = "";
-      if (divider) divider.style.display = "";
-      btn.addEventListener("click", () => {
-        window.location.href = `/api/auth/google?next=${encodeURIComponent(nextUrl)}`;
-      });
-    } catch {
-      /* leave hidden */
-    }
+  const btn = document.getElementById("google-btn");
+  const divider = document.getElementById("google-divider");
+  if (!btn) return;
+
+  try {
+    const { available } = await apiFetch("/api/auth/google/available");
+    if (!available) return;
+
+    const nextUrl = getNextUrl("templates.html");
+
+    btn.style.display = "";
+    if (divider) divider.style.display = "";
+
+    btn.addEventListener("click", () => {
+      const API_BASE_URL = "https://momently-server0-1.onrender.com";
+
+      window.location.href =
+        `${API_BASE_URL}/api/auth/google?next=${encodeURIComponent(nextUrl)}`;
+    });
+  } catch {
+    /* leave hidden */
   }
+}
 
   function showWelcomeTransition(onDone) {
     const overlay = document.getElementById("welcome-transition");
