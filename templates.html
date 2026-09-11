@@ -77,17 +77,31 @@
 
   <!-- Preview modal -->
   <div class="modal-overlay" id="template-preview-modal">
-    <div class="modal-box">
-      <button class="modal-close" type="button" data-close-preview aria-label="Close preview">✕</button>
-      <img data-preview-image src="" alt="">
-      <div class="modal-box-body">
-        <h3 data-preview-name></h3>
-        <p class="meta" data-preview-meta></p>
-        <p class="price" data-preview-price></p>
-        <button type="button" class="btn btn-primary btn-block" data-preview-use data-use-template="">Use This Template</button>
-      </div>
+  <div class="modal-box">
+    <button class="modal-close" type="button" data-close-preview aria-label="Close preview">✕</button>
+
+    <img data-preview-image src="" alt="">
+
+    <div class="modal-box-body">
+      <h3 data-preview-name></h3>
+
+      <p class="meta" data-preview-meta></p>
+
+      <p class="template-preview-description" data-preview-description></p>
+
+      <p class="price" data-preview-price></p>
+
+      <button
+        type="button"
+        class="btn btn-primary btn-block"
+        data-preview-use
+        data-use-template=""
+      >
+        Use This Template
+      </button>
     </div>
   </div>
+</div>
 
   <footer class="footer">
     <div class="container footer-bottom" style="border-top:none; padding-top:0;">
