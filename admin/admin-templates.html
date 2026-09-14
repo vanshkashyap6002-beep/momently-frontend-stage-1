@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Templates | Momently Admin</title>
+
+  <link
+    rel="stylesheet"
+    href="../css/style.css"
+  />
+</head>
+
+<body>
+
+  <div class="admin-shell">
+
+    <!-- =========================================
+         SIDEBAR
+         ========================================= -->
+
+    <aside class="admin-sidebar">
+
+      <div class="admin-brand">
+        <a href="orders.html">
+          Momently
+        </a>
+
+        <span>
+          Admin
+        </span>
+      </div>
+
+      <nav class="admin-nav">
+
+        <a href="orders.html">
+          Orders
+        </a>
+
+        <a
+          href="admin-templates.html"
+          class="active"
+        >
+          Templates
+        </a>
+
+      </nav>
+
+      <div class="admin-sidebar-footer">
+
+        <button
+          type="button"
+          id="admin-signout"
+          class="admin-signout"
+        >
+          Sign out
+        </button>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================================
+         MAIN
+         ========================================= -->
+
+    <main class="admin-main">
+
+      <!-- TOP BAR -->
+
+      <header class="admin-topbar">
+
+        <div>
+          <h1>
+            Templates
+          </h1>
+
+          <p>
+            Manage the experiences available on Momently.
+          </p>
+        </div>
+
+        <div class="admin-topbar-user">
+          <span>
+            Signed in as
+          </span>
+
+          <strong id="admin-name">
+            Admin
+          </strong>
+        </div>
+
+      </header>
+
+
+      <!-- CONTENT -->
+
+      <section class="admin-content">
+
+        <!-- =====================================
+             PAGE HEADER
+             ===================================== -->
+
+        <div class="admin-page-header">
+
+          <div>
+            <h2>
+              Template Manager
+            </h2>
+
+            <p>
+              Add, edit, enable, or disable Momently templates.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            id="add-template-btn"
+            class="btn btn-primary"
+          >
+            Add template
+          </button>
+
+        </div>
+
+
+        <!-- =====================================
+             BANNER
+             ===================================== -->
+
+        <div
+          id="template-banner"
+          class="form-banner"
+          hidden
+        ></div>
+
+
+        <!-- =====================================
+             TEMPLATE LIST
+             ===================================== -->
+
+        <div class="admin-panel">
+
+          <div class="admin-panel-header">
+
+            <div>
+              <h3>
+                All templates
+              </h3>
+
+              <p>
+                Enabled and disabled templates.
+              </p>
+            </div>
+
+            <div id="template-count">
+              0 templates
+            </div>
+
+          </div>
+
+
+          <div class="admin-table-wrapper">
+
+            <table class="admin-table">
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Template
+                  </th>
+
+                  <th>
+                    Occasion
+                  </th>
+
+                  <th>
+                    Price
+                  </th>
+
+                  <th>
+                    Status
+                  </th>
+
+                  <th>
+                    Actions
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="templates-table-body">
+
+                <tr>
+
+                  <td
+                    colspan="5"
+                    class="admin-table-empty"
+                  >
+                    Loading templates...
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================================
+       TEMPLATE MODAL
+       ========================================= -->
+
+  <div
+    id="template-modal"
+    class="admin-modal"
+    hidden
+  >
+
+    <div
+      class="admin-modal-backdrop"
+      data-close-modal
+    ></div>
+
+
+    <div
+      class="admin-modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="template-modal-title"
+    >
+
+      <div class="admin-modal-header">
+
+        <div>
+          <h2 id="template-modal-title">
+            Add template
+          </h2>
+
+          <p>
+            Enter the details for this Momently experience.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="admin-modal-close"
+          data-close-modal
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <!-- FORM -->
+
+      <form id="template-form">
+
+        <input
+          type="hidden"
+          id="template-id"
+        />
+
+
+        <div class="admin-form-grid">
+
+
+          <!-- ID -->
+
+          <div class="form-group">
+
+            <label for="template-id-field">
+              Template ID
+            </label>
+
+            <input
+              type="text"
+              id="template-id-field"
+              name="id"
+              placeholder="template-id"
+              required
+            />
+
+          </div>
+
+
+          <!-- SLUG -->
+
+          <div class="form-group">
+
+            <label for="template-slug">
+              Slug
+            </label>
+
+            <input
+              type="text"
+              id="template-slug"
+              name="slug"
+              placeholder="template-slug"
+              required
+            />
+
+          </div>
+
+
+          <!-- NAME -->
+
+          <div class="form-group">
+
+            <label for="template-name">
+              Name
+            </label>
+
+            <input
+              type="text"
+              id="template-name"
+              name="name"
+              placeholder="Template name"
+              required
+            />
+
+          </div>
+
+
+          <!-- OCCASION -->
+
+          <div class="form-group">
+
+            <label for="template-occasion">
+              Occasion
+            </label>
+
+            <input
+              type="text"
+              id="template-occasion"
+              name="occasion"
+              placeholder="Birthday, anniversary..."
+              required
+            />
+
+          </div>
+
+
+          <!-- THEME -->
+
+          <div class="form-group">
+
+            <label for="template-theme">
+              Theme
+            </label>
+
+            <input
+              type="text"
+              id="template-theme"
+              name="theme"
+              placeholder="Romantic, playful..."
+            />
+
+          </div>
+
+
+          <!-- STYLE -->
+
+          <div class="form-group">
+
+            <label for="template-style">
+              Style
+            </label>
+
+            <input
+              type="text"
+              id="template-style"
+              name="style"
+              placeholder="Minimal, 3D..."
+            />
+
+          </div>
+
+
+          <!-- MOOD -->
+
+          <div class="form-group">
+
+            <label for="template-mood">
+              Mood
+            </label>
+
+            <input
+              type="text"
+              id="template-mood"
+              name="mood"
+              placeholder="Warm, emotional..."
+            />
+
+          </div>
+
+
+          <!-- ACCENT -->
+
+          <div class="form-group">
+
+            <label for="template-accent">
+              Accent
+            </label>
+
+            <select
+              id="template-accent"
+              name="accent"
+              required
+            >
+
+              <option value="">
+                Select accent
+              </option>
+
+              <option value="birthday">
+                Birthday
+              </option>
+
+              <option value="anniversary">
+                Anniversary
+              </option>
+
+              <option value="proposal">
+                Proposal
+              </option>
+
+              <option value="wedding">
+                Wedding
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- PRICE -->
+
+          <div class="form-group">
+
+            <label for="template-price">
+              Price
+            </label>
+
+            <input
+              type="number"
+              id="template-price"
+              name="price"
+              min="0"
+              step="1"
+              placeholder="199"
+              required
+            />
+
+          </div>
+
+
+          <!-- PREVIEW SEED -->
+
+          <div class="form-group">
+
+            <label for="template-preview-seed">
+              Preview Seed
+            </label>
+
+            <input
+              type="text"
+              id="template-preview-seed"
+              name="previewSeed"
+              placeholder="demo/template-name"
+              required
+            />
+
+          </div>
+
+
+          <!-- CREATOR -->
+
+          <div class="form-group">
+
+            <label for="template-creator">
+              Creator
+            </label>
+
+            <input
+              type="text"
+              id="template-creator"
+              name="creatorName"
+              placeholder="Momently"
+            />
+
+          </div>
+
+
+          <!-- ENABLED -->
+
+          <div class="form-group">
+
+            <label for="template-enabled">
+              Status
+            </label>
+
+            <select
+              id="template-enabled"
+              name="isEnabled"
+            >
+
+              <option value="true">
+                Enabled
+              </option>
+
+              <option value="false">
+                Disabled
+              </option>
+
+            </select>
+
+          </div>
+
+
+          <!-- SHORT DESCRIPTION -->
+
+          <div class="form-group form-group-full">
+
+            <label for="template-short-description">
+              Short description
+            </label>
+
+            <input
+              type="text"
+              id="template-short-description"
+              name="shortDescription"
+              placeholder="A short line shown on the template card."
+            />
+
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="form-group form-group-full">
+
+            <label for="template-description">
+              Description
+            </label>
+
+            <textarea
+              id="template-description"
+              name="description"
+              rows="5"
+              placeholder="Describe the experience shown in the preview."
+            ></textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORM ERROR -->
+
+        <div
+          id="template-form-error"
+          class="form-banner"
+          hidden
+        ></div>
+
+
+        <!-- FORM ACTIONS -->
+
+        <div class="admin-modal-footer">
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-close-modal
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            id="save-template-btn"
+            class="btn btn-primary"
+          >
+            Save template
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       SCRIPTS
+       ========================================= -->
+
+  <script src="../js/main.js"></script>
+
+  <script src="../js/admin.js"></script>
+
+  <script src="../js/admin-templates.js"></script>
+
+</body>
+</html>
