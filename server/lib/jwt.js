@@ -33,25 +33,20 @@ const SEVEN_DAYS = 60 * 60 * 24 * 7;
 // Environment
 // --------------------------------------------------
 
-const isProduction =
-  process.env.NODE_ENV === "production";
 
 // --------------------------------------------------
 // Cookie options
 // --------------------------------------------------
 
+const isProduction =
+  process.env.NODE_ENV === "production";
+
 const cookieOptions = {
   httpOnly: true,
-
-  sameSite: isProduction
-    ? "none"
-    : "lax",
-
+  sameSite: isProduction ? "none" : "lax",
   secure: isProduction,
-
   maxAge: SEVEN_DAYS * 1000,
-
-  path: "/",
+  path: "/"
 };
 
 // --------------------------------------------------
