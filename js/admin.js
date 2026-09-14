@@ -32,7 +32,8 @@
           method: "POST",
           body: { email: form.email.value.trim(), password: form.password.value },
         });
-        window.location.href = "orders.html";
+        // window.location.href = "orders.html";
+        alert("LOGIN SUCCESS - cookie should now be saved");
       } catch (err) {
         showBanner(err.message);
         btn.disabled = false;
