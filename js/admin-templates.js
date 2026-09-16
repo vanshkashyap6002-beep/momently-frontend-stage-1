@@ -236,7 +236,21 @@ const {
     }
 
     if (!data.previewSeed) {
-      return "Preview seed is required.";
+      return "Preview URL is required.";
+    }
+
+    // Validate preview URL
+    try {
+      const url = new URL(data.previewSeed);
+
+      if (
+        url.protocol !== "http:" &&
+        url.protocol !== "https:"
+      ) {
+        return "Preview URL must start with http:// or https://.";
+      }
+    } catch {
+      return "Please enter a valid Preview URL.";
     }
 
     return "";
@@ -540,6 +554,17 @@ const {
                   <button
                     type="button"
                     class="btn btn-secondary"
+                    data-action="preview"
+                    data-id="${escapeHtml(
+                      template.id
+                    )}"
+                  >
+                    Preview
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
                     data-action="edit"
                     data-id="${escapeHtml(
                       template.id
@@ -669,6 +694,7 @@ const {
               body: data,
             }
           );
+
       } else {
         result =
           await apiFetch(
@@ -814,6 +840,59 @@ const {
   }
 
   // --------------------------------------------------
+  // Preview
+  // --------------------------------------------------
+
+  function previewTemplate(template) {
+    if (!template) {
+      return;
+    }
+
+    const previewUrl = String(
+      template.previewSeed || ""
+    ).trim();
+
+    if (!previewUrl) {
+      showBanner(
+        "This template does not have a preview URL."
+      );
+
+      return;
+    }
+
+    try {
+      const url = new URL(
+        previewUrl
+      );
+
+      if (
+        url.protocol !== "http:" &&
+        url.protocol !== "https:"
+      ) {
+        throw new Error(
+          "Invalid protocol"
+        );
+      }
+
+      window.open(
+        url.href,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    } catch (error) {
+      console.error(
+        "Preview URL error:",
+        error
+      );
+
+      showBanner(
+        "This template has an invalid preview URL."
+      );
+    }
+  }
+
+  // --------------------------------------------------
   // Table actions
   // --------------------------------------------------
 
@@ -847,6 +926,14 @@ const {
 
     const action =
       button.dataset.action;
+
+    if (action === "preview") {
+      previewTemplate(
+        template
+      );
+
+      return;
+    }
 
     if (action === "edit") {
       openEditModal(

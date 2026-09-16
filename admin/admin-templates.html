@@ -288,11 +288,6 @@
 
           <!-- ID -->
 
-          <input
-  type="hidden"
-  id="template-id"
-/>
-
           <!-- SLUG -->
 
           <div class="form-group">
@@ -466,21 +461,23 @@
 
           <!-- PREVIEW SEED -->
 
-          <div class="form-group">
+          <!-- PREVIEW URL -->
 
-            <label for="template-preview-seed">
-              Preview Seed
-            </label>
+<div class="form-group">
 
-            <input
-              type="text"
-              id="template-preview-seed"
-              name="previewSeed"
-              placeholder="demo/template-name"
-              required
-            />
+  <label for="template-preview-seed">
+    Preview URL
+  </label>
 
-          </div>
+  <input
+    type="url"
+    id="template-preview-seed"
+    name="previewSeed"
+    placeholder="https://template-name.vercel.app"
+    required
+  />
+
+</div>
 
 
           <!-- CREATOR -->
