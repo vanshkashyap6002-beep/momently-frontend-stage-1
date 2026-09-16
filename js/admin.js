@@ -264,7 +264,6 @@
   async function initOrdersDashboard() {
     const ok = await guardAdminSession();
     if (!ok) return;
-    initSignOut();
 
     const params = new URLSearchParams(window.location.search);
     const orderId = params.get("order");
@@ -277,7 +276,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    initAdminLoginForm();
-    if (document.getElementById("orders-list-view")) initOrdersDashboard();
-  });
+  initAdminLoginForm();
+  initSignOut();
+
+  if (document.getElementById("orders-list-view")) {
+    initOrdersDashboard();
+  }
+});
 })();
