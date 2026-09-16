@@ -84,7 +84,7 @@
   function renderStatusFilters() {
     const wrap = document.getElementById("status-filters");
     if (!wrap) return;
-    const statuses = ["", "PENDING", "PAID", "IN_PROGRESS", "READY", "PUBLISHED"];
+    const statuses = ["", "PENDING", "IN_PROGRESS", "READY", "PUBLISHED"];
     wrap.innerHTML = statuses
       .map((s) => `<button type="button" class="filter-chip${currentStatusFilter === s ? " active" : ""}" data-status="${s}">${s ? s.replace("_", " ") : "All"}</button>`)
       .join("");

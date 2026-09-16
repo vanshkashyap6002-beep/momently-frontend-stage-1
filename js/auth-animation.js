@@ -1,270 +1,273 @@
 /**
- * Momently Auth Background Heart Experience
- * - Much larger hearts
- * - Seamless infinite loop sequence
- * - Keeps existing CSS/HTML form completely untouched
+ * Momently Brand Experience: The Red Thread of Fate (Akai Ito)
+ * 60 FPS Hardware-Accelerated Canvas Engine (Zero Lag, Retina Sharp)
+ *
+ * Sequence:
+ * Phase 1: Two delicate crimson threads enter from opposite margins (far-left and bottom-right).
+ * Phase 2: They fluidly converge toward the center, looping gracefully around the authentication card.
+ * Phase 3: They meet and tie into an elegant glowing Infinity Knot with a soft pulse.
+ * Phase 4: The knot releases tension, scattering into 36 weightless silk filaments that drift and dissolve.
+ * Loops infinitely and smoothly without memory leaks.
  */
 (function () {
   'use strict';
 
-  // 1. Inject isolated styles strictly scoped to the background canvas
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  // 1. Scoped styles for the background canvas layer
   const style = document.createElement('style');
-  style.id = 'momently-bg-heart-styles';
+  style.id = 'momently-akai-ito-styles';
   style.textContent = `
-    #momently-bg-canvas {
+    #akai-ito-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
+      z-index: 1; /* Sits behind login card */
+      display: block;
     }
 
-    /* Ensure card & forms always float above the background canvas */
-    .card, form, main, .container {
+    /* Ensure card, text, and inputs remain crisp and 100% interactive */
+    .card, .container, main, nav, form, button, input, a {
       position: relative;
       z-index: 10;
-    }
-
-    /* 1. Large Center Hand-Drawn Heart */
-    .bg-sketch-heart {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(650px, 92vw);
-      height: min(650px, 92vw);
-      opacity: 0.9;
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .bg-sketch-path {
-      stroke-dasharray: 620;
-      stroke-dashoffset: 620;
-      animation: drawSketchStroke 1.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-
-    @keyframes drawSketchStroke {
-      0% { stroke-dashoffset: 620; opacity: 0.1; }
-      30% { opacity: 0.85; }
-      100% { stroke-dashoffset: 0; opacity: 0.9; }
-    }
-
-    .bg-sketch-heart.pulse-glow {
-      animation: heartGlowBreath 1s ease-in-out forwards;
-    }
-
-    @keyframes heartGlowBreath {
-      0% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 0 rgba(122, 28, 46, 0)); }
-      50% { transform: translate(-50%, -50%) scale(1.06); filter: drop-shadow(0 0 28px rgba(122, 28, 46, 0.35)); }
-      100% { transform: translate(-50%, -50%) scale(1); filter: drop-shadow(0 0 12px rgba(122, 28, 46, 0.18)); }
-    }
-
-    /* 2. Much Larger Surrounding Perimeter Hearts */
-    .bg-float-heart {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.6);
-      transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .bg-float-heart.visible {
-      opacity: 0.9;
-      transform: translate(-50%, -50%) scale(1);
-    }
-
-    .bg-float-heart.bursting {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(1.4);
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
-
-    /* 3. Small Scatter Hearts */
-    .bg-mini-heart {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0;
-      animation: scatterFloat linear forwards;
-    }
-
-    @keyframes scatterFloat {
-      0% {
-        opacity: 0.95;
-        transform: translate(0, 0) scale(0.6) rotate(0deg);
-      }
-      40% {
-        opacity: 0.9;
-      }
-      100% {
-        opacity: 0;
-        transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(var(--rot));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .bg-float-heart {
-        width: 58px;
-        height: 58px;
-      }
     }
   `;
   document.head.appendChild(style);
 
   document.addEventListener('DOMContentLoaded', () => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const canvas = document.createElement('canvas');
+    canvas.id = 'akai-ito-canvas';
+    document.body.prepend(canvas);
 
-    // Create persistent background stage
-    const stage = document.createElement('div');
-    stage.id = 'momently-bg-canvas';
-    document.body.prepend(stage);
+    const ctx = canvas.getContext('2d', { alpha: true });
 
-    // Run the animation immediately and loop infinitely
-    runLoop(stage);
-  });
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
 
-  function runLoop(stage) {
-    playHeartCycle(stage, () => {
-      // Loop seamlessly after a slight gentle pause (800ms)
-      setTimeout(() => {
-        runLoop(stage);
-      }, 800);
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2); // Retina crispness capped at 2 for optimal GPU performance
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Akai Ito Color Palette
+    const CRIMSON_DEEP = 'rgba(122, 28, 46, ';    // #7a1c2e Momently burgundy
+    const CRIMSON_VIBRANT = 'rgba(190, 18, 60, '; // #be123c Glowing ruby
+    const CRIMSON_SOFT = 'rgba(244, 63, 94, ';    // #f43f5e Highlight rose
+
+    // Cubic Bézier curve point generator
+    function getBezierPoint(p0, p1, p2, p3, t) {
+      const mt = 1 - t;
+      const mt2 = mt * mt;
+      const t2 = t * t;
+      return {
+        x: mt2 * mt * p0.x + 3 * mt2 * t * p1.x + 3 * mt * t2 * p2.x + t2 * t * p3.x,
+        y: mt2 * mt * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t2 * t * p3.y
+      };
+    }
+
+    // Dynamic curve definitions calculated relative to viewport
+    function getCurves() {
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // Thread A: Enters from far-left margin, curves gracefully, sweeps up and frames the card
+      const threadA = [
+        { x: -50, y: height * 0.22 },
+        { x: width * 0.22, y: height * 0.12 },
+        { x: width * 0.32, y: height * 0.52 },
+        { x: cx - 25, y: cy + 12 }
+      ];
+
+      // Thread B: Enters from bottom-right margin, sweeps up the right empty space, frames card
+      const threadB = [
+        { x: width + 50, y: height * 0.88 },
+        { x: width * 0.78, y: height * 0.75 },
+        { x: width * 0.68, y: height * 0.44 },
+        { x: cx + 25, y: cy - 12 }
+      ];
+
+      return { threadA, threadB, cx, cy };
+    }
+
+    // Silk Filament Particles for Phase 4
+    let filaments = [];
+    function createFilaments(cx, cy) {
+      filaments = [];
+      const count = width < 768 ? 22 : 38;
+
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
+        const speed = 1.2 + Math.random() * 2.4;
+        filaments.push({
+          x: cx + (Math.random() - 0.5) * 60,
+          y: cy + (Math.random() - 0.5) * 50,
+          vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 0.8,
+          vy: Math.sin(angle) * speed - (1.2 + Math.random() * 1.6), // Upward silk float
+          length: 16 + Math.random() * 22,
+          angle: Math.random() * Math.PI,
+          vAngle: (Math.random() - 0.5) * 0.04,
+          alpha: 0.85,
+          decay: 0.009 + Math.random() * 0.007,
+          width: 0.8 + Math.random() * 1.4
+        });
+      }
+    }
+
+    // Animation Loop Variables
+    let startTime = performance.now();
+    const CYCLE_DURATION = 7400; // 7.4 seconds per complete romance cycle
+
+    function animate(currentTime) {
+      const elapsed = (currentTime - startTime) % CYCLE_DURATION;
+      ctx.clearRect(0, 0, width, height);
+
+      const { threadA, threadB, cx, cy } = getCurves();
+
+      // ========================================================
+      // PHASE 1 & 2: Origin Across Margins & Convergence (0ms -> 3000ms)
+      // ========================================================
+      if (elapsed < 4800) {
+        const progress = Math.min(elapsed / 2600, 1);
+        // Custom smooth exponential ease-out
+        const t = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+
+        // Render Thread A
+        ctx.beginPath();
+        ctx.strokeStyle = CRIMSON_VIBRANT + (0.75 * (1 - Math.max(0, (elapsed - 3800) / 1000))) + ')';
+        ctx.lineWidth = 1.8;
+        ctx.shadowColor = CRIMSON_VIBRANT + '0.4)';
+        ctx.shadowBlur = 8;
+        ctx.lineCap = 'round';
+
+        const steps = 60;
+        const currentStepsA = Math.floor(steps * t);
+        for (let i = 0; i <= currentStepsA; i++) {
+          const pt = getBezierPoint(threadA[0], threadA[1], threadA[2], threadA[3], i / steps);
+          if (i === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+
+        // Render Thread B
+        ctx.beginPath();
+        ctx.strokeStyle = CRIMSON_VIBRANT + (0.75 * (1 - Math.max(0, (elapsed - 3800) / 1000))) + ')';
+        for (let i = 0; i <= currentStepsA; i++) {
+          const pt = getBezierPoint(threadB[0], threadB[1], threadB[2], threadB[3], i / steps);
+          if (i === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.stroke();
+      }
+
+      // ========================================================
+      // PHASE 3: The Unbroken Infinity Knot (2400ms -> 4600ms)
+      // ========================================================
+      if (elapsed >= 2400 && elapsed < 4800) {
+        const knotProgress = Math.min((elapsed - 2400) / 1000, 1);
+        const knotFadeOut = Math.max(0, (elapsed - 3800) / 1000);
+        const knotAlpha = Math.min(1, knotProgress) * (1 - knotFadeOut);
+
+        // Breathing pulse glow
+        const pulse = 1 + Math.sin((elapsed - 2400) * 0.005) * 0.06;
+        const knotScale = (width < 768 ? 32 : 48) * pulse;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.strokeStyle = CRIMSON_VIBRANT + (0.9 * knotAlpha) + ')';
+        ctx.shadowColor = CRIMSON_SOFT + (0.8 * knotAlpha) + ')';
+        ctx.shadowBlur = 16 * pulse;
+        ctx.lineWidth = 2.2;
+        ctx.lineCap = 'round';
+
+        // Draw Lemniscate of Bernoulli (Infinity Symbol: ∞)
+        ctx.beginPath();
+        const totalPoints = 90;
+        const knotDrawSteps = Math.floor(totalPoints * knotProgress);
+
+        for (let i = 0; i <= knotDrawSteps; i++) {
+          const theta = (Math.PI * 2 * i) / totalPoints;
+          const scale = knotScale / (1 + Math.pow(Math.sin(theta), 2));
+          const x = scale * Math.cos(theta);
+          const y = scale * Math.sin(theta) * Math.cos(theta);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Delicate center heart crest within the knot
+        if (knotProgress >= 0.7) {
+          const crestAlpha = Math.min(1, (knotProgress - 0.7) / 0.3) * (1 - knotFadeOut);
+          ctx.beginPath();
+          ctx.strokeStyle = CRIMSON_DEEP + (0.85 * crestAlpha) + ')';
+          ctx.lineWidth = 1.4;
+          ctx.shadowBlur = 6;
+          ctx.arc(0, -2, 4, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      // ========================================================
+      // PHASE 4: Tension Release & Floating Silk Filaments (3800ms -> 7200ms)
+      // ========================================================
+      if (elapsed >= 3800) {
+        if (filaments.length === 0) {
+          createFilaments(cx, cy);
+        }
+
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = CRIMSON_SOFT + '0.3)';
+
+        for (let i = 0; i < filaments.length; i++) {
+          const f = filaments[i];
+          if (f.alpha <= 0) continue;
+
+          f.x += f.vx;
+          f.y += f.vy;
+          f.angle += f.vAngle;
+          f.alpha -= f.decay;
+
+          // Draw silk fiber segment
+          const halfLen = f.length / 2;
+          const x1 = f.x - Math.cos(f.angle) * halfLen;
+          const y1 = f.y - Math.sin(f.angle) * halfLen;
+          const x2 = f.x + Math.cos(f.angle) * halfLen;
+          const y2 = f.y + Math.sin(f.angle) * halfLen;
+
+          ctx.beginPath();
+          ctx.strokeStyle = CRIMSON_VIBRANT + Math.max(0, f.alpha) + ')';
+          ctx.lineWidth = f.width;
+          ctx.lineCap = 'round';
+          ctx.moveTo(x1, y1);
+          // Delicate quadratic curvature to look like wave-blown silk
+          const midCtrlX = (x1 + x2) / 2 + Math.sin(f.angle) * 6;
+          const midCtrlY = (y1 + y2) / 2 + Math.cos(f.angle) * 6;
+          ctx.quadraticCurveTo(midCtrlX, midCtrlY, x2, y2);
+          ctx.stroke();
+        }
+      } else {
+        // Reset filaments for next run
+        filaments = [];
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // Start 60 FPS animation loop
+    requestAnimationFrame((time) => {
+      startTime = time;
+      animate(time);
     });
-  }
-
-  function playHeartCycle(stage, onComplete) {
-    stage.innerHTML = ''; // Fresh cycle stage
-    const burgundy = '#7A1C2E'; // Signature Momently Burgundy
-
-    // Step 1: Draw Center Heart (Large)
-    const sketchBox = document.createElement('div');
-    sketchBox.className = 'bg-sketch-heart';
-    sketchBox.innerHTML = `
-      <svg viewBox="0 0 200 200" fill="none" style="width:100%;height:100%;overflow:visible;">
-        <path class="bg-sketch-path"
-          d="M 100,165 
-             C 25,115 15,60 52,32 
-             C 80,10 96,25 100,42 
-             C 104,25 120,10 148,32 
-             C 185,60 175,115 100,165 Z" 
-          stroke="${burgundy}" 
-          stroke-width="2.6" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-        />
-      </svg>
-    `;
-    stage.appendChild(sketchBox);
-
-    // Step 2: Glow & Pulse
-    setTimeout(() => {
-      sketchBox.classList.add('pulse-glow');
-    }, 1900);
-
-    // Step 3: Big Perimeter Hearts Appear
-    const isMobile = window.innerWidth < 768;
-    const positions = isMobile
-      ? [
-          { x: 12, y: 16, rot: -10 },
-          { x: 88, y: 18, rot: 12 },
-          { x: 10, y: 82, rot: -8 },
-          { x: 90, y: 80, rot: 14 }
-        ]
-      : [
-          { x: 16, y: 20, rot: -12 },
-          { x: 84, y: 22, rot: 10 },
-          { x: 10, y: 52, rot: 8 },
-          { x: 90, y: 50, rot: -14 },
-          { x: 20, y: 82, rot: -6 },
-          { x: 80, y: 84, rot: 15 }
-        ];
-
-    const heartElements = [];
-
-    setTimeout(() => {
-      positions.forEach((pos, idx) => {
-        setTimeout(() => {
-          const heart = document.createElement('div');
-          heart.className = 'bg-float-heart';
-          heart.style.left = `${pos.x}vw`;
-          heart.style.top = `${pos.y}vh`;
-          heart.innerHTML = `
-            <svg viewBox="0 0 100 100" fill="none" style="width:100%;height:100%;transform:rotate(${pos.rot}deg);">
-              <path d="M 50,85 C 10,58 5,30 26,16 C 40,5 48,13 50,21 C 52,13 60,5 74,16 C 95,30 90,58 50,85 Z" 
-                    stroke="${burgundy}" 
-                    stroke-width="2.5" 
-                    fill="rgba(122, 28, 46, 0.05)"
-                    stroke-linecap="round" />
-            </svg>
-          `;
-          stage.appendChild(heart);
-
-          requestAnimationFrame(() => heart.classList.add('visible'));
-          heartElements.push({ el: heart, x: pos.x, y: pos.y });
-        }, idx * 170);
-      });
-    }, 2500);
-
-    // Step 4: Each Heart Bursts One-by-One into Small Hearts
-    setTimeout(() => {
-      // Fade out central sketch
-      sketchBox.style.opacity = '0';
-      sketchBox.style.transform = 'translate(-50%, -50%) scale(1.1)';
-
-      heartElements.forEach((item, index) => {
-        setTimeout(() => {
-          item.el.classList.add('bursting');
-
-          const rect = item.el.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
-
-          for (let p = 0; p < 8; p++) {
-            createMiniHeart(stage, centerX, centerY, burgundy);
-          }
-        }, index * 260);
-      });
-    }, 4000);
-
-    // Step 5: Complete cycle and trigger next iteration
-    setTimeout(() => {
-      if (typeof onComplete === 'function') onComplete();
-    }, 6600);
-  }
-
-  function createMiniHeart(stage, originX, originY, color) {
-    const mini = document.createElement('div');
-    mini.className = 'bg-mini-heart';
-
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 55 + Math.random() * 110;
-    const dx = Math.cos(angle) * distance;
-    const dy = Math.sin(angle) * distance - (12 + Math.random() * 30);
-    const size = 14 + Math.random() * 14;
-    const rot = (Math.random() - 0.5) * 80;
-    const duration = 1100 + Math.random() * 400;
-
-    mini.style.left = `${originX}px`;
-    mini.style.top = `${originY}px`;
-    mini.style.width = `${size}px`;
-    mini.style.height = `${size}px`;
-    mini.style.setProperty('--dx', `${dx}px`);
-    mini.style.setProperty('--dy', `${dy}px`);
-    mini.style.setProperty('--rot', `${rot}deg`);
-    mini.style.animationDuration = `${duration}ms`;
-
-    mini.innerHTML = `
-      <svg viewBox="0 0 100 100" fill="none" style="width:100%;height:100%;">
-        <path d="M 50,85 C 10,58 5,30 26,16 C 40,5 48,13 50,21 C 52,13 60,5 74,16 C 95,30 90,58 50,85 Z" 
-              stroke="${color}" 
-              fill="rgba(122, 28, 46, 0.4)"
-              stroke-width="2.6" />
-      </svg>
-    `;
-
-    stage.appendChild(mini);
-  }
+  });
 })();
