@@ -31,25 +31,48 @@
 
   <script src="js/main.js"></script>
   <script>
-    (function () {
-      document.addEventListener("DOMContentLoaded", async function () {
-        var params = new URLSearchParams(window.location.search);
-        var orderId = params.get("order");
-        var refEl = document.getElementById("order-ref");
-        var detailEl = document.getElementById("success-detail");
-        if (!orderId) return;
-        refEl.textContent = "Order ref: " + orderId;
-        try {
-          var res = await window.Momently.apiFetch("/api/orders/" + orderId);
-          var o = res.order;
-          if (o.memoryTitle) {
-            detailEl.textContent = '"' + o.memoryTitle + '" is in Momently\u2019s queue and will be handcrafted soon.';
-          }
-        } catch (e) {
-          /* Order summary is a nice-to-have here — the confirmation itself doesn't depend on it. */
+  (function () {
+    document.addEventListener("DOMContentLoaded", async function () {
+      var params = new URLSearchParams(window.location.search);
+      var orderId = params.get("order");
+      var refEl = document.getElementById("order-ref");
+      var detailEl = document.getElementById("success-detail");
+
+      if (!orderId) {
+        window.location.href = "templates.html";
+        return;
+      }
+
+      refEl.textContent = "Checking your payment…";
+
+      try {
+        var res = await window.Momently.apiFetch(
+          "/api/orders/" + encodeURIComponent(orderId)
+        );
+
+        var o = res.order;
+
+        if (!o || o.paymentStatus !== "PAID") {
+          window.location.href =
+            "payment.html?order=" + encodeURIComponent(orderId);
+          return;
         }
-      });
-    })();
-  </script>
+
+        refEl.textContent = "Order ref: " + orderId;
+
+        if (o.memoryTitle) {
+          detailEl.textContent =
+            '"' +
+            o.memoryTitle +
+            '" is in Momently’s queue and will be handcrafted soon.';
+        }
+      } catch (e) {
+        refEl.textContent = "";
+        detailEl.textContent =
+          "We couldn't verify this order yet. Please return to the payment page and try again.";
+      }
+    });
+  })();
+</script>
 </body>
 </html>
