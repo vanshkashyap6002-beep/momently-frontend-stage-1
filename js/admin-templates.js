@@ -189,7 +189,7 @@ const {
       creatorName:
         getValue(
           "template-creator"
-        ) || "Momently",
+        ) || "CHERMO",
 
       shortDescription:
         getValue(

@@ -74,7 +74,7 @@
       const { memory } = await apiFetch(`/api/memory/${encodeURIComponent(slug)}`);
 
       document.documentElement.style.setProperty("--memory-accent", accentColorFor(memory.accent));
-      document.title = `${memory.title || "A Momently Memory"} — Momently`;
+      document.title = `${memory.title || "A CHERMO Memory"} — CHERMO`;
 
       const heroMedia = memory.media[0];
       const galleryMedia = memory.media.slice(1);
@@ -86,7 +86,7 @@
           : `<img src="${heroMedia.url}" alt="">`;
       }
 
-      document.getElementById("memory-title").textContent = memory.title || "A Momently Memory";
+      document.getElementById("memory-title").textContent = memory.title || "A CHERMO Memory";
       document.getElementById("memory-subtitle").textContent = memory.subtitle || "";
 
       if (memory.importantDate) {
@@ -102,8 +102,8 @@
       renderTimeline(memory.timeline);
       renderGallery(galleryMedia);
 
-      document.getElementById("memory-closing-message").textContent = memory.closingMessage || "With love, from all of us at Momently.";
-      document.getElementById("memory-footer-text").textContent = `A ${memory.templateName || "Momently"} memory, made for ${memory.recipientName || "someone special"}`;
+      document.getElementById("memory-closing-message").textContent = memory.closingMessage || "With love, from all of us at CHERMO.";
+      document.getElementById("memory-footer-text").textContent = `A ${memory.templateName || "CHERMO"} memory, made for ${memory.recipientName || "someone special"}`;
 
       hide("memory-loading");
       show("memory-content");

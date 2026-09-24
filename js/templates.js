@@ -538,7 +538,7 @@
       description.textContent =
         template.description ||
         template.shortDescription ||
-        "A special interactive experience made with Momently.";
+        "A special interactive experience made with CHERMO.";
 
       description.style.display =
         "block";

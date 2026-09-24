@@ -50,8 +50,8 @@
         order_id: razorpayOrderId,
         amount,
         currency,
-        name: "Momently",
-        description: order.memoryTitle || "Momently memory",
+        name: "CHERMO",
+        description: order.memoryTitle || "CHERMO memory",
         theme: { color: "#7A1E2B" },
         handler: async function (response) {
           setStatus("Verifying your payment…");
@@ -117,7 +117,7 @@
         return;
       }
 
-      document.getElementById("pay-title").textContent = o.memoryTitle || "Your Momently memory";
+      document.getElementById("pay-title").textContent = o.memoryTitle || "Your CHERMO memory";
       document.getElementById("pay-amount").textContent = formatCurrency(o.amount);
       document.getElementById("pay-subtitle").textContent = o.recipientName ? `For ${o.recipientName}` : "";
 
