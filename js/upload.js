@@ -18,7 +18,7 @@
       .map((f) => {
         const src = `/api/media/${f.id}/file`;
         const media = (f.mimeType || "").startsWith("video/")
-          ? `<video src="${src}" muted playsinline></video>`
+          ? `<video src="${src}" muted playsinline aria-hidden="true" tabindex="-1"></video>`
           : `<img src="${src}" alt="${escapeHtml(f.filename)}">`;
         return `<div class="upload-thumb" data-media-id="${f.id}">${media}<button type="button" class="remove-thumb" data-remove="${f.id}" aria-label="Remove ${escapeHtml(f.filename)}">✕</button></div>`;
       })
@@ -71,12 +71,6 @@
     loadExisting(previewsEl);
 
     zone.addEventListener("click", () => input.click());
-    zone.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        input.click();
-      }
-    });
     input.addEventListener("change", () => {
       if (input.files.length) uploadFiles(input.files, previewsEl);
       input.value = "";

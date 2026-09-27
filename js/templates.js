@@ -18,6 +18,15 @@
     currentUser
   } = window.Momently;
 
+  let previewTrigger = null;
+
+  function closePreview(modal) {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    if (previewTrigger && previewTrigger.isConnected) previewTrigger.focus();
+    previewTrigger = null;
+  }
+
 
   // ------------------------------------------------------------------
   // Template image
@@ -91,7 +100,7 @@
                       t.slug
                     )}"
                   >
-                    Preview
+                    Preview ${escapeHtml(t.name || "template")}
                   </button>
                 `
                 : ""
@@ -164,7 +173,8 @@
 
         if (previewBtn) {
           return openPreview(
-            previewBtn.dataset.previewTemplate
+            previewBtn.dataset.previewTemplate,
+            previewBtn
           );
         }
 
@@ -438,7 +448,7 @@
   // Preview modal
   // ------------------------------------------------------------------
 
-  function openPreview(slug) {
+  function openPreview(slug, trigger) {
 
     const modal =
       document.getElementById(
@@ -602,9 +612,10 @@
     // Open modal
     // --------------------------------------------------------------
 
-    modal.classList.add(
-      "open"
-    );
+    previewTrigger = trigger || document.activeElement;
+    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("open");
+    modal.querySelector("[data-close-preview]")?.focus();
   }
 
 
@@ -715,9 +726,7 @@
           )
         ) {
 
-          modal.classList.remove(
-            "open"
-          );
+          closePreview(modal);
 
           return;
         }
@@ -769,6 +778,28 @@
 
       }
     );
+
+    modal.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closePreview(modal);
+        return;
+      }
+
+      if (event.key === "Tab") {
+        const focusable = Array.from(modal.querySelectorAll("button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])"));
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
   }
 
 

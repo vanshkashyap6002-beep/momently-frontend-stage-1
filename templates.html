@@ -11,7 +11,7 @@
 
   <meta
     name="description"
-    content="Browse CHERMO's handcrafted memory page templates for birthdays, anniversaries, proposals, and more."
+    content="Browse CHERMO memory page templates for birthdays, anniversaries, proposals, and more."
   >
 
   <link
@@ -86,6 +86,8 @@
           class="nav-toggle"
           type="button"
           aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
         >
           <span></span>
           <span></span>
@@ -103,7 +105,7 @@
        MOBILE MENU
        ========================================================= -->
 
-  <div class="mobile-menu">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
 
     <a href="index.html">
       Home
@@ -123,7 +125,7 @@
 
     <span data-auth-slot-mobile></span>
 
-  </div>
+  </nav>
 
 
   <!-- =========================================================
@@ -252,6 +254,11 @@
   <div
     class="modal-overlay"
     id="template-preview-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="preview-modal-title"
+    aria-hidden="true"
+    tabindex="-1"
   >
 
     <div class="modal-box">
@@ -264,7 +271,7 @@
         data-close-preview
         aria-label="Close preview"
       >
-        ✕
+        <span aria-hidden="true">✕</span>
       </button>
 
 
@@ -283,7 +290,7 @@
 
         <!-- TEMPLATE NAME -->
 
-        <h3 data-preview-name></h3>
+        <h3 id="preview-modal-title" data-preview-name></h3>
 
 
         <!-- TEMPLATE META -->
@@ -367,6 +374,12 @@
       <span>
         Made with ♥
       </span>
+      <nav class="legal-footer-links" aria-label="Legal policies">
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="refund-policy.html">Refunds</a>
+        <a href="cookie-policy.html">Cookies</a>
+      </nav>
 
     </div>
 

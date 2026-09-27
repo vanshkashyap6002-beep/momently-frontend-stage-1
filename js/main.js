@@ -78,8 +78,18 @@
     const toggle = document.querySelector(".nav-toggle");
     const menu = document.querySelector(".mobile-menu");
     if (!toggle || !menu) return;
-    toggle.addEventListener("click", () => menu.classList.toggle("open"));
-    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => menu.classList.remove("open")));
+    const setOpen = (isOpen) => {
+      menu.classList.toggle("open", isOpen);
+      toggle.setAttribute("aria-expanded", String(isOpen));
+    };
+    toggle.addEventListener("click", () => setOpen(!menu.classList.contains("open")));
+    menu.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && menu.classList.contains("open")) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
   }
 
   /** Swaps the nav's "Login" link for a name + sign-out once we know the

@@ -26,7 +26,7 @@
       <h1>Create your account</h1>
       <p class="subtitle">One quick step before you choose a template.</p>
 
-      <div id="form-banner"></div>
+      <div id="form-banner" aria-live="polite"></div>
 
       <button type="button" class="btn btn-google btn-block" id="google-btn" style="display:none;">
         <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
@@ -56,9 +56,20 @@
         <button type="submit" class="btn btn-primary btn-block" id="submit-btn">Create Account</button>
       </form>
 
+      <p class="privacy-notice">When you create an account, CHERMO uses your account details as described in the <a href="privacy-policy.html">Privacy Policy</a>. Read the <a href="terms.html">Terms</a>.</p>
+
       <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
     </div>
   </main>
+  <footer class="legal-mini-footer">
+    <nav class="legal-footer-links" aria-label="Legal policies">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </nav>
+    <span>© 2026 CHERMO</span>
+  </footer>
 
   <div class="welcome-transition" id="welcome-transition" style="display:none;">
     <div>

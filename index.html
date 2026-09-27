@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHERMO — Cherish Every Moment</title>
-<meta name="description" content="CHERMO turns your favorite memory into a beautifully designed, personal page — handcrafted by CHERMO and shared with a single link.">
-<meta property="og:title" content="CHERMO — Cherish Every Moment">
+<title>CHERMO — Cherish Every Moment.</title>
+<meta name="description" content="Turn your favorite memory into a personal page with CHERMO. Choose a template, add your story and photos, and share your published memory.">
+<meta property="og:title" content="CHERMO — Cherish Every Moment.">
 <meta property="og:description" content="Turn your favorite memory into a beautifully designed, personal page with CHERMO.">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/animations.css">
@@ -41,13 +41,13 @@
 
   <a href="templates.html" class="btn btn-primary btn-sm">Create Memory</a>
 
-  <button class="nav-toggle" type="button" aria-label="Open menu">
+  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
     <span></span><span></span><span></span>
   </button>
 </div>
     </div>
   </header>
-  <div class="mobile-menu">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
   <a href="index.html">Home</a>
   <a href="templates.html">Marketplace</a>
   <a href="index.html#pricing">Pricing</a>
@@ -57,7 +57,7 @@
   <span data-auth-slot-mobile></span>
 
   <a href="templates.html" class="btn btn-primary">Create Memory</a>
-</div>
+  </nav>
   <!-- Hero -->
   <section class="hero">
     <div class="hearts-layer"></div>
@@ -69,7 +69,7 @@
       <div>
         <span class="eyebrow">CHERMO</span>
         <h1 class="hero-title">Every Memory Deserves<br>Its Own Place<br><span class="italic">On The Internet.</span></h1>
-        <p class="hero-subtitle">Cherish Every Moment. Tell us the story, send the photos, and CHERMO personally designs a page to hold it — a birthday, a proposal, an anniversary, a goodbye. Ready to share with one link.</p>
+        <p class="hero-subtitle">Cherish Every Moment. Tell us the story, send the photos, and CHERMO will shape them into a personal page you can share.</p>
         <div class="hero-actions">
           <a href="templates.html" class="btn btn-primary">Create Yours →</a>
           <a href="templates.html" class="btn btn-outline">Explore Templates</a>
@@ -101,28 +101,28 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">Why CHERMO</span>
-        <h2 class="section-title">Not a template you fill in. A memory someone builds for you.</h2>
+        <h2 class="section-title">A memory shaped around what matters to you.</h2>
       </div>
       <div class="card-grid">
         <div class="feature-card">
           <div class="icon">✦</div>
-          <h3>Handcrafted templates</h3>
-          <p>Every template is designed in-house for a specific kind of moment — a proposal reads nothing like a birthday.</p>
+          <h3>Templates for your occasion</h3>
+          <p>Choose a template for the occasion, then personalize the page with your story and photos.</p>
         </div>
         <div class="feature-card">
           <div class="icon">✎</div>
-          <h3>Personally put together</h3>
-          <p>You send the story and the photos. Our team lays it out by hand — nothing here is auto-generated.</p>
+          <h3>Your story, your details</h3>
+          <p>Share your story and photos, and CHERMO will personalize the page using the details you provide.</p>
         </div>
         <div class="feature-card">
           <div class="icon">⚿</div>
-          <h3>Private until it's ready</h3>
-          <p>Your photos stay private the whole way through. Only CHERMO can see them while your memory is being made.</p>
+          <h3>Your content, used for your memory</h3>
+          <p>Your photos and videos are used to prepare your memory and handled under our <a href="privacy-policy.html">Privacy Policy</a>. They are not intended to be public before your memory is published.</p>
         </div>
         <div class="feature-card">
           <div class="icon">♥</div>
-          <h3>One link, forever</h3>
-          <p>A single, permanent page you can send in a text, print on a card, or read from on the day itself.</p>
+          <h3>A page to share</h3>
+          <p>A shareable page you can send in a text, print on a card, or open on the day itself. Availability may change; see our <a href="terms.html">Terms</a>.</p>
         </div>
       </div>
     </div>
@@ -145,8 +145,8 @@
           <p>A few details, a personal message, and the photos or video you want featured.</p>
         </div>
         <div class="step-card">
-          <h3>We craft it by hand</h3>
-          <p>CHERMO personally builds your page on the chosen template — no auto-generation.</p>
+          <h3>Personalize your page</h3>
+          <p>CHERMO prepares your page using the template, story, and photos you choose.</p>
         </div>
         <div class="step-card">
           <h3>Get your link</h3>
@@ -162,7 +162,7 @@
       <div class="section-head">
         <span class="eyebrow">Templates</span>
         <h2 class="section-title">A few of our favorites</h2>
-        <p class="section-subtitle">Every template on CHERMO is made once by us, then personalized for you.</p>
+        <p class="section-subtitle">Choose a template and personalize it with the details and media you provide.</p>
       </div>
       <div class="template-grid" id="featured-templates-grid">
         <div class="skeleton" style="aspect-ratio:4/3;"></div>
@@ -171,33 +171,6 @@
       </div>
       <div class="text-center mt-24">
         <a href="templates.html" class="btn btn-outline">View All Templates</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section class="section" style="background:#fff;">
-    <div class="container">
-      <div class="section-head">
-        <span class="eyebrow">Stories</span>
-        <h2 class="section-title">What people made with CHERMO</h2>
-      </div>
-      <div class="testimonial-grid">
-        <div class="testimonial-card">
-          <p class="testimonial-quote">"I sent five photos and a paragraph. What came back felt like something a close friend made, not a company."</p>
-          <p class="testimonial-name">Ananya R.</p>
-          <p class="testimonial-role">Anniversary memory</p>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-quote">"I used it to propose. Watching her scroll through it, on her phone, still gets me."</p>
-          <p class="testimonial-name">Karan S.</p>
-          <p class="testimonial-role">Proposal memory</p>
-        </div>
-        <div class="testimonial-card">
-          <p class="testimonial-quote">"My mom cried. That's genuinely the whole review."</p>
-          <p class="testimonial-name">Meera D.</p>
-          <p class="testimonial-role">Birthday memory</p>
-        </div>
       </div>
     </div>
   </section>
@@ -216,7 +189,7 @@
           <p class="pricing-amount">Free</p>
           <p class="pricing-note">A small set of simple, beautifully made templates</p>
           <ul class="pricing-features">
-            <li>✓ Handcrafted layout</li>
+            <li>✓ Personalized layout</li>
             <li>✓ Up to 10 photos</li>
             <li>✓ One published link</li>
           </ul>
@@ -225,7 +198,7 @@
         <div class="pricing-card featured">
           <p class="pricing-name">Signature templates</p>
           <p class="pricing-amount">₹499–₹799</p>
-          <p class="pricing-note">Our most-loved designs for anniversaries and proposals</p>
+          <p class="pricing-note">Designs for anniversaries and proposals</p>
           <ul class="pricing-features">
             <li>✓ Everything in Starter</li>
             <li>✓ Timeline & gallery sections</li>
@@ -236,7 +209,7 @@
         <div class="pricing-card">
           <p class="pricing-name">Premium templates</p>
           <p class="pricing-amount">₹999+</p>
-          <p class="pricing-note">Our most detailed designs, for weddings and milestones</p>
+          <p class="pricing-note">Designs for weddings and milestones</p>
           <ul class="pricing-features">
             <li>✓ Everything in Signature</li>
             <li>✓ Extended story timeline</li>
@@ -258,15 +231,15 @@
       <div class="faq-list">
         <div class="faq-item">
           <button class="faq-question" type="button">Who actually builds the memory page? <span class="chev">⌄</span></button>
-          <div class="faq-answer">A real person on the CHERMO team, using the template you chose and the story and photos you send us. Nothing here is auto-generated.</div>
+          <div class="faq-answer">CHERMO prepares the page using the template you choose and the story and photos you provide.</div>
         </div>
         <div class="faq-item">
           <button class="faq-question" type="button">How long does it take? <span class="chev">⌄</span></button>
-          <div class="faq-answer">Most memories are ready within a few days of payment. You'll get an email the moment yours is published.</div>
+          <div class="faq-answer">We'll email you when your memory is published.</div>
         </div>
         <div class="faq-item">
           <button class="faq-question" type="button">Are my photos private? <span class="chev">⌄</span></button>
-          <div class="faq-answer">Yes. Your photos are only visible to you and CHERMO while your memory is being built. Nothing is public until you're the one asking us to publish it.</div>
+          <div class="faq-answer">Your submitted photos and videos are used to prepare your memory. A memory is shared through its page after it is published; see our <a href="privacy-policy.html">Privacy Policy</a> for details.</div>
         </div>
         <div class="faq-item">
           <button class="faq-question" type="button">Can I choose what goes into the page? <span class="chev">⌄</span></button>
@@ -282,7 +255,7 @@
       <div class="footer-grid">
         <div>
           <a href="index.html" class="wordmark">CHERMO</a>
-          <p class="footer-tagline">Cherish Every Moment. Every memory deserves its own place on the internet, handcrafted one page at a time.</p>
+          <p class="footer-tagline">Cherish Every Moment. Every memory deserves its own place on the internet.</p>
         </div>
         <div class="footer-col">
           <h5>Product</h5>
@@ -299,10 +272,19 @@
             <li><a href="signup.html">Sign Up</a></li>
           </ul>
         </div>
+        <div class="footer-col">
+          <h5>Policies</h5>
+          <ul>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="refund-policy.html">Refund Policy</a></li>
+            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+        </div>
       </div>
       <div class="footer-bottom">
         <span>© <span data-year>2026</span> CHERMO. All rights reserved.</span>
-        <span>Made with ♥</span>
+        <span>Original CHERMO designs and content are protected. See our <a href="terms.html#intellectual-property">usage terms</a>.</span>
       </div>
     </div>
   </footer>

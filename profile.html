@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Profile — CHERMO</title>
+<title>My Profile — CHERMO</title>
+<meta name="description" content="Manage your CHERMO account profile and view your orders.">
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/animations.css">
 </head>
@@ -12,45 +13,106 @@
   <header class="navbar scrolled">
     <div class="container navbar-inner">
       <a href="index.html" class="wordmark">CHERMO</a>
-      <nav class="nav-links">
+      <nav class="nav-links" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="templates.html">Marketplace</a>
       </nav>
       <div class="nav-actions">
         <span data-auth-slot></span>
-        <button class="nav-toggle" type="button" aria-label="Open menu">
+        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
           <span></span><span></span><span></span>
         </button>
       </div>
     </div>
   </header>
-  <div class="mobile-menu">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
     <a href="index.html">Home</a>
     <a href="templates.html">Marketplace</a>
     <span data-auth-slot-mobile></span>
-  </div>
+  </nav>
 
-  <main class="section" style="padding-top: calc(var(--nav-height) + 40px);">
-    <div class="container" style="max-width: 720px;">
-      <div class="profile-header">
-        <div class="profile-avatar" id="profile-avatar"></div>
-        <div>
-          <h1 id="profile-name" style="font-size:24px;"></h1>
-          <p id="profile-email" style="color:rgba(18,16,15,0.55); font-size:14px;"></p>
+  <main class="section profile-page">
+    <div class="container profile-container">
+      <div class="section-head profile-page-heading">
+        <span class="eyebrow">My Account</span>
+        <h1 class="section-title">My Profile</h1>
+      </div>
+
+      <div id="profile-banner" class="profile-banner" aria-live="polite"></div>
+
+      <section class="profile-panel" aria-labelledby="profile-information-heading">
+        <div class="profile-section-heading">
+          <div class="profile-avatar" id="profile-avatar" aria-hidden="true"></div>
+          <h2 id="profile-information-heading">Profile information</h2>
         </div>
-        <button type="button" class="btn btn-ghost btn-sm" id="profile-signout" style="margin-left:auto;">Sign Out</button>
-      </div>
+        <p id="profile-loading" class="profile-loading">Loading your profile…</p>
 
-      <div class="section-head" style="text-align:left; margin: 40px 0 24px;">
-        <h2 class="section-title" style="font-size:22px;">Your Memories</h2>
-      </div>
-      <div id="profile-orders">
-        <div class="skeleton" style="height:90px; margin-bottom:14px;"></div>
-      </div>
+        <form id="profile-form" class="profile-form" hidden>
+          <div class="profile-form-grid">
+            <div class="field">
+              <label for="profile-full-name">Name</label>
+              <input type="text" id="profile-full-name" name="fullName" required minlength="2" maxlength="100" autocomplete="name">
+            </div>
+            <div class="field">
+              <label for="profile-email">Email <span aria-hidden="true">🔒</span></label>
+              <input type="email" id="profile-email" name="email" readonly autocomplete="email" aria-describedby="profile-email-note">
+              <p class="field-hint" id="profile-email-note">Your account email cannot be changed here.</p>
+            </div>
+            <div class="field">
+              <label for="profile-phone">Phone (optional)</label>
+              <input type="tel" id="profile-phone" name="phone" maxlength="30" autocomplete="tel" inputmode="tel">
+            </div>
+            <div class="field">
+              <label for="profile-date-of-birth">Date of birth (optional)</label>
+              <input type="date" id="profile-date-of-birth" name="dateOfBirth" autocomplete="bday">
+            </div>
+            <div class="field profile-form-wide">
+              <label for="profile-relationship-status">Relationship status (optional)</label>
+              <select id="profile-relationship-status" name="relationshipStatus">
+                <option value="">Select a status (optional)</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+                <option value="Single">Single</option>
+                <option value="In a relationship">In a relationship</option>
+                <option value="Engaged">Engaged</option>
+                <option value="Married">Married</option>
+              </select>
+            </div>
+            <div class="field profile-form-wide">
+              <label for="profile-about-me">About Me (optional)</label>
+              <textarea id="profile-about-me" name="aboutMe" rows="4" maxlength="500" aria-describedby="about-me-count"></textarea>
+              <p class="field-hint profile-character-count" id="about-me-count">0 / 500 characters</p>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="profile-save">Save Changes</button>
+        </form>
+      </section>
+
+      <section class="profile-orders-section" aria-labelledby="profile-orders-heading">
+        <div class="section-head profile-subheading">
+          <h2 class="section-title" id="profile-orders-heading">My Orders</h2>
+        </div>
+        <div id="profile-orders" aria-live="polite">
+          <div class="skeleton" style="height:90px; margin-bottom:14px;"></div>
+        </div>
+      </section>
+
+      <section class="profile-account-section" aria-labelledby="profile-account-heading">
+        <h2 class="section-title" id="profile-account-heading">Account</h2>
+        <button type="button" class="btn btn-ghost" id="profile-signout">Log Out</button>
+      </section>
     </div>
   </main>
 
   <script src="js/main.js"></script>
   <script src="js/profile.js"></script>
+  <footer class="legal-mini-footer">
+    <nav class="legal-footer-links" aria-label="Legal policies">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </nav>
+    <span>© 2026 CHERMO</span>
+  </footer>
 </body>
 </html>

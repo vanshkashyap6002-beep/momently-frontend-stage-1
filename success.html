@@ -18,9 +18,9 @@
   </header>
 
   <main class="success-shell">
-    <div class="success-icon">❤️</div>
+    <div class="success-icon" aria-hidden="true">❤️</div>
     <h1>Your CHERMO memory is on its way</h1>
-    <p id="success-detail">We've received your order and CHERMO is starting on it.</p>
+    <p id="success-detail" aria-live="polite">We've received your order and CHERMO is starting on it.</p>
     <p>You'll get an email at your account address the moment your memory is published.</p>
     <div class="order-ref" id="order-ref"></div>
     <div class="hero-actions" style="justify-content:center; margin-top:32px;">
@@ -28,6 +28,16 @@
       <a href="index.html" class="btn btn-ghost">Back Home</a>
     </div>
   </main>
+
+  <footer class="legal-mini-footer">
+    <nav class="legal-footer-links" aria-label="Legal policies">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </nav>
+    <span>© 2026 CHERMO</span>
+  </footer>
 
   <script src="js/main.js"></script>
   <script>
@@ -64,7 +74,7 @@
           detailEl.textContent =
             '"' +
             o.memoryTitle +
-            '" is in CHERMO’s queue and will be handcrafted soon.';
+            '" is in CHERMO’s queue.';
         }
       } catch (e) {
         refEl.textContent = "";

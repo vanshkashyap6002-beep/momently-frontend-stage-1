@@ -26,7 +26,7 @@
       <h1>Welcome back</h1>
       <p class="subtitle">Log in to continue your memory.</p>
 
-      <div id="form-banner"></div>
+      <div id="form-banner" aria-live="polite"></div>
 
       <button type="button" class="btn btn-google btn-block" id="google-btn" style="display:none;">
         <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
@@ -52,8 +52,18 @@
       </form>
 
       <p class="auth-switch">New to CHERMO? <a href="signup.html">Create an account</a></p>
+      <p class="privacy-notice">Account information is handled as described in the <a href="privacy-policy.html">Privacy Policy</a>.</p>
     </div>
   </main>
+  <footer class="legal-mini-footer">
+    <nav class="legal-footer-links" aria-label="Legal policies">
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="terms.html">Terms</a>
+      <a href="refund-policy.html">Refund Policy</a>
+      <a href="cookie-policy.html">Cookie Policy</a>
+    </nav>
+    <span>© 2026 CHERMO</span>
+  </footer>
 
   <!-- Login success overlay: ❤️ Welcome Back / Loading your memories… (~800ms) -->
   <div class="welcome-transition" id="welcome-transition" style="display:none;">
