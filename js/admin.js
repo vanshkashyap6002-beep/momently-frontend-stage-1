@@ -8,7 +8,7 @@
 
 (function () {
   "use strict";
-  const { apiFetch, escapeHtml, formatCurrency } = window.Momently;
+  const { apiFetch, apiUrl, escapeHtml, formatCurrency } = window.Momently;
 
   function showBanner(message, type = "error") {
     const banner = document.getElementById("form-banner");
@@ -178,7 +178,12 @@
 
     const mediaWrap = document.getElementById("detail-media");
     mediaWrap.innerHTML = order.media.length
-      ? order.media.map((m) => (m.mimeType && m.mimeType.startsWith("video/") ? `<video src="${m.url}" muted></video>` : `<img src="${m.url}" alt="${escapeHtml(m.filename)}">`)).join("")
+      ? order.media.map((m) => {
+          const url = escapeHtml(apiUrl(m.url));
+          return m.mimeType && m.mimeType.startsWith("video/")
+            ? `<video src="${url}" muted></video>`
+            : `<img src="${url}" alt="${escapeHtml(m.filename)}">`;
+        }).join("")
       : `<p style="font-size:13px; color:rgba(18,16,15,0.5);">No media uploaded.</p>`;
 
     document.getElementById("status-select").value = order.status === "PUBLISHED" ? "READY" : order.status;
@@ -228,7 +233,7 @@
     document.getElementById("save-memory-btn").onclick = async () => {
       try {
         await apiFetch(`/api/admin/orders/${orderId}/memory`, {
-          method: "PATCH",
+          method: "PUT",
           body: {
             memoryTitle: document.getElementById("memory-title-input").value.trim(),
             memorySubtitle: document.getElementById("memory-subtitle-input").value.trim(),
@@ -250,7 +255,8 @@
       btn.textContent = "Publishing…";
       try {
         const result = await apiFetch(`/api/admin/orders/${orderId}/publish`, { method: "POST" });
-        document.getElementById("publish-result").innerHTML = `Published! <a href="${result.memoryUrl}" target="_blank" rel="noopener">${escapeHtml(result.memoryUrl)}</a>${result.emailSent ? "" : " (email not sent — check SMTP settings)"}`;
+        const memoryUrl = result.memoryUrl || `${window.location.origin}/memory/${encodeURIComponent(result.memorySlug)}`;
+        document.getElementById("publish-result").innerHTML = `Published! <a href="${escapeHtml(memoryUrl)}" target="_blank" rel="noopener">${escapeHtml(memoryUrl)}</a>${result.emailDelivered ? "" : " (email not sent — check SMTP settings)"}`;
         showBanner("Memory published.", "success");
       } catch (err) {
         showBanner(err.message);

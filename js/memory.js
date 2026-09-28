@@ -8,7 +8,7 @@
 
 (function () {
   "use strict";
-  const { apiFetch, escapeHtml } = window.Momently;
+  const { apiFetch, apiUrl, escapeHtml } = window.Momently;
 
   function accentColorFor(accentKey) {
     const varName = `--accent-${accentKey}`;
@@ -57,9 +57,12 @@
     const wrap = document.getElementById("memory-gallery");
     if (!mediaItems || mediaItems.length === 0) return;
     wrap.innerHTML = mediaItems
-      .map((m, index) => (m.isVideo
-        ? `<video src="${escapeHtml(m.url)}" controls aria-label="Video ${index + 1} from this memory"></video>`
-        : `<img src="${escapeHtml(m.url)}" alt="Photo ${index + 1} from this memory" loading="lazy">`))
+      .map((m, index) => {
+        const url = escapeHtml(apiUrl(m.url));
+        return m.isVideo
+          ? `<video src="${url}" controls aria-label="Video ${index + 1} from this memory"></video>`
+          : `<img src="${url}" alt="Photo ${index + 1} from this memory" loading="lazy">`;
+      })
       .join("");
     section.style.display = "";
   }
@@ -84,8 +87,8 @@
       const heroMediaEl = document.getElementById("memory-hero-media");
       if (heroMedia) {
         heroMediaEl.innerHTML = heroMedia.isVideo
-          ? `<video src="${escapeHtml(heroMedia.url)}" autoplay muted loop playsinline aria-hidden="true" tabindex="-1"></video>`
-          : `<img src="${escapeHtml(heroMedia.url)}" alt="Cover photo for ${escapeHtml(memory.title || "this memory")}">`;
+          ? `<video src="${escapeHtml(apiUrl(heroMedia.url))}" autoplay muted loop playsinline aria-hidden="true" tabindex="-1"></video>`
+          : `<img src="${escapeHtml(apiUrl(heroMedia.url))}" alt="Cover photo for ${escapeHtml(memory.title || "this memory")}">`;
       }
 
       document.getElementById("memory-title").textContent = memory.title || "A CHERMO Memory";

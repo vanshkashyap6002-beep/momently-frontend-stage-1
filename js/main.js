@@ -11,6 +11,11 @@
 
 (function () {
   "use strict";
+  const API_BASE_URL = "https://momently-server0-1.onrender.com";
+
+  function apiUrl(path) {
+    return new URL(path, API_BASE_URL).toString();
+  }
 
   /** Wraps fetch with same-origin cookies and JSON handling. Pass a
    * FormData instance as `body` for file uploads — the browser sets the
@@ -18,9 +23,7 @@
    * override it in that case. */
   async function apiFetch(path, { method = "GET", body, headers = {} } = {}) {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
-    const API_BASE_URL = "https://momently-server0-1.onrender.com";
-
-    const res = await fetch(API_BASE_URL + path, {
+    const res = await fetch(apiUrl(path), {
     method,
     credentials: "include",
     headers: isFormData ? headers : { "Content-Type": "application/json", ...headers },
@@ -227,7 +230,7 @@
   // ---------------------------------------------------------------------
   // Public namespace + boot
   // ---------------------------------------------------------------------
-  window.Momently = { apiFetch, escapeHtml, formatCurrency, currentUser };
+  window.Momently = { apiFetch, apiUrl, escapeHtml, formatCurrency, currentUser };
 
   document.addEventListener("DOMContentLoaded", () => {
     initNavbar();

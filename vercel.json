@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/memory/:slug",
+      "destination": "/memory/memory.html"
+    }
+  ]
+}
