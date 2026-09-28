@@ -47,6 +47,7 @@
   // ------------------------------------------------------------------
   const STATUS_TONES = { PENDING: "neutral", PAID: "accent", IN_PROGRESS: "warning", READY: "success", PUBLISHED: "success" };
   const PAYMENT_TONES = { UNPAID: "neutral", PAID: "success", FAILED: "danger" };
+  const PUBLIC_MEMORY_ORIGIN = "https://chermo.in";
 
   function badge(text, tone) {
     return `<span class="status-badge tone-${tone}">${escapeHtml(text.replace(/_/g, " ").toLowerCase())}</span>`;
@@ -134,6 +135,7 @@
 
   // ---------------- Detail view ----------------
   let timelineRows = [];
+  let currentOrder = null;
 
   function renderTimelineEditor() {
     const wrap = document.getElementById("timeline-editor");
@@ -165,6 +167,7 @@
   }
 
   function fillDetail(order) {
+    currentOrder = order;
     document.getElementById("detail-customer-name").textContent = order.customerName;
     document.getElementById("detail-customer-email").textContent = order.customerEmail;
     document.getElementById("detail-status-badge").innerHTML = badge(order.status, STATUS_TONES[order.status] || "neutral");
@@ -186,7 +189,14 @@
         }).join("")
       : `<p style="font-size:13px; color:rgba(18,16,15,0.5);">No media uploaded.</p>`;
 
-    document.getElementById("status-select").value = order.status === "PUBLISHED" ? "READY" : order.status;
+    const isPublished = order.status === "PUBLISHED";
+    const canPublish = order.status === "READY"
+      && order.paymentStatus === "PAID"
+      && Boolean(order.razorpayOrderId && order.razorpayPaymentId);
+    const statusSelect = document.getElementById("status-select");
+    statusSelect.value = order.status;
+    statusSelect.disabled = isPublished;
+    document.getElementById("save-status-btn").disabled = isPublished;
 
     document.getElementById("memory-title-input").value = order.memoryTitle || "";
     document.getElementById("memory-subtitle-input").value = order.memorySubtitle || "";
@@ -197,9 +207,63 @@
     timelineRows = (order.timeline || []).map((t) => ({ date: t.date, title: t.title, description: t.description }));
     renderTimelineEditor();
 
-    if (order.status === "PUBLISHED") {
-      document.getElementById("publish-result").textContent = `Published. Link: ${window.location.origin}/memory/${order.memorySlug}`;
+    const publishButton = document.getElementById("publish-btn");
+    const publishConfirmation = document.getElementById("publish-confirmation");
+    const publishedActions = document.getElementById("published-actions");
+    const publishResult = document.getElementById("publish-result");
+    publishConfirmation.style.display = "none";
+    publishButton.style.display = canPublish ? "" : "none";
+    publishedActions.style.display = isPublished ? "flex" : "none";
+    document.getElementById("save-memory-btn").textContent = isPublished
+      ? "Update Published Memory"
+      : "Save Draft";
+    document.getElementById("save-memory-btn").disabled = !(isPublished || order.status === "READY");
+    document.getElementById("preview-memory-btn").disabled = !(isPublished || order.status === "READY");
+
+    const guidance = document.getElementById("publish-guidance");
+    if (isPublished) {
+      const memoryUrl = `${PUBLIC_MEMORY_ORIGIN}/memory/${encodeURIComponent(order.memorySlug)}`;
+      document.getElementById("view-published-memory-link").href = memoryUrl;
+      publishResult.textContent = `Published. Link: ${memoryUrl}`;
+      guidance.textContent = "This memory is already published. Edit and update it without changing its link or sending another publication email.";
+    } else {
+      publishResult.textContent = "";
+      guidance.textContent = canPublish
+        ? "Preview your work, then provide the final memory link before the initial publication."
+        : "Initial publishing is available only when the order is READY and its payment is verified.";
     }
+  }
+
+  function openMemoryPreview() {
+    const preview = window.open("/memory/memory.html?preview=1", "_blank");
+    if (!preview) {
+      showBanner("Allow pop-ups to open the memory preview.");
+      return;
+    }
+
+    const memory = {
+      title: document.getElementById("memory-title-input").value.trim(),
+      subtitle: document.getElementById("memory-subtitle-input").value.trim(),
+      recipientName: currentOrder?.recipientName,
+      importantDate: currentOrder?.importantDate,
+      closingMessage: document.getElementById("memory-closing-input").value.trim(),
+      accent: currentOrder?.accent,
+      templateName: currentOrder?.templateName,
+      songTitle: document.getElementById("song-title-input").value.trim(),
+      songArtist: document.getElementById("song-artist-input").value.trim(),
+      media: (currentOrder?.media || []).map((item) => ({
+        url: apiUrl(item.url),
+        isVideo: (item.mimeType || "").startsWith("video/"),
+      })),
+      timeline: timelineRows.map((item) => ({
+        date: item.date,
+        title: item.title,
+        description: item.description,
+      })),
+    };
+    preview.addEventListener("load", () => {
+      preview.postMessage({ type: "chermo-memory-preview", memory }, window.location.origin);
+    }, { once: true });
   }
 
   async function loadOrderDetail(orderId) {
@@ -219,10 +283,18 @@
     document.getElementById("save-status-btn").onclick = async () => {
       try {
         await apiFetch(`/api/admin/orders/${orderId}/status`, { method: "PATCH", body: { status: document.getElementById("status-select").value } });
+        await loadOrderDetail(orderId);
         showBanner("Status updated.", "success");
       } catch (err) {
         showBanner(err.message);
       }
+    };
+
+    document.getElementById("preview-memory-btn").onclick = openMemoryPreview;
+
+    document.getElementById("edit-published-memory-btn").onclick = () => {
+      document.getElementById("memory-editor").scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("memory-title-input").focus({ preventScroll: true });
     };
 
     document.getElementById("add-timeline-row").onclick = () => {
@@ -230,39 +302,59 @@
       renderTimelineEditor();
     };
 
+    async function saveMemory() {
+      await apiFetch(`/api/admin/orders/${orderId}/memory`, {
+        method: "PUT",
+        body: {
+          memoryTitle: document.getElementById("memory-title-input").value.trim(),
+          memorySubtitle: document.getElementById("memory-subtitle-input").value.trim(),
+          memoryClosingMessage: document.getElementById("memory-closing-input").value.trim(),
+          memorySongTitle: document.getElementById("song-title-input").value.trim(),
+          memorySongArtist: document.getElementById("song-artist-input").value.trim(),
+          timeline: timelineRows,
+        },
+      });
+    }
+
     document.getElementById("save-memory-btn").onclick = async () => {
       try {
-        await apiFetch(`/api/admin/orders/${orderId}/memory`, {
-          method: "PUT",
-          body: {
-            memoryTitle: document.getElementById("memory-title-input").value.trim(),
-            memorySubtitle: document.getElementById("memory-subtitle-input").value.trim(),
-            closingMessage: document.getElementById("memory-closing-input").value.trim(),
-            songTitle: document.getElementById("song-title-input").value.trim(),
-            songArtist: document.getElementById("song-artist-input").value.trim(),
-            timeline: timelineRows,
-          },
-        });
-        showBanner("Memory draft saved.", "success");
+        await saveMemory();
+        showBanner(currentOrder.status === "PUBLISHED" ? "Published memory updated. Its link is unchanged." : "Memory draft saved.", "success");
       } catch (err) {
         showBanner(err.message);
       }
     };
 
     document.getElementById("publish-btn").onclick = async () => {
-      const btn = document.getElementById("publish-btn");
+      document.getElementById("publish-customer-name").textContent = currentOrder.customerName || "—";
+      document.getElementById("publish-customer-email").textContent = currentOrder.customerEmail || "—";
+      document.getElementById("publish-confirmation").style.display = "";
+      document.getElementById("memory-link-input").focus();
+    };
+
+    document.getElementById("cancel-publish-btn").onclick = () => {
+      document.getElementById("publish-confirmation").style.display = "none";
+    };
+
+    document.getElementById("confirm-publish-btn").onclick = async () => {
+      const input = document.getElementById("memory-link-input");
+      if (!input.reportValidity()) return;
+      const btn = document.getElementById("confirm-publish-btn");
       btn.disabled = true;
       btn.textContent = "Publishing…";
       try {
-        const result = await apiFetch(`/api/admin/orders/${orderId}/publish`, { method: "POST" });
-        const memoryUrl = result.memoryUrl || `${window.location.origin}/memory/${encodeURIComponent(result.memorySlug)}`;
-        document.getElementById("publish-result").innerHTML = `Published! <a href="${escapeHtml(memoryUrl)}" target="_blank" rel="noopener">${escapeHtml(memoryUrl)}</a>${result.emailDelivered ? "" : " (email not sent — check SMTP settings)"}`;
-        showBanner("Memory published.", "success");
+        await saveMemory();
+        const result = await apiFetch(`/api/admin/orders/${orderId}/publish`, {
+          method: "POST",
+          body: { memoryLink: input.value.trim() },
+        });
+        await loadOrderDetail(orderId);
+        showBanner(result.emailDelivered ? "Memory published and customer email sent." : "Memory published, but the customer email was not sent. Check the existing SMTP configuration.", result.emailDelivered ? "success" : "error");
       } catch (err) {
         showBanner(err.message);
       } finally {
         btn.disabled = false;
-        btn.textContent = "Publish Memory";
+        btn.textContent = "Publish & Send Email";
       }
     };
   }

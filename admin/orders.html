@@ -93,9 +93,10 @@
                 <div class="field">
                   <select id="status-select">
                     <option value="PENDING">Pending</option>
-                    <option value="PAID">Paid</option>
+                    <option value="PAID" disabled>Paid (verified)</option>
                     <option value="IN_PROGRESS">In Progress</option>
                     <option value="READY">Ready</option>
+                    <option value="PUBLISHED" disabled>Published</option>
                   </select>
                 </div>
                 <button type="button" class="btn btn-outline btn-block" id="save-status-btn">Update Status</button>
@@ -104,8 +105,8 @@
 
             <!-- Right column: build + publish the memory -->
             <div>
-              <div class="admin-panel">
-                <h3>Build the Memory</h3>
+              <div class="admin-panel" id="memory-editor">
+                <h3>Build / Edit the Memory</h3>
                 <div class="field">
                   <label for="memory-title-input">Memory title</label>
                   <input type="text" id="memory-title-input">
@@ -135,13 +136,31 @@
                   <button type="button" class="btn btn-ghost btn-sm" id="add-timeline-row">+ Add timeline entry</button>
                 </div>
 
-                <button type="button" class="btn btn-outline btn-block" id="save-memory-btn">Save Draft</button>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-outline" id="preview-memory-btn">Preview Memory</button>
+                  <button type="button" class="btn btn-outline" id="save-memory-btn">Save Draft</button>
+                </div>
               </div>
 
-              <div class="admin-panel">
+              <div class="admin-panel" id="memory-publish-panel">
                 <h3>Publish</h3>
-                <p style="font-size:13px; color:rgba(18,16,15,0.55); margin-bottom:14px;">Publishing makes the memory link live and emails the customer. Requires payment to be marked Paid.</p>
-                <button type="button" class="btn btn-primary btn-block" id="publish-btn">Publish Memory</button>
+                <p id="publish-guidance" style="font-size:13px; color:rgba(18,16,15,0.55); margin-bottom:14px;"></p>
+                <button type="button" class="btn btn-primary btn-block" id="publish-btn" style="display:none;">Publish Memory</button>
+                <div id="publish-confirmation" style="display:none; margin-top:16px;">
+                  <div class="detail-row"><span class="label">Customer</span><span id="publish-customer-name"></span></div>
+                  <div class="detail-row"><span class="label">Email</span><span id="publish-customer-email"></span></div>
+                  <div class="field">
+                    <label for="memory-link-input">Memory Link</label>
+                    <input type="url" id="memory-link-input" required placeholder="https://chermo.in/memory/your-memory-slug" pattern="https://chermo\.in/memory/[a-z0-9]+(-[a-z0-9]+)*" autocomplete="url">
+                    <small>Paste the final CHERMO link. It must use https://chermo.in/memory/&lt;slug&gt;.</small>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-block" id="confirm-publish-btn">Publish &amp; Send Email</button>
+                  <button type="button" class="btn btn-ghost btn-block" id="cancel-publish-btn">Cancel</button>
+                </div>
+                <div id="published-actions" style="display:none; gap:10px; flex-wrap:wrap;">
+                  <button type="button" class="btn btn-outline" id="edit-published-memory-btn">Edit Memory</button>
+                  <a class="btn btn-primary" id="view-published-memory-link" target="_blank" rel="noopener">View Memory</a>
+                </div>
                 <p id="publish-result" style="font-size:13px; margin-top:12px;"></p>
               </div>
             </div>

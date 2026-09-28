@@ -67,7 +67,61 @@
     section.style.display = "";
   }
 
+  function renderMemory(memory) {
+    document.documentElement.style.setProperty("--memory-accent", accentColorFor(memory.accent));
+    document.title = `${memory.title || "A CHERMO Memory"} — CHERMO`;
+
+    const heroMedia = memory.media[0];
+    const galleryMedia = memory.media.slice(1);
+
+    const heroMediaEl = document.getElementById("memory-hero-media");
+    if (heroMedia) {
+      heroMediaEl.innerHTML = heroMedia.isVideo
+        ? `<video src="${escapeHtml(apiUrl(heroMedia.url))}" autoplay muted loop playsinline aria-hidden="true" tabindex="-1"></video>`
+        : `<img src="${escapeHtml(apiUrl(heroMedia.url))}" alt="Cover photo for ${escapeHtml(memory.title || "this memory")}">`;
+    }
+
+    document.getElementById("memory-title").textContent = memory.title || "A CHERMO Memory";
+    document.getElementById("memory-subtitle").textContent = memory.subtitle || "";
+
+    if (memory.importantDate) {
+      document.getElementById("memory-date").textContent = formatDate(memory.importantDate);
+      document.getElementById("memory-date").style.display = "";
+    }
+
+    if (memory.songTitle) {
+      document.getElementById("memory-song").textContent = `${memory.songTitle}${memory.songArtist ? " — " + memory.songArtist : ""}`;
+      document.getElementById("memory-music").style.display = "";
+    }
+
+    renderTimeline(memory.timeline);
+    renderGallery(galleryMedia);
+
+    document.getElementById("memory-closing-message").textContent = memory.closingMessage || "With love, from all of us at CHERMO.";
+    document.getElementById("memory-footer-text").textContent = `A ${memory.templateName || "CHERMO"} memory, made for ${memory.recipientName || "someone special"}`;
+
+    hide("memory-loading");
+    show("memory-content");
+  }
+
   async function init() {
+    const isPreview = new URLSearchParams(window.location.search).get("preview") === "1";
+    if (isPreview) {
+      const onPreview = (event) => {
+        if (
+          event.origin !== window.location.origin ||
+          event.source !== window.opener ||
+          event.data?.type !== "chermo-memory-preview" ||
+          !event.data.memory
+        ) return;
+
+        window.removeEventListener("message", onPreview);
+        renderMemory(event.data.memory);
+      };
+      window.addEventListener("message", onPreview);
+      return;
+    }
+
     const slug = slugFromPath();
     if (!slug) {
       hide("memory-loading");
@@ -77,41 +131,7 @@
 
     try {
       const { memory } = await apiFetch(`/api/memory/${encodeURIComponent(slug)}`);
-
-      document.documentElement.style.setProperty("--memory-accent", accentColorFor(memory.accent));
-      document.title = `${memory.title || "A CHERMO Memory"} — CHERMO`;
-
-      const heroMedia = memory.media[0];
-      const galleryMedia = memory.media.slice(1);
-
-      const heroMediaEl = document.getElementById("memory-hero-media");
-      if (heroMedia) {
-        heroMediaEl.innerHTML = heroMedia.isVideo
-          ? `<video src="${escapeHtml(apiUrl(heroMedia.url))}" autoplay muted loop playsinline aria-hidden="true" tabindex="-1"></video>`
-          : `<img src="${escapeHtml(apiUrl(heroMedia.url))}" alt="Cover photo for ${escapeHtml(memory.title || "this memory")}">`;
-      }
-
-      document.getElementById("memory-title").textContent = memory.title || "A CHERMO Memory";
-      document.getElementById("memory-subtitle").textContent = memory.subtitle || "";
-
-      if (memory.importantDate) {
-        document.getElementById("memory-date").textContent = formatDate(memory.importantDate);
-        document.getElementById("memory-date").style.display = "";
-      }
-
-      if (memory.songTitle) {
-        document.getElementById("memory-song").textContent = `${memory.songTitle}${memory.songArtist ? " — " + memory.songArtist : ""}`;
-        document.getElementById("memory-music").style.display = "";
-      }
-
-      renderTimeline(memory.timeline);
-      renderGallery(galleryMedia);
-
-      document.getElementById("memory-closing-message").textContent = memory.closingMessage || "With love, from all of us at CHERMO.";
-      document.getElementById("memory-footer-text").textContent = `A ${memory.templateName || "CHERMO"} memory, made for ${memory.recipientName || "someone special"}`;
-
-      hide("memory-loading");
-      show("memory-content");
+      renderMemory(memory);
     } catch {
       hide("memory-loading");
       show("memory-not-found");
