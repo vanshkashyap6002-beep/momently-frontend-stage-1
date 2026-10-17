@@ -17,6 +17,57 @@ const {
     saving: false,
   };
 
+  let localImageUrl = "";
+  let localImagePending = false;
+  let imageSelectionVersion = 0;
+
+  function clearLocalImage() {
+    imageSelectionVersion += 1;
+    if (localImageUrl) URL.revokeObjectURL(localImageUrl);
+    localImageUrl = "";
+    localImagePending = false;
+    const input = document.getElementById("template-image-file");
+    const image = document.getElementById("template-image-local-preview");
+    if (input) input.value = "";
+    if (image) { image.hidden = true; image.removeAttribute("src"); }
+    document.getElementById("template-image-clear").hidden = true;
+    document.getElementById("template-image-status").textContent = "";
+  }
+
+  function initLocalImagePreview() {
+    const input = document.getElementById("template-image-file");
+    const image = document.getElementById("template-image-local-preview");
+    const status = document.getElementById("template-image-status");
+    const clear = document.getElementById("template-image-clear");
+    if (!input || !image || !status || !clear) return;
+    clear.addEventListener("click", clearLocalImage);
+    input.addEventListener("change", async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      clearLocalImage();
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 10 * 1024 * 1024) {
+        status.textContent = "Choose a JPEG, PNG or WebP image no larger than 10 MB.";
+        return;
+      }
+      localImagePending = true;
+      clear.hidden = false;
+      const version = imageSelectionVersion;
+      localImageUrl = URL.createObjectURL(file);
+      image.src = localImageUrl;
+      status.textContent = "Preparing local preview… Nothing is being uploaded.";
+      try {
+        await image.decode();
+        if (version !== imageSelectionVersion) return;
+        image.hidden = false;
+        status.textContent = `${file.name}: local preview ready. Select another file to replace it, or discard this selection to save template details. Image saving needs backend storage support.`;
+      } catch {
+        if (version !== imageSelectionVersion) return;
+        clearLocalImage();
+        status.textContent = "This file could not be read as an image. Please choose another JPEG, PNG or WebP.";
+      }
+    });
+  }
+
   // --------------------------------------------------
   // DOM
   // --------------------------------------------------
@@ -273,6 +324,7 @@ const {
   }
 
   function closeModal() {
+    clearLocalImage();
     if (!modal) {
       return;
     }
@@ -296,6 +348,7 @@ const {
   }
 
   function resetForm() {
+    clearLocalImage();
     if (!form) {
       return;
     }
@@ -337,6 +390,7 @@ const {
   }
 
   function openEditModal(template) {
+    clearLocalImage();
     if (!template) {
       return;
     }
@@ -663,6 +717,11 @@ const {
 
     clearFormError();
     clearBanner();
+
+    if (localImagePending) {
+      showFormError("The selected image is only a local preview and cannot be saved yet. Discard the local selection to save template details without changing the existing artwork.");
+      return;
+    }
 
     const data =
       getTemplateFormData();
@@ -1035,6 +1094,7 @@ const {
   // --------------------------------------------------
 
   function init() {
+    initLocalImagePreview();
     initEvents();
     startAdminTemplates();
   }

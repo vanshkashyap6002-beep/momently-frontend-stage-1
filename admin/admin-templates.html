@@ -459,6 +459,15 @@
           </div>
 
 
+          <div class="form-group form-group-full template-image-field">
+            <label for="template-image-file">Template Preview Image — local preview only</label>
+            <p id="template-image-help" class="field-hint">Choose JPEG, PNG or WebP (up to 10 MB) to inspect artwork before integration. Image uploads are not connected to storage yet. Selected files will not be saved or published.</p>
+            <input id="template-image-file" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="template-image-help template-image-status">
+            <img id="template-image-local-preview" alt="Selected template artwork" hidden>
+            <button id="template-image-clear" class="btn btn-outline btn-sm" type="button" hidden>Discard local selection</button>
+            <p id="template-image-status" class="field-hint" role="status" aria-live="polite"></p>
+          </div>
+
           <!-- PREVIEW SEED -->
 
           <!-- PREVIEW URL -->
@@ -466,7 +475,7 @@
 <div class="form-group">
 
   <label for="template-preview-seed">
-    Preview URL
+    Preview Experience URL
   </label>
 
   <input
@@ -476,6 +485,7 @@
     placeholder="https://template-name.vercel.app"
     required
   />
+  <p class="field-hint">The interactive template website URL. This does not upload or save a preview image.</p>
 
 </div>
 

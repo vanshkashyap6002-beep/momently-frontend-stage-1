@@ -252,7 +252,48 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 .template-card-body { padding: 18px 18px 20px; }
 .template-card-body h3 { font-size: 17px; margin-bottom: 4px; }
 .template-card-meta { font-size: 12.5px; color: rgba(18,16,15,0.72); margin-bottom: 14px; }
-.template-card-actions { display: flex; gap: 8px; }
+.template-card-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+/* Template artwork is optional; failed requests never expose broken-image text. */
+.template-artwork { position: relative; aspect-ratio: 4/3; background: #eee8e2; }
+.template-artwork [data-template-artwork] { width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
+.template-artwork.has-artwork [data-template-artwork] { visibility: visible; }
+.template-image-fallback { position: absolute; inset: 48px 20px; display: grid; place-content: center; text-align: center; color: #625852; font-size: 14px; }
+.template-artwork.has-artwork .template-image-fallback { display: none; }
+.template-card { min-width: 0; height: auto; }
+.template-card-body { min-width: 0; overflow-wrap: anywhere; }
+.template-card-description { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; margin: 12px 0 20px; }
+.template-card-actions > .btn { flex: 1 1 140px; min-width: 0; white-space: normal; }
+.template-image-field { border-block: 1px solid #ded5cd; padding-block: 20px; }
+.template-image-field input { margin-block: 12px; }
+#template-image-local-preview { width: 100%; max-height: 280px; object-fit: contain; background: #eee8e2; margin-bottom: 12px; }
+#template-image-local-preview[hidden], #template-image-clear[hidden] { display: none; }
+#template-preview-modal .modal-box { padding-top: 56px; max-height: calc(100dvh - 40px); overflow-y: auto; }
+#template-preview-modal .modal-close { position: sticky; top: 8px; float: right; margin: -48px 8px 4px 0; background: #fff; }
+.template-preview-description { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.85; margin-bottom: 24px; }
+#template-preview-modal .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; overflow-wrap: anywhere; }
+#template-preview-modal .modal-box-body { overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .template-card-actions { flex-direction: column; }
+  .template-card-actions > .btn { flex: auto; width: 100%; }
+  #template-preview-modal .meta { grid-template-columns: 1fr; }
+}
+.template-preview-actions { display: grid; gap: 12px; }
+.template-preview-actions .btn, .template-card-actions .btn { min-height: 44px; }
+/* Existing admin template dialog, scoped to preserve other admin screens. */
+#template-modal[hidden] { display: none; }
+#template-modal { position: fixed; inset: 0; z-index: 150; display: flex; align-items: center; justify-content: center; padding: 16px; }
+#template-modal .admin-modal-backdrop { position: absolute; inset: 0; background: rgba(18,16,15,.6); }
+#template-modal .admin-modal-dialog { position: relative; width: min(760px, 100%); max-height: calc(100dvh - 32px); overflow-y: auto; background: var(--color-paper); padding: 24px; }
+#template-modal .admin-modal-header { display: flex; gap: 16px; justify-content: space-between; margin-bottom: 24px; }
+#template-modal .admin-modal-close { position: sticky; top: 0; min-width: 44px; height: 44px; background: #fff; border: 1px solid #ded5cd; font-size: 24px; }
+#template-modal .admin-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+#template-modal .form-group { min-width: 0; }
+#template-modal .form-group-full { grid-column: 1 / -1; }
+#template-modal label { display: block; margin-bottom: 8px; }
+#template-modal input:not([type="checkbox"]), #template-modal select, #template-modal textarea { width: 100%; min-height: 44px; padding: 10px; border: 1px solid #a79c94; border-radius: 4px; font-size: 16px; }
+#template-modal textarea { min-height: 110px; resize: vertical; }
+#template-modal .admin-modal-footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+@media (max-width: 560px) { #template-modal .admin-form-grid { grid-template-columns: 1fr; } }
 @media (max-width: 980px) { .template-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 640px) { .template-grid { grid-template-columns: 1fr; } }
 

@@ -33,8 +33,31 @@
   // ------------------------------------------------------------------
 
   function templateImageUrl(t) {
-    return t.previewImageUrl || "";
+    const value = String(t.previewImageUrl || "").trim();
+    if (!value) return "";
+    try {
+      const url = new URL(value, window.Momently.apiUrl("/"));
+      if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) return "";
+      // The legacy API generates random stock photos from the experience URL.
+      // These are not template artwork; show an honest fallback instead.
+      if (url.hostname === "picsum.photos" && url.pathname.startsWith("/seed/")) return "";
+      return url.href;
+    } catch {
+      return "";
+    }
   }
+
+  // Capture image events before cards are inserted, including cached images.
+  document.addEventListener("load", (event) => {
+    if (event.target.matches?.("[data-template-artwork]")) {
+      event.target.closest(".template-artwork")?.classList.add("has-artwork");
+    }
+  }, true);
+  document.addEventListener("error", (event) => {
+    if (event.target.matches?.("[data-template-artwork]")) {
+      event.target.closest(".template-artwork")?.classList.remove("has-artwork");
+    }
+  }, true);
 
 
   // ------------------------------------------------------------------
@@ -48,11 +71,13 @@
     return `
       <article class="template-card">
 
-        <div class="template-card-media">
+        <div class="template-card-media template-artwork">
+          <span class="template-image-fallback">Preview image unavailable</span>
 
           <img
-            src="${escapeHtml(templateImageUrl(t))}"
-            alt="${escapeHtml(t.name)} template preview"
+            ${templateImageUrl(t) ? `src="${escapeHtml(templateImageUrl(t))}"` : ""}
+            data-template-artwork
+            alt=""
             loading="lazy"
           >
 
@@ -100,7 +125,7 @@
                       t.slug
                     )}"
                   >
-                    Preview ${escapeHtml(t.name || "template")}
+                    Preview Template
                   </button>
                 `
                 : ""
@@ -482,14 +507,11 @@
 
 
     if (image) {
-
-      image.src =
-        templateImageUrl(
-          template
-        );
-
-      image.alt =
-        `${template.name} template preview`;
+      image.closest(".template-artwork")?.classList.remove("has-artwork");
+      const url = templateImageUrl(template);
+      image.removeAttribute("src");
+      image.alt = "";
+      if (url) image.src = url;
     }
 
 
@@ -522,14 +544,13 @@
 
     if (meta) {
 
-      meta.textContent = [
-        template.occasion,
-        template.theme,
-        template.style,
-        template.mood
-      ]
-        .filter(Boolean)
-        .join(" · ");
+      meta.replaceChildren();
+      for (const [label, value] of [["Occasion", template.occasion], ["Theme", template.theme], ["Style", template.style], ["Mood", template.mood]]) {
+        if (!value) continue;
+        const item = document.createElement("span");
+        item.textContent = `${label}: ${value}`;
+        meta.appendChild(item);
+      }
     }
 
 
