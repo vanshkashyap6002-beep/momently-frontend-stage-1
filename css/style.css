@@ -260,8 +260,11 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 .template-image-fallback { position: absolute; inset: 48px 20px; display: grid; place-content: center; text-align: center; color: #625852; font-size: 14px; }
 .template-artwork.has-artwork .template-image-fallback { display: none; }
 .template-card { min-width: 0; height: auto; }
-.template-card-body { min-width: 0; overflow-wrap: anywhere; }
-.template-card-description { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.75; margin: 12px 0 20px; }
+.template-card-body { min-width: 0; overflow-wrap: anywhere; text-align: left; }
+.template-card-description { white-space: pre-line; overflow-wrap: anywhere; line-height: 1.75; margin: 12px 0 20px; }
+/* Keep a useful reading width when the filter sidebar shares the row. */
+#marketplace-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { #marketplace-grid { grid-template-columns: minmax(0, 1fr); } }
 .template-card-actions > .btn { flex: 1 1 140px; min-width: 0; white-space: normal; }
 .template-image-field { border-block: 1px solid #ded5cd; padding-block: 20px; }
 .template-image-field input { margin-block: 12px; }

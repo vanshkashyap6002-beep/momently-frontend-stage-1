@@ -107,11 +107,7 @@
             ${escapeHtml(t.style || "")}
           </p>
 
-          <p class="template-card-description">
-            ${escapeHtml(
-              t.shortDescription || ""
-            )}
-          </p>
+          <p class="template-card-description">${escapeHtml(t.shortDescription || "")}</p>
 
           <div class="template-card-actions">
 

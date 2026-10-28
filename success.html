@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Order Confirmed — CHERMO</title>
+<title>Order Status — CHERMO</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/animations.css">
 </head>
@@ -19,9 +19,9 @@
 
   <main class="success-shell">
     <div class="success-icon" aria-hidden="true">❤️</div>
-    <h1>Your CHERMO memory is on its way</h1>
-    <p id="success-detail" aria-live="polite">We've received your order and CHERMO is starting on it.</p>
-    <p>You'll get an email at your account address the moment your memory is published.</p>
+    <h1 id="success-heading">Checking your order</h1>
+    <p id="success-detail" aria-live="polite">Please wait while we verify the order status.</p>
+    <p>Publication is a separate step after payment. Check your <a href="profile.html">account</a> for the published link, or <a href="terms.html#support">contact support</a> if delivery is missing. See <a href="terms.html#delivery">digital fulfilment</a>.</p>
     <div class="order-ref" id="order-ref"></div>
     <div class="hero-actions" style="justify-content:center; margin-top:32px;">
       <a href="templates.html" class="btn btn-outline">Create Another Memory</a>
@@ -69,6 +69,8 @@
         }
 
         refEl.textContent = "Order ref: " + orderId;
+        document.getElementById("success-heading").textContent = "Your payment is confirmed";
+        detailEl.textContent = "Your order is in CHERMO’s queue.";
 
         if (o.memoryTitle) {
           detailEl.textContent =
@@ -77,6 +79,7 @@
             '" is in CHERMO’s queue.';
         }
       } catch (e) {
+        document.getElementById("success-heading").textContent = "Order status unavailable";
         refEl.textContent = "";
         detailEl.textContent =
           "We couldn't verify this order yet. Please return to the payment page and try again.";

@@ -113,8 +113,10 @@
       const recipient = order.recipientName ? ` · For ${escapeHtml(order.recipientName)}` : "";
       const orderStatus = STATUS_LABELS[order.status] || order.status || "Unknown";
       const paymentStatus = PAYMENT_STATUS_LABELS[order.paymentStatus] || order.paymentStatus || "Unknown";
-      const viewLink = order.status === "PUBLISHED" && order.memorySlug
-        ? `<a href="/memory/${encodeURIComponent(order.memorySlug)}" class="btn btn-outline btn-sm" target="_blank" rel="noopener">View Memory</a>`
+      const destination = window.ChermoMemoryLink.validateMemoryLink(order.memoryUrl) ||
+        (!order.memoryUrl && order.memorySlug ? `/memory/${encodeURIComponent(order.memorySlug)}` : null);
+      const viewLink = order.status === "PUBLISHED" && destination
+        ? `<a href="${escapeHtml(destination)}" class="btn btn-outline btn-sm" target="_blank" rel="noopener">View Memory</a>`
         : "";
       const continueLink = order.status === "PENDING"
         ? `<a href="create-memory.html?template=${encodeURIComponent(order.templateSlug || "")}" class="btn btn-outline btn-sm">Continue Editing</a>`

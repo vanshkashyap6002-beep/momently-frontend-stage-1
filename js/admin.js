@@ -222,10 +222,15 @@
 
     const guidance = document.getElementById("publish-guidance");
     if (isPublished) {
-      const memoryUrl = `${PUBLIC_MEMORY_ORIGIN}/memory/${encodeURIComponent(order.memorySlug)}`;
-      document.getElementById("view-published-memory-link").href = memoryUrl;
-      publishResult.textContent = `Published. Link: ${memoryUrl}`;
-      guidance.textContent = "This memory is already published. Edit and update it without changing its link or sending another publication email.";
+      const memoryUrl = window.ChermoMemoryLink.validateMemoryLink(order.memoryUrl) ||
+        (!order.memoryUrl && order.memorySlug ? `${PUBLIC_MEMORY_ORIGIN}/memory/${encodeURIComponent(order.memorySlug)}` : null);
+      const publishedLink = document.getElementById("view-published-memory-link");
+      if (memoryUrl) publishedLink.href = memoryUrl;
+      else publishedLink.removeAttribute("href");
+      publishResult.textContent = memoryUrl ? `Published. Link: ${memoryUrl}` : "Published, but no valid destination was returned. Contact support.";
+      guidance.textContent = order.memorySlug
+        ? "This memory is already published. Edit and update it without changing its link or sending another publication email."
+        : "This memory links to a separately hosted experience. Saving order details here does not update that external website. Its published link stays unchanged.";
     } else {
       publishResult.textContent = "";
       guidance.textContent = canPublish
@@ -319,7 +324,9 @@
     document.getElementById("save-memory-btn").onclick = async () => {
       try {
         await saveMemory();
-        showBanner(currentOrder.status === "PUBLISHED" ? "Published memory updated. Its link is unchanged." : "Memory draft saved.", "success");
+        showBanner(currentOrder.status === "PUBLISHED"
+          ? (currentOrder.memorySlug ? "Published memory updated. Its link is unchanged." : "Order memory details saved. Update the separately hosted experience separately; its link is unchanged.")
+          : "Memory draft saved.", "success");
       } catch (err) {
         showBanner(err.message);
       }
@@ -338,16 +345,23 @@
 
     document.getElementById("confirm-publish-btn").onclick = async () => {
       const input = document.getElementById("memory-link-input");
+      const memoryLink = window.ChermoMemoryLink.validateMemoryLink(input.value);
+      input.setCustomValidity(memoryLink ? "" : "Paste a complete, valid HTTPS URL without spaces or embedded credentials.");
+      input.oninput = () => input.setCustomValidity("");
       if (!input.reportValidity()) return;
       const btn = document.getElementById("confirm-publish-btn");
+      if (btn.disabled) return;
       btn.disabled = true;
       btn.textContent = "Publishing…";
       try {
         await saveMemory();
         const result = await apiFetch(`/api/admin/orders/${orderId}/publish`, {
           method: "POST",
-          body: { memoryLink: input.value.trim() },
+          body: { memoryLink },
         });
+        if (result.memoryUrl !== memoryLink) {
+          throw new Error("Publication returned a different destination. Verify the stored link before retrying; no email success is confirmed here.");
+        }
         await loadOrderDetail(orderId);
         showBanner(result.emailDelivered ? "Memory published and customer email sent." : "Memory published, but the customer email was not sent. Check the existing SMTP configuration.", result.emailDelivered ? "success" : "error");
       } catch (err) {

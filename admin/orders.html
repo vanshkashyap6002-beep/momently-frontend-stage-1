@@ -151,8 +151,8 @@
                   <div class="detail-row"><span class="label">Email</span><span id="publish-customer-email"></span></div>
                   <div class="field">
                     <label for="memory-link-input">Memory Link</label>
-                    <input type="url" id="memory-link-input" required placeholder="https://chermo.in/memory/your-memory-slug" pattern="https://chermo\.in/memory/[a-z0-9]+(-[a-z0-9]+)*" autocomplete="url">
-                    <small>Paste the final CHERMO link. It must use https://chermo.in/memory/&lt;slug&gt;.</small>
+                    <input type="url" id="memory-link-input" required placeholder="https://your-experience.example/" autocomplete="url" aria-describedby="memory-link-help">
+                    <small id="memory-link-help">Paste the complete URL exactly as you want it published and included in the email.</small>
                   </div>
                   <button type="button" class="btn btn-primary btn-block" id="confirm-publish-btn">Publish &amp; Send Email</button>
                   <button type="button" class="btn btn-ghost btn-block" id="cancel-publish-btn">Cancel</button>
@@ -171,6 +171,7 @@
   </div>
 
   <script src="../js/main.js"></script>
+  <script src="../js/memory-link.js"></script>
   <script src="../js/admin.js"></script>
 </body>
 </html>
