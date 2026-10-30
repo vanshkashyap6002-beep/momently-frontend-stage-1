@@ -1,12 +1,10 @@
 User-agent: *
 Allow: /
-Disallow: /admin/
-Disallow: /login.html
-Disallow: /signup.html
-Disallow: /create-memory.html
-Disallow: /payment.html
-Disallow: /success.html
-Disallow: /profile.html
-Disallow: /memory/
+# Private application pages carry noindex meta tags; crawlers must read them.
+Disallow: /server/
+Disallow: /docs/
+Disallow: /tests/
+Disallow: /.git/
+Disallow: /.codex/
 
 Sitemap: https://chermo.in/sitemap.xml
