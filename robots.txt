@@ -7,4 +7,4 @@ Disallow: /tests/
 Disallow: /.git/
 Disallow: /.codex/
 
-Sitemap: https://chermo.in/sitemap.xml
+Sitemap: https://www.chermo.in/sitemap.xml

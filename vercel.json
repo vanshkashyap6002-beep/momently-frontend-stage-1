@@ -4,5 +4,18 @@
       "source": "/memory/:slug",
       "destination": "/memory/memory.html"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "chermo.in"
+        }
+      ],
+      "destination": "https://www.chermo.in/:path*",
+      "permanent": true
+    }
   ]
 }
