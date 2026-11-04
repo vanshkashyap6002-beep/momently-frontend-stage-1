@@ -166,7 +166,16 @@
     });
   }
 
+  function assertMemoryEditorReady() {
+    const required = ['recipient-input', 'date-input', 'occasion-input', 'personal-input', 'template-input', 'memory-lifecycle-panel', 'memory-title-input', 'memory-subtitle-input', 'memory-closing-input', 'song-title-input', 'song-artist-input', 'status-select'];
+    const missing = required.filter(id => !document.getElementById(id));
+    if (missing.length || !window.ChermoAdminLifecycle) {
+      throw new Error('The admin page and its scripts are different versions. Publish admin/orders.html together with js/admin.js and js/admin-lifecycle.js, then hard-refresh the page (Ctrl+Shift+R).');
+    }
+  }
+
   async function fillDetail(order) {
+    assertMemoryEditorReady();
     currentOrder = order;
     document.getElementById("detail-customer-name").textContent = order.customerName;
     document.getElementById("detail-customer-email").textContent = order.customerEmail;
