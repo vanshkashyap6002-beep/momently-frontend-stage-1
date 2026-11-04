@@ -25,3 +25,16 @@ test('stale markup fails clearly before attempting to fill missing inputs', () =
   assert.throws(() => check(ids, null), /different versions/);
   assert.match(source, /async function fillDetail\(order\)\s*\{\s*assertMemoryEditorReady\(\);/);
 });
+test('missing lifecycle route explains backend mismatch and prevents partial saves', async () => {
+  const panel={dataset:{}}, button={disabled:false};
+  const context={window:{Momently:{escapeHtml:x=>x,apiFetch:async url=>{
+    if(url.includes('/lifecycle'))throw Object.assign(new Error('Not found'),{status:404});
+    return {templates:[]};
+  }}},document:{getElementById:id=>id==='save-memory-btn'?button:panel}};
+  vm.runInNewContext(fs.readFileSync(require.resolve('../js/admin-lifecycle.js'),'utf8'),context);
+  assert.equal(await context.window.ChermoAdminLifecycle.fill({id:'test-order'},()=>{}),false);
+  assert.equal(button.disabled,true);
+  assert.equal(panel.dataset.ready,'false');
+  assert.match(panel.textContent,/backend \(404\)/);
+  assert.match(panel.textContent,/migration/);
+});

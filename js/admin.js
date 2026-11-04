@@ -323,7 +323,8 @@
       } catch (err) {
         showBanner(err.message);
       } finally {
-        saveButton.disabled = false;
+        // A reload can detect an unavailable lifecycle backend. Preserve its lock.
+        saveButton.disabled = document.getElementById('memory-lifecycle-panel').dataset.ready !== 'true';
       }
     };
 

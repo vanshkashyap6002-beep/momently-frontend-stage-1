@@ -15,9 +15,18 @@
     },
     async fill(order, reload) {
       const panel = document.getElementById('memory-lifecycle-panel');
+      const saveButton = document.getElementById('save-memory-btn');
+      saveButton.disabled = true;
+      panel.dataset.ready = 'false';
       panel.textContent = 'Loading publication controls…';
       try {
-        const [state, catalog] = await Promise.all([api(`/api/admin/orders/${order.id}/lifecycle`), api('/api/templates')]);
+        const [state, catalog] = await Promise.all([
+          api(`/api/admin/orders/${encodeURIComponent(order.id)}/lifecycle`).catch(err => {
+            if (err.status === 404) throw new Error('Publication controls are unavailable on the backend (404). The updated admin backend and its database migration must be released together. Saving is disabled until these controls load.');
+            throw err;
+          }),
+          api('/api/templates')
+        ]);
         const select = document.getElementById('template-input');
         select.innerHTML = `<option value="${esc(order.templateId)}" data-accent="${esc(order.accent)}">${esc(order.templateName)}</option>` + catalog.templates.filter(t => t.id !== order.templateId).map(t => `<option value="${esc(t.id)}" data-accent="${esc(t.accent)}">${esc(t.name)}</option>`).join('');
         document.getElementById('occasion-input').value = state.memory_occasion || '';
@@ -41,6 +50,8 @@
           <input type="file" id="admin-media-files" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" multiple aria-label="Photos and videos to add"><button class="btn btn-outline" data-action="upload">Upload selected files</button>
           ${order.media.map(m => `<div class="field"><label for="caption-${esc(m.id)}">${esc(m.filename)}</label><input id="caption-${esc(m.id)}" maxlength="1000" value="${esc(m.caption)}"><button class="btn btn-ghost" data-caption="${esc(m.id)}">Save caption</button><button class="btn btn-ghost" data-remove="${esc(m.id)}">Remove media</button></div>`).join('')}
           <p id="lifecycle-feedback" role="status"></p>`;
+        saveButton.disabled = false;
+        panel.dataset.ready = 'true';
         panel.onclick = async e => {
           const button = e.target.closest('button'); if (!button || busy) return;
           const action = button.dataset.action, mediaId = button.dataset.caption || button.dataset.remove;
@@ -81,7 +92,8 @@
           } catch(err) { feedback.textContent = err.message; }
           finally { busy=false; button.disabled=false; }
         };
-      } catch(err) { panel.textContent=err.message; }
+        return true;
+      } catch(err) { saveButton.disabled = true; panel.textContent=err.message; return false; }
     }
   };
 })();
