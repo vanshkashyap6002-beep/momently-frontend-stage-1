@@ -166,7 +166,7 @@
     });
   }
 
-  function fillDetail(order) {
+  async function fillDetail(order) {
     currentOrder = order;
     document.getElementById("detail-customer-name").textContent = order.customerName;
     document.getElementById("detail-customer-email").textContent = order.customerEmail;
@@ -207,36 +207,13 @@
     timelineRows = (order.timeline || []).map((t) => ({ date: t.date, title: t.title, description: t.description }));
     renderTimelineEditor();
 
-    const publishButton = document.getElementById("publish-btn");
-    const publishConfirmation = document.getElementById("publish-confirmation");
-    const publishedActions = document.getElementById("published-actions");
-    const publishResult = document.getElementById("publish-result");
-    publishConfirmation.style.display = "none";
-    publishButton.style.display = canPublish ? "" : "none";
-    publishedActions.style.display = isPublished ? "flex" : "none";
-    document.getElementById("save-memory-btn").textContent = isPublished
-      ? "Update Published Memory"
-      : "Save Draft";
-    document.getElementById("save-memory-btn").disabled = !(isPublished || order.status === "READY");
-    document.getElementById("preview-memory-btn").disabled = !(isPublished || order.status === "READY");
-
-    const guidance = document.getElementById("publish-guidance");
-    if (isPublished) {
-      const memoryUrl = window.ChermoMemoryLink.validateMemoryLink(order.memoryUrl) ||
-        (!order.memoryUrl && order.memorySlug ? `${PUBLIC_MEMORY_ORIGIN}/memory/${encodeURIComponent(order.memorySlug)}` : null);
-      const publishedLink = document.getElementById("view-published-memory-link");
-      if (memoryUrl) publishedLink.href = memoryUrl;
-      else publishedLink.removeAttribute("href");
-      publishResult.textContent = memoryUrl ? `Published. Link: ${memoryUrl}` : "Published, but no valid destination was returned. Contact support.";
-      guidance.textContent = order.memorySlug
-        ? "This memory is already published. Edit and update it without changing its link or sending another publication email."
-        : "This memory links to a separately hosted experience. Saving order details here does not update that external website. Its published link stays unchanged.";
-    } else {
-      publishResult.textContent = "";
-      guidance.textContent = canPublish
-        ? "Preview your work, then provide the final memory link before the initial publication."
-        : "Initial publishing is available only when the order is READY and its payment is verified.";
-    }
+    document.getElementById("save-memory-btn").disabled = false;
+    document.getElementById("save-memory-btn").textContent = "Save changes without email";
+    document.getElementById("preview-memory-btn").disabled = false;
+    document.getElementById("recipient-input").value = order.recipientName || "";
+    document.getElementById("date-input").value = order.importantDate || "";
+    document.getElementById("personal-input").value = order.personalMessage || "";
+    await window.ChermoAdminLifecycle.fill(order, () => loadOrderDetail(order.id));
   }
 
   function openMemoryPreview() {
@@ -247,17 +224,20 @@
     }
 
     const memory = {
+      personalMessage: document.getElementById("personal-input").value,
+      occasion: document.getElementById("occasion-input").value,
       title: document.getElementById("memory-title-input").value.trim(),
       subtitle: document.getElementById("memory-subtitle-input").value.trim(),
-      recipientName: currentOrder?.recipientName,
-      importantDate: currentOrder?.importantDate,
+      recipientName: document.getElementById("recipient-input").value,
+      importantDate: document.getElementById("date-input").value,
       closingMessage: document.getElementById("memory-closing-input").value.trim(),
-      accent: currentOrder?.accent,
-      templateName: currentOrder?.templateName,
+      accent: document.getElementById("template-input").selectedOptions[0]?.dataset.accent || currentOrder?.accent,
+      templateName: document.getElementById("template-input").selectedOptions[0]?.textContent || currentOrder?.templateName,
       songTitle: document.getElementById("song-title-input").value.trim(),
       songArtist: document.getElementById("song-artist-input").value.trim(),
-      media: (currentOrder?.media || []).map((item) => ({
+      media: window.ChermoAdminLifecycle.previewMedia(currentOrder).map((item) => ({
         url: apiUrl(item.url),
+        caption: item.caption || "",
         isVideo: (item.mimeType || "").startsWith("video/"),
       })),
       timeline: timelineRows.map((item) => ({
@@ -277,7 +257,7 @@
     detail.style.display = "";
     try {
       const { order } = await apiFetch(`/api/admin/orders/${orderId}`);
-      fillDetail(order);
+      await fillDetail(order);
       wireDetailActions(orderId);
     } catch (err) {
       showBanner(err.message);
@@ -297,11 +277,6 @@
 
     document.getElementById("preview-memory-btn").onclick = openMemoryPreview;
 
-    document.getElementById("edit-published-memory-btn").onclick = () => {
-      document.getElementById("memory-editor").scrollIntoView({ behavior: "smooth", block: "start" });
-      document.getElementById("memory-title-input").focus({ preventScroll: true });
-    };
-
     document.getElementById("add-timeline-row").onclick = () => {
       timelineRows.push({ date: "", title: "", description: "" });
       renderTimelineEditor();
@@ -311,6 +286,11 @@
       await apiFetch(`/api/admin/orders/${orderId}/memory`, {
         method: "PUT",
         body: {
+          recipientName: document.getElementById("recipient-input").value.trim(),
+          importantDate: document.getElementById("date-input").value,
+          personalMessage: document.getElementById("personal-input").value,
+          occasion: document.getElementById("occasion-input").value,
+          ...(document.getElementById("template-input").value ? {templateId:document.getElementById("template-input").value} : {}),
           memoryTitle: document.getElementById("memory-title-input").value.trim(),
           memorySubtitle: document.getElementById("memory-subtitle-input").value.trim(),
           memoryClosingMessage: document.getElementById("memory-closing-input").value.trim(),
@@ -322,55 +302,23 @@
     }
 
     document.getElementById("save-memory-btn").onclick = async () => {
+      const saveButton = document.getElementById("save-memory-btn");
+      if (saveButton.disabled) return;
+      saveButton.disabled = true;
       try {
         await saveMemory();
+        await loadOrderDetail(orderId);
         showBanner(currentOrder.status === "PUBLISHED"
           ? (currentOrder.memorySlug ? "Published memory updated. Its link is unchanged." : "Order memory details saved. Update the separately hosted experience separately; its link is unchanged.")
           : "Memory draft saved.", "success");
       } catch (err) {
         showBanner(err.message);
-      }
-    };
-
-    document.getElementById("publish-btn").onclick = async () => {
-      document.getElementById("publish-customer-name").textContent = currentOrder.customerName || "—";
-      document.getElementById("publish-customer-email").textContent = currentOrder.customerEmail || "—";
-      document.getElementById("publish-confirmation").style.display = "";
-      document.getElementById("memory-link-input").focus();
-    };
-
-    document.getElementById("cancel-publish-btn").onclick = () => {
-      document.getElementById("publish-confirmation").style.display = "none";
-    };
-
-    document.getElementById("confirm-publish-btn").onclick = async () => {
-      const input = document.getElementById("memory-link-input");
-      const memoryLink = window.ChermoMemoryLink.validateMemoryLink(input.value);
-      input.setCustomValidity(memoryLink ? "" : "Paste a complete, valid HTTPS URL without spaces or embedded credentials.");
-      input.oninput = () => input.setCustomValidity("");
-      if (!input.reportValidity()) return;
-      const btn = document.getElementById("confirm-publish-btn");
-      if (btn.disabled) return;
-      btn.disabled = true;
-      btn.textContent = "Publishing…";
-      try {
-        await saveMemory();
-        const result = await apiFetch(`/api/admin/orders/${orderId}/publish`, {
-          method: "POST",
-          body: { memoryLink },
-        });
-        if (result.memoryUrl !== memoryLink) {
-          throw new Error("Publication returned a different destination. Verify the stored link before retrying; no email success is confirmed here.");
-        }
-        await loadOrderDetail(orderId);
-        showBanner(result.emailDelivered ? "Memory published and customer email sent." : "Memory published, but the customer email was not sent. Check the existing SMTP configuration.", result.emailDelivered ? "success" : "error");
-      } catch (err) {
-        showBanner(err.message);
       } finally {
-        btn.disabled = false;
-        btn.textContent = "Publish & Send Email";
+        saveButton.disabled = false;
       }
     };
+
+    window.ChermoAdminLifecycle.save = saveMemory;
   }
 
   async function initOrdersDashboard() {

@@ -59,9 +59,10 @@
     wrap.innerHTML = mediaItems
       .map((m, index) => {
         const url = escapeHtml(apiUrl(m.url));
-        return m.isVideo
+        const caption = m.caption ? `<figcaption>${escapeHtml(m.caption)}</figcaption>` : "";
+        return `<figure>${m.isVideo
           ? `<video src="${url}" controls aria-label="Video ${index + 1} from this memory"></video>`
-          : `<img src="${url}" alt="Photo ${index + 1} from this memory" loading="lazy">`;
+          : `<img src="${url}" alt="Photo ${index + 1} from this memory" loading="lazy">`}${caption}</figure>`;
       })
       .join("");
     section.style.display = "";
@@ -94,6 +95,12 @@
       document.getElementById("memory-music").style.display = "";
     }
 
+    for (const [id, text] of [["memory-personal-message", memory.personalMessage], ["memory-occasion", memory.occasion], ["memory-cover-caption", heroMedia?.caption]]) {
+      let el = document.getElementById(id);
+      if (!el) { el = document.createElement('p'); el.id = id; document.getElementById('memory-subtitle').after(el); }
+      el.textContent = text || '';
+      el.hidden = !text;
+    }
     renderTimeline(memory.timeline);
     renderGallery(galleryMedia);
 
@@ -130,7 +137,13 @@
     }
 
     try {
-      const { memory } = await apiFetch(`/api/memory/${encodeURIComponent(slug)}`);
+      const { memory, redirectUrl } = await apiFetch(`/api/memory/${encodeURIComponent(slug)}`);
+      if (redirectUrl) {
+        const target = new URL(redirectUrl);
+        if (target.protocol !== 'https:' || target.username || target.password) throw Error('Invalid destination');
+        window.location.replace(target.href);
+        return;
+      }
       renderMemory(memory);
     } catch {
       hide("memory-loading");

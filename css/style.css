@@ -462,6 +462,11 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 .admin-detail-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
 .admin-panel { background: #fff; border-radius: var(--radius-md); box-shadow: var(--shadow-soft); padding: 26px; margin-bottom: 24px; }
 .admin-panel h3 { font-size: 15.5px; margin-bottom: 16px; }
+#memory-lifecycle-panel { overflow-wrap: anywhere; }
+#memory-lifecycle-panel input, #memory-lifecycle-panel button { max-width: 100%; }
+#memory-lifecycle-panel p { margin-bottom: 14px; }
+#memory-lifecycle-panel ul { padding-left: 20px; margin-bottom: 18px; }
+#memory-lifecycle-panel details { margin-bottom: 20px; }
 .detail-row { display: flex; justify-content: space-between; padding: 9px 0; font-size: 13.5px; border-bottom: 1px solid rgba(18,16,15,0.06); }
 .detail-row .label { color: rgba(18,16,15,0.72); }
 .media-thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; }
