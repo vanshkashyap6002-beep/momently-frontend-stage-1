@@ -181,7 +181,7 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 
 /* -------------------------------- Footer ------------------------------------ */
 .footer { border-top: 1px solid rgba(18,16,15,0.08); padding: 64px 0 32px; }
-.footer-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3,minmax(0,1fr)); gap: 48px; margin-bottom: 48px; }
 .footer-tagline { margin-top: 14px; color: rgba(18,16,15,0.72); font-size: 14.5px; max-width: 320px; }
 .footer-col h5 { font-family: var(--font-body); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: rgba(18,16,15,0.72); }
 .footer-col li { margin-bottom: 11px; }
@@ -584,3 +584,12 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
   .legal-container section { padding: 22px 0; }
   .legal-mini-footer { flex-direction: column; text-align: center; }
 }
+
+/* Keep all four sample prints legible once the homepage hero stacks. */
+@media(max-width:900px){
+  .hero-stack{position:static;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;height:auto;margin:0}
+  .hero-stack .hero-card{position:static;width:auto;min-width:0;padding:10px}
+  .hero-stack .hero-card img{width:100%;height:auto;aspect-ratio:4/3}
+}
+@media(max-width:540px){.hero-stack{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:541px) and (max-width:900px){.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}}

@@ -5,6 +5,10 @@ const path = require('node:path');
 const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const pages = ['', 'admin', 'memory'].flatMap(dir => fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith('.html')).map(f => path.join(dir, f)));
+for (const entry of fs.readdirSync(path.join(root,'memory-studio'), {withFileTypes:true})) {
+  if (entry.isDirectory()) pages.push(path.join('memory-studio',entry.name,'index.html'));
+  else if (entry.name.endsWith('.html')) pages.push(path.join('memory-studio',entry.name));
+}
 test('all frontend scripts and inline scripts parse', () => {
   for (const name of fs.readdirSync(path.join(root, 'js')).filter(f => f.endsWith('.js'))) new vm.Script(fs.readFileSync(path.join(root, 'js', name), 'utf8'), { filename: name });
   for (const page of pages) {

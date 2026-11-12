@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memory Studio · CHERMO Memory Studio</title>
+<link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/memory-studio.css">
+<script defer src="/js/studio-print.js"></script><script defer src="/js/studio-layouts.js"></script><script defer src="/js/studio-draft.js"></script><script defer src="/js/studio-camera.js"></script><script defer src="/js/memory-studio.js"></script><script defer src="/js/studio-navigation.js"></script></head>
+<body class="studio"><a class="skip" href="#main">Skip to studio</a><header class="mast"><a href="/index.html" class="wordmark">CHERMO</a><nav aria-label="Site navigation"><a href="/index.html">Home</a><a href="/templates.html">Marketplace</a><a data-route href="/memory-studio/">Memory Studio</a></nav></header>
+<main id="main" tabindex="-1"><div data-page="home"><section class="archive-hero archive-wrap">
+<div class="archive-intro"><p class="archive-label">Memory Studio</p><h1>Make the photograph<br>worth keeping.</h1><p>Choose a photo, find its paper, and add a line in your own words.</p>
+<div class="archive-actions"><button id="archive-upload">Choose photos</button><a data-route href="/memory-studio/camera/?mode=polaroid">Open camera</a></div></div>
+<figure class="archive-print"><img class="archive-photo" src="/memory-studio/train-afternoon.webp" alt="Two friends sharing a smile at a train window"><img class="archive-bow" src="/assets/studio-collections/bows/0.webp" alt=""><figcaption>The long way home</figcaption></figure></section>
+<section class="archive-formats archive-wrap" aria-labelledby="format-heading">
+  <div id="format-floaters" aria-hidden="true"></div>
+  <h2 id="format-heading">Every memory has a <em>shape.</em></h2>
+  <p>Pick the shape that fits the moment – one frame, a quick strip, or a whole story.</p>
+  <nav aria-label="Choose a print format">
+    <a data-route href="/memory-studio/editor/?mode=polaroid"><canvas data-sample="polaroid" aria-hidden="true"></canvas><span>Single print <i aria-hidden="true">↗</i></span></a>
+    <a data-route href="/memory-studio/photobooth/?positions=3"><canvas data-sample="strip" data-positions="3" aria-hidden="true"></canvas><span>3-strip photobooth <i aria-hidden="true">↗</i></span></a>
+    <a data-route href="/memory-studio/photobooth/?positions=4"><canvas data-sample="strip" data-positions="4" aria-hidden="true"></canvas><span>4-strip photobooth <i aria-hidden="true">↗</i></span></a>
+    <a data-route href="/memory-studio/collage/"><canvas data-sample="collage" aria-hidden="true"></canvas><span>Memory collage <i aria-hidden="true">↗</i></span></a>
+  </nav>
+</section>
+<section class="archive-papers archive-wrap"><div id="paper-impressions" aria-hidden="true"></div><h2>Same photograph.<br>Different paper.</h2><div class="archive-stage">
+<canvas id="archive-proof" tabindex="0" aria-label="Sample photograph on the selected paper"></canvas>
+<div class="archive-controls"><div id="archive-list" role="group" aria-label="Paper collections"></div>
+<div class="archive-mobile"><button id="archive-prev" aria-label="Previous collection">←</button><select id="archive-select" aria-label="Collection"></select><button id="archive-next" aria-label="Next collection">→</button></div>
+<div id="archive-designs" role="group" aria-label="Paper design"></div>
+<div class="archive-actions"><button id="archive-camera">Open camera with this paper</button><button id="archive-choose">Choose a photo</button></div></div></div><input hidden type="file" id="archive-file" accept="image/jpeg,image/png,image/webp"></section></div></main><p id="status" role="status"></p>
+<footer><a href="/index.html" class="wordmark">CHERMO</a><p>Cherish What Matters. Free to create and download. Photos stay on your device. Saving a draft is optional.</p><a href="/privacy-policy.html">Privacy policy</a></footer></body></html>
