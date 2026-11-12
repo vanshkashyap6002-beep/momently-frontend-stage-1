@@ -81,7 +81,22 @@
 
   function initMobileMenu() {
     const toggle = document.querySelector(".nav-toggle");
-    const menu = document.querySelector(".mobile-menu");
+    const menu = document.getElementById(toggle?.getAttribute("aria-controls")) || document.querySelector(".mobile-menu");
+    if (toggle && menu instanceof HTMLDialogElement) {
+      toggle.addEventListener("click", () => {
+        menu.showModal();
+        toggle.setAttribute("aria-expanded", "true");
+      });
+      menu.addEventListener("close", () => toggle.setAttribute("aria-expanded", "false"));
+      menu.addEventListener("click", (event) => {
+        if (event.target.closest("a, .drawer-close") ||
+            (event.target === menu && event.clientX < menu.getBoundingClientRect().left)) menu.close();
+      });
+      const close = () => { if (menu.open) menu.close(); };
+      matchMedia("(max-width: 860px)").addEventListener("change", close);
+      window.addEventListener("pagehide", close);
+      return;
+    }
     if (!toggle || !menu) return;
     const setOpen = (isOpen) => {
       menu.classList.toggle("open", isOpen);

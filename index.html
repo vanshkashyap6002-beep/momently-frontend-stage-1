@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHERMO — Personalized Digital Memories &amp; Keepsakes</title>
 <meta name="description" content="Turn your favorite memory into a personal page with CHERMO. Choose a template, add your story and photos, and share your published memory.">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=home-drawer-1">
 <link rel="stylesheet" href="css/animations.css">
 <link rel="canonical" href="https://www.chermo.in/">
 <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
 <script src="/js/analytics.js" defer></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://www.chermo.in/#organization", "name": "CHERMO", "url": "https://www.chermo.in/"}, {"@type": "WebSite", "name": "CHERMO", "url": "https://www.chermo.in/", "publisher": {"@id": "https://www.chermo.in/#organization"}}]}</script>
 </head>
-<body>
+<body class="chermo-home">
 
   <!-- Intro overlay: shown once per 24h, staged reveal, matches homepage hero headline -->
   <div class="intro-overlay">
@@ -52,24 +52,25 @@
 
   <a href="templates.html" class="btn btn-primary btn-sm">Create Memory</a>
 
-  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+  <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" aria-haspopup="dialog">
     <span></span><span></span><span></span>
   </button>
 </div>
     </div>
   </header>
-  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+  <dialog id="mobile-menu" class="home-drawer" aria-label="Site menu">
+  <button type="button" class="drawer-close" aria-label="Close menu">×</button>
+  <nav aria-label="Mobile navigation">
   <a href="index.html">Home</a>
   <a href="templates.html">Marketplace</a>
   <a href="/memory-studio/">Memory Studio</a>
   <a href="index.html#pricing">Pricing</a>
   <a href="index.html#how-it-works">How It Works</a>
-  <a href="login.html">Login</a>
-
-  <span data-auth-slot-mobile></span>
+  <span data-auth-slot-mobile><a href="login.html">Login</a></span>
 
   <a href="templates.html" class="btn btn-primary">Create Memory</a>
   </nav>
+  </dialog>
   <!-- Hero -->
   <section class="hero">
     <div class="hearts-layer"></div>
@@ -89,19 +90,19 @@
       </div>
       <div class="hero-stack" aria-hidden="true">
         <div class="hero-card">
-          <img src="https://picsum.photos/seed/momently-hero-1/300/225" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-1.jpg" alt="" width="300" height="225">
           <p class="hero-card-caption">Happy Anniversary, Love</p>
         </div>
         <div class="hero-card">
-          <img src="https://picsum.photos/seed/momently-hero-2/300/225" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-2.jpg" alt="" width="300" height="225">
           <p class="hero-card-caption">To My Best Friend</p>
         </div>
         <div class="hero-card">
-          <img src="https://picsum.photos/seed/momently-hero-3/300/225" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-3.jpg" alt="" width="300" height="225">
           <p class="hero-card-caption">Will You Marry Me?</p>
         </div>
         <div class="hero-card">
-          <img src="https://picsum.photos/seed/momently-hero-4/300/225" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-4.jpg" alt="" width="300" height="225">
           <p class="hero-card-caption">Forever & Always</p>
         </div>
       </div>
@@ -302,7 +303,7 @@
       </div>
     </div>
   </footer>
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=home-drawer-1"></script>
   <script src="js/templates.js"></script>
 </body>
 </html>
