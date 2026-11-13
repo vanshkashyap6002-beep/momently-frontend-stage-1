@@ -37,7 +37,10 @@ test('private and admin pages remain noindex and outside sitemap and analytics',
 });
 test('canonical redirect only matches apex and preserves memory rewrite', () => {
   const config = JSON.parse(read('vercel.json'));
-  assert.deepEqual(config.redirects, [{ source: '/:path*', has: [{ type: 'host', value: 'chermo.in' }], destination: 'https://www.chermo.in/:path*', permanent: true }]);
+  assert.deepEqual(config.redirects, [
+    { source: '/index.html', destination: '/', permanent: true },
+    { source: '/:path*', has: [{ type: 'host', value: 'chermo.in' }], destination: 'https://www.chermo.in/:path*', permanent: true }
+  ]);
   assert.deepEqual(config.rewrites, [{ source: '/memory/:slug', destination: '/memory/memory.html' }]);
 });
 test('legal-page analytics requires consent and sanitizes URL without duplicate pageviews', () => {
