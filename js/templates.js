@@ -32,18 +32,29 @@
   // Template image
   // ------------------------------------------------------------------
 
+  const capturedDesigns = new Set([
+    "the-little-box", "the-bloom", "a-diya-for-you", "the-unfolding",
+    "the-receipt-of-us", "winter-album", "summer-album",
+    "autumn-album-golden-hours", "house-of-us-3d"
+  ]);
+
+  function capturedPreview(slug) {
+    return capturedDesigns.has(slug) ? `/assets/template-previews/${slug}.webp` : "";
+  }
+
   function templateImageUrl(t) {
     const value = String(t.previewImageUrl || "").trim();
-    if (!value) return "";
+    const fallback = capturedPreview(t.slug);
+    if (!value) return fallback;
     try {
       const url = new URL(value, window.Momently.apiUrl("/"));
-      if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) return "";
+      if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) return fallback;
       // The legacy API generates random stock photos from the experience URL.
       // These are not template artwork; show an honest fallback instead.
-      if (url.hostname === "picsum.photos" && url.pathname.startsWith("/seed/")) return "";
+      if (url.hostname === "picsum.photos" && url.pathname.startsWith("/seed/")) return fallback;
       return url.href;
     } catch {
-      return "";
+      return fallback;
     }
   }
 
@@ -56,6 +67,8 @@
   document.addEventListener("error", (event) => {
     if (event.target.matches?.("[data-template-artwork]")) {
       event.target.closest(".template-artwork")?.classList.remove("has-artwork");
+      const fallback = capturedPreview(event.target.dataset.templateArtwork);
+      if (fallback && event.target.getAttribute("src") !== fallback) event.target.src = fallback;
     }
   }, true);
 
@@ -76,7 +89,7 @@
 
           <img
             ${templateImageUrl(t) ? `src="${escapeHtml(templateImageUrl(t))}"` : ""}
-            data-template-artwork
+            data-template-artwork="${escapeHtml(t.slug)}"
             alt=""
             loading="lazy"
           >
@@ -227,6 +240,16 @@
         await apiFetch(
           "/api/templates"
         );
+
+      const prices = templates.map(t => t.price)
+        .filter(p => (typeof p === "number" || (typeof p === "string" && p.trim())) && Number.isFinite(Number(p)) && Number(p) >= 0)
+        .map(Number);
+      const priceLabel = document.getElementById("catalogue-price");
+      if (priceLabel && prices.length) {
+        const min = Math.min(...prices);
+        const max = Math.max(...prices);
+        priceLabel.textContent = min === max ? formatCurrency(min) : `${formatCurrency(min)}–${formatCurrency(max)}`;
+      }
 
       grid.innerHTML =
         templates
@@ -505,6 +528,7 @@
     if (image) {
       image.closest(".template-artwork")?.classList.remove("has-artwork");
       const url = templateImageUrl(template);
+      image.dataset.templateArtwork = template.slug;
       image.removeAttribute("src");
       image.alt = "";
       if (url) image.src = url;

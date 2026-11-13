@@ -509,6 +509,7 @@ window.initStudio = function($, navigate) {
       finally{busy=false;if($('desk'))$('desk').inert=false;sync();}
     };
   }
+  let updateStripSamples;
   function mountLayouts(page){
     const mode=page==='photobooth'?'strip':'collage';
     StudioLayouts.samples.then(photos=>{
@@ -525,12 +526,28 @@ window.initStudio = function($, navigate) {
         button.onclick=()=>applyStyle(StudioLayouts.style(name));
         gallery.append(button);
       }
+      const variableSamples=[];
       for(const layout of StudioLayouts.presets(mode)){
         const button=document.createElement('button'),c=P.canvas(1,1);
         const sampleState={...StudioLayouts.example(mode,photos),...layout,photos:photos.map(p=>({...p,film:layout.film}))};
-        P.render(c,sampleState,210);button.append(c,document.createTextNode(layout.name));
-        button.onclick=()=>{applyStyle(layout);for(const b of list.children)b.setAttribute('aria-pressed',String(b===button));};
+        if(layout.positions)P.render(c,sampleState,210);
+        else variableSamples.push(()=>P.render(c,{...sampleState,positions:state.positions},210));
+        button.append(c,document.createTextNode(layout.name));
+        button.onclick=()=>{
+          applyStyle(layout);
+          if(mode==='strip' && layout.positions){
+            const url=new URL(location.href);
+            url.searchParams.set('positions',String(layout.positions));
+            history.replaceState(history.state,'',url);
+            updateStripSamples();
+          }
+          for(const b of list.children)b.setAttribute('aria-pressed',String(b===button));
+        };
         list.append(button);
+      }
+      if(mode==='strip'){
+        updateStripSamples=()=>variableSamples.forEach(draw=>draw());
+        updateStripSamples();
       }
     });
   }
@@ -558,7 +575,8 @@ window.initStudio = function($, navigate) {
       if(page==='photobooth'){
         state.mode='strip';
         const count=url.searchParams.get('positions');
-        if(count==='3' || count==='4')state.positions=Number(count);
+        if(['2','3','4','6'].includes(count))state.positions=Number(count);
+        updateStripSamples?.();
       }
       if(page==='collage')state.mode='collage';
       if(page==='camera'){

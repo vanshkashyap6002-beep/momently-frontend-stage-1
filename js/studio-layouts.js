@@ -52,13 +52,16 @@ window.StudioLayouts=(()=>{
   }
   const strips=[
     ['Classic two',2],['Classic three',3],['Classic four',4],['Extended six',6],
-    ['Vertical',4],['Horizontal',4,0,'Horizontal'],['Romantic',3,1],['Vintage film',4,6],
-    ['Black and white',3,6,'Horizontal'],['Minimalist',2,0,'Horizontal'],
-    ['Couples',2,1],['Friends',4,2],['Birthday',3,3],['Family',6,4],['Travel diary',4,5]
+    ['Vertical'],['Horizontal',null,0,'Horizontal'],['Romantic',null,1],['Vintage film',null,6],
+    ['Black and white',null,6,'Horizontal'],['Minimalist',null,0,'Horizontal'],
+    ['Couples',null,1],['Friends',null,2],['Birthday',null,3],['Family',null,4],['Travel diary',null,5]
   ];
   function presets(mode){
     const rows=mode==='strip'?strips:[['Single Polaroid',1],['Two-photo memories',2,1],['Three-photo scrapbook',3,5],['Four-photo board',4,2],['Six-photo board',6,4]];
-    return rows.map(([name,positions,theme=0,direction='Vertical'])=>({name,mode,positions,direction,...style(names[theme]),filmEdge:name==='Vintage film',corners:name==='Romantic'||name==='Birthday'?'Rounded':'Square',spacing:name==='Minimalist'?1:name==='Vertical'?7:3}));
+    return rows.map(([name,positions,theme=0,direction='Vertical'])=>({
+      name,mode,direction,...(positions?{positions}:{}),
+      ...style(names[theme]),filmEdge:name==='Vintage film',corners:name==='Romantic'||name==='Birthday'?'Rounded':'Square',spacing:name==='Minimalist'?1:name==='Vertical'?7:3
+    }));
   }
   const samples=new Promise(resolve=>{
     const image=new Image();

@@ -8,6 +8,21 @@ function load(name, context) {
   vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../js', name), 'utf8'), context);
 }
 
+test('strip styles preserve the selected length and explicit layouts choose a length', () => {
+  const context = { window: {}, Image: class {} };
+  load('studio-print.js', context);
+  context.StudioPrint = context.window.StudioPrint;
+  load('studio-layouts.js', context);
+  const { presets } = context.window.StudioLayouts;
+  const explicit = { 'Classic two': 2, 'Classic three': 3, 'Classic four': 4, 'Extended six': 6 };
+  for (const positions of [3, 4]) {
+    for (const style of presets('strip')) {
+      assert.equal(({ positions, ...style }).positions, explicit[style.name] ?? positions, style.name);
+    }
+  }
+  assert.deepEqual(Array.from(presets('collage'), layout => layout.positions), [1, 2, 3, 4, 6]);
+});
+
 test('original and zero strength preserve pixels, and each full film grade is distinct', () => {
   const context = { window: {} };
   load('studio-print.js', context);
