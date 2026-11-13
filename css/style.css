@@ -244,6 +244,8 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 .template-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
 .template-card-media { position: relative; aspect-ratio: 4/3; overflow: hidden; background: var(--color-blush); }
 .template-card-media img { width: 100%; height: 100%; object-fit: cover; }
+.template-design-link { position: absolute; inset: 0; z-index: 2; }
+.template-design-link:focus-visible { outline: 3px solid var(--color-love); outline-offset: -4px; }
 .template-badge {
   position: absolute; top: 12px; left: 12px; padding: 5px 12px; border-radius: var(--radius-full);
   font-size: 11.5px; font-weight: 600; background: rgba(253,251,249,0.92); backdrop-filter: blur(4px); color: var(--color-ink);

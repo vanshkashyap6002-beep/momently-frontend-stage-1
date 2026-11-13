@@ -77,10 +77,21 @@
   // Template card
   // ------------------------------------------------------------------
 
+  function designPreviewUrl(template) {
+    try {
+      const url = new URL(template.previewSeed);
+      if (["https:", "http:"].includes(url.protocol) && !url.username && !url.password) return url.href;
+    } catch {
+      // A template can be listed before it has a public demo.
+    }
+    return "";
+  }
+
   function renderTemplateCard(
     t,
     { showPreview = false } = {}
   ) {
+    const previewUrl = designPreviewUrl(t);
     return `
       <article class="template-card">
 
@@ -101,6 +112,9 @@
           <span class="template-price">
             ${formatCurrency(t.price || 0)}
           </span>
+          ${previewUrl ? `<a class="template-design-link" href="${previewUrl.replace(/&/g, "&amp;").replace(/"/g, "&quot;")}" target="_blank" rel="noopener noreferrer">
+            <span class="visually-hidden">Preview ${escapeHtml(t.name)} design (opens in a new tab)</span>
+          </a>` : ""}
 
         </div>
 
@@ -680,58 +694,12 @@
     }
 
 
-    const previewUrl =
-      String(
-        template.previewSeed || ""
-      ).trim();
-
-
+    const previewUrl = designPreviewUrl(template);
     if (!previewUrl) {
-
-      alert(
-        "This template does not have a preview URL yet."
-      );
-
+      alert("This template does not have a valid preview URL yet.");
       return;
     }
-
-
-    try {
-
-      const url =
-        new URL(
-          previewUrl
-        );
-
-
-      if (
-        url.protocol !== "http:" &&
-        url.protocol !== "https:"
-      ) {
-        throw new Error(
-          "Invalid preview URL protocol"
-        );
-      }
-
-
-      window.open(
-        url.href,
-        "_blank",
-        "noopener,noreferrer"
-      );
-
-    } catch (error) {
-
-      console.error(
-        "Preview URL error:",
-        error
-      );
-
-
-      alert(
-        "This template has an invalid preview URL."
-      );
-    }
+    window.open(previewUrl, "_blank", "noopener,noreferrer");
   }
 
 
