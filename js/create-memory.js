@@ -61,8 +61,8 @@
     const slug = params.get("template");
 
     if (!user) {
-      const next = `create-memory.html${slug ? `?template=${encodeURIComponent(slug)}` : ""}`;
-      window.location.href = `login.html?next=${encodeURIComponent(next)}`;
+      const next = `/create-memory${slug ? `?template=${encodeURIComponent(slug)}` : ""}`;
+      window.location.href = `/login?next=${encodeURIComponent(next)}`;
       return;
     }
     if (!slug) {
@@ -124,7 +124,7 @@
 
   function initStep3() {
     document.getElementById("proceed-payment").addEventListener("click", () => {
-      window.location.href = `payment.html?order=${encodeURIComponent(order.id)}`;
+      window.location.href = `/payment?order=${encodeURIComponent(order.id)}`;
     });
   }
 

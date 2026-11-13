@@ -1,16 +1,67 @@
 {
   "rewrites": [
     {
+      "source": "/admin/admin-templates",
+      "destination": "/admin/admin-templates.html"
+    },
+    {
+      "source": "/admin/orders",
+      "destination": "/admin/orders.html"
+    },
+    {
+      "source": "/cookie-policy",
+      "destination": "/cookie-policy.html"
+    },
+    {
+      "source": "/create-memory",
+      "destination": "/create-memory.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/memory/memory",
+      "destination": "/memory/memory.html"
+    },
+    {
+      "source": "/payment",
+      "destination": "/payment.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy-policy.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/profile.html"
+    },
+    {
+      "source": "/refund-policy",
+      "destination": "/refund-policy.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/signup.html"
+    },
+    {
+      "source": "/success",
+      "destination": "/success.html"
+    },
+    {
+      "source": "/templates",
+      "destination": "/templates.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
       "source": "/memory/:slug",
       "destination": "/memory/memory.html"
     }
   ],
   "redirects": [
-    {
-      "source": "/index.html",
-      "destination": "/",
-      "permanent": true
-    },
     {
       "source": "/:path*",
       "has": [
@@ -20,6 +71,121 @@
         }
       ],
       "destination": "https://www.chermo.in/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/admin/admin-templates.html",
+      "destination": "/admin/admin-templates",
+      "permanent": true
+    },
+    {
+      "source": "/admin/index.html",
+      "destination": "/admin/",
+      "permanent": true
+    },
+    {
+      "source": "/admin/orders.html",
+      "destination": "/admin/orders",
+      "permanent": true
+    },
+    {
+      "source": "/cookie-policy.html",
+      "destination": "/cookie-policy",
+      "permanent": true
+    },
+    {
+      "source": "/create-memory.html",
+      "destination": "/create-memory",
+      "permanent": true
+    },
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/login.html",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/memory/memory.html",
+      "destination": "/memory/memory",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/camera/index.html",
+      "destination": "/memory-studio/camera/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/collage/index.html",
+      "destination": "/memory-studio/collage/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/editor/index.html",
+      "destination": "/memory-studio/editor/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/index.html",
+      "destination": "/memory-studio/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/photobooth/index.html",
+      "destination": "/memory-studio/photobooth/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio/preview/index.html",
+      "destination": "/memory-studio/preview/",
+      "permanent": true
+    },
+    {
+      "source": "/memory-studio.html",
+      "destination": "/memory-studio/",
+      "permanent": true
+    },
+    {
+      "source": "/payment.html",
+      "destination": "/payment",
+      "permanent": true
+    },
+    {
+      "source": "/privacy-policy.html",
+      "destination": "/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/profile.html",
+      "destination": "/profile",
+      "permanent": true
+    },
+    {
+      "source": "/refund-policy.html",
+      "destination": "/refund-policy",
+      "permanent": true
+    },
+    {
+      "source": "/signup.html",
+      "destination": "/signup",
+      "permanent": true
+    },
+    {
+      "source": "/success.html",
+      "destination": "/success",
+      "permanent": true
+    },
+    {
+      "source": "/templates.html",
+      "destination": "/templates",
+      "permanent": true
+    },
+    {
+      "source": "/terms.html",
+      "destination": "/terms",
       "permanent": true
     }
   ]

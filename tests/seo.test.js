@@ -11,7 +11,7 @@ test('public metadata and sitemap agree on www host and existing pages', () => {
   assert.equal(new Set(urls).size, publicPages.length);
   for (const page of publicPages) {
     const html = read(page);
-    const url = 'https://www.chermo.in/' + (page === 'index.html' ? '' : page);
+    const url = 'https://www.chermo.in/' + (page === 'index.html' ? '' : page.slice(0, -5));
     assert.ok(urls.includes(url));
     assert.ok(html.includes(`rel="canonical" href="${url}"`));
     assert.ok(html.includes(`property="og:url" content="${url}"`));
@@ -37,18 +37,22 @@ test('private and admin pages remain noindex and outside sitemap and analytics',
 });
 test('canonical redirect only matches apex and preserves memory rewrite', () => {
   const config = JSON.parse(read('vercel.json'));
-  assert.deepEqual(config.redirects, [
-    { source: '/index.html', destination: '/', permanent: true },
-    { source: '/:path*', has: [{ type: 'host', value: 'chermo.in' }], destination: 'https://www.chermo.in/:path*', permanent: true }
-  ]);
-  assert.deepEqual(config.rewrites, [{ source: '/memory/:slug', destination: '/memory/memory.html' }]);
+  assert.equal(config.redirects[0].has[0].value, 'chermo.in');
+  for (const rule of config.redirects.slice(1)) {
+    assert.ok(fs.existsSync(path.join(root, rule.source)));
+    assert.ok(!rule.destination.includes('.html'));
+    if (!rule.destination.endsWith('/')) {
+      assert.ok(config.rewrites.some(r => r.source === rule.destination && r.destination === rule.source));
+    }
+  }
+  assert.deepEqual(config.rewrites.at(-1), { source: '/memory/:slug', destination: '/memory/memory.html' });
 });
 test('legal-page analytics requires consent and sanitizes URL without duplicate pageviews', () => {
   for (const page of publicPages.slice(2)) {
     const appended = [], handlers = {};
     const window = { CHERMO_GA4_MEASUREMENT_ID: 'G-TEST123' };
     const context = {
-      window, location: { hostname: 'www.chermo.in', pathname: '/' + page, search: '?email=private', hash: '#private' },
+      window, location: { hostname: 'www.chermo.in', pathname: '/' + page.slice(0, -5), search: '?email=private', hash: '#private' },
       localStorage: { getItem: () => null, setItem: () => {} },
       document: { title: 'Policy', head: { appendChild: s => appended.push(s) },
         body: { appendChild: () => {} }, addEventListener: () => {},
@@ -62,7 +66,7 @@ test('legal-page analytics requires consent and sanitizes URL without duplicate 
     assert.equal(appended.length, 1);
     const views = window.dataLayer.filter(args => args[0] === 'event' && args[1] === 'page_view');
     assert.equal(views.length, 1);
-    assert.equal(views[0][2].page_location, 'https://www.chermo.in/' + page);
+    assert.equal(views[0][2].page_location, 'https://www.chermo.in/' + page.slice(0, -5));
     assert.equal(views[0][2].page_referrer, '');
     choose('denied'); assert.equal(window['ga-disable-G-TEST123'], true);
   }

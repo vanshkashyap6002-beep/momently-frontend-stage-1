@@ -1,9 +1,10 @@
 /* Public-page analytics only. No customer content or URL parameters are collected. */
 (() => {
   'use strict';
-  const pages = ['/', '/index.html', '/templates.html', '/privacy-policy.html', '/terms.html', '/refund-policy.html', '/cookie-policy.html'];
+  const pages = ['/', '/templates', '/privacy-policy', '/terms', '/refund-policy', '/cookie-policy'];
+  const page = location.pathname === '/index.html' ? '/' : location.pathname.replace(/\.html$/, '');
   const id = window.CHERMO_GA4_MEASUREMENT_ID;
-  if (!['chermo.in', 'www.chermo.in'].includes(location.hostname) || !pages.includes(location.pathname) || !/^G-[A-Z0-9]+$/.test(id || '')) return;
+  if (!['chermo.in', 'www.chermo.in'].includes(location.hostname) || !pages.includes(page) || !/^G-[A-Z0-9]+$/.test(id || '')) return;
   const key = 'chermo-analytics-consent';
   let active = false;
   let started = false;
@@ -16,7 +17,7 @@
     window.dataLayer = window.dataLayer || [];
     const gtag = function () { window.dataLayer.push(arguments); };
     window.gtag = gtag;
-    const safeUrl = 'https://www.chermo.in' + (location.pathname === '/index.html' ? '/' : location.pathname);
+    const safeUrl = 'https://www.chermo.in' + page;
     gtag('js', new Date());
     gtag('config', id, { send_page_view: false, page_location: safeUrl, page_referrer: '', allow_google_signals: false, allow_ad_personalization_signals: false });
     gtag('event', 'page_view', { page_location: safeUrl, page_referrer: '', page_title: document.title });

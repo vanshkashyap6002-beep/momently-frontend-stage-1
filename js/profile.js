@@ -162,7 +162,7 @@
   }
 
   function redirectToLogin() {
-    window.location.href = "login.html?next=" + encodeURIComponent("profile.html");
+    window.location.href = "/login?next=" + encodeURIComponent("/profile");
   }
 
   async function init() {

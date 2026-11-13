@@ -181,13 +181,13 @@
     const user = await currentUser();
 
     const nextUrl =
-      `create-memory.html?template=${encodeURIComponent(
+      `/create-memory?template=${encodeURIComponent(
         slug
       )}`;
 
     window.location.href = user
       ? nextUrl
-      : `login.html?next=${encodeURIComponent(
+      : `/login?next=${encodeURIComponent(
           nextUrl
         )}`;
   }

@@ -100,7 +100,7 @@
     const orderId = params.get("order");
 
     if (!user) {
-      window.location.href = `login.html?next=${encodeURIComponent(`payment.html?order=${orderId || ""}`)}`;
+      window.location.href = `/login?next=${encodeURIComponent(`/payment?order=${orderId || ""}`)}`;
       return;
     }
     if (!orderId) {

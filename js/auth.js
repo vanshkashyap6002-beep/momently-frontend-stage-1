@@ -38,7 +38,7 @@
     const { available } = await apiFetch("/api/auth/google/available");
     if (!available) return;
 
-    const nextUrl = getNextUrl("templates.html");
+    const nextUrl = getNextUrl("/templates");
 
     btn.style.display = "";
     if (divider) divider.style.display = "";
@@ -81,7 +81,7 @@
           method: "POST",
           body: { email: form.email.value.trim(), password: form.password.value },
         });
-        showWelcomeTransition(() => (window.location.href = getNextUrl("templates.html")));
+        showWelcomeTransition(() => (window.location.href = getNextUrl("/templates")));
       } catch (err) {
         showBanner(err.message);
         setSubmitting(submitBtn, false, "Log In");
@@ -105,7 +105,7 @@
             password: form.password.value,
           },
         });
-        showWelcomeTransition(() => (window.location.href = getNextUrl("templates.html")));
+        showWelcomeTransition(() => (window.location.href = getNextUrl("/templates")));
       } catch (err) {
         showBanner(err.message);
         setSubmitting(submitBtn, false, "Create Account");
