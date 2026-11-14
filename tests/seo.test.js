@@ -8,13 +8,16 @@ const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const publicPages = ['index.html', 'templates.html', 'privacy-policy.html', 'terms.html', 'refund-policy.html', 'cookie-policy.html'];
 test('public metadata and sitemap agree on www host and existing pages', () => {
   const urls = [...read('sitemap.xml').matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
-  const updatesUrl = 'https://www.chermo.in/updates/';
-  assert.equal(urls.length, publicPages.length + 1);
+  const landingPages = ['updates', 'memory-studio'];
+  assert.equal(urls.length, publicPages.length + landingPages.length);
   assert.equal(new Set(urls).size, urls.length);
-  assert.ok(urls.includes(updatesUrl));
-  const updates = read('updates/index.html');
-  assert.ok(updates.includes(`rel="canonical" href="${updatesUrl}"`));
-  assert.ok(!updates.includes('noindex'));
+  for (const slug of landingPages) {
+    const url = `https://www.chermo.in/${slug}/`;
+    const html = read(`${slug}/index.html`);
+    assert.ok(urls.includes(url));
+    assert.ok(html.includes(`rel="canonical" href="${url}"`));
+    assert.ok(!html.includes('noindex'));
+  }
   for (const page of publicPages) {
     const html = read(page);
     const url = 'https://www.chermo.in/' + (page === 'index.html' ? '' : page.slice(0, -5));
