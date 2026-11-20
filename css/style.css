@@ -687,3 +687,23 @@ html:has(.home-drawer[open]) {overflow:hidden}
     .home-drawer[open]::backdrop {opacity:0}
   }
 }
+
+.info-nav, .info-footer { display:flex; align-items:center; flex-wrap:wrap; gap:.25rem clamp(.8rem,3vw,2rem); }
+.info-nav { padding: .8rem 0; border-bottom:1px solid var(--color-blush); }
+.info-nav .wordmark { margin-right:auto; }
+.info-nav a,.info-footer a,.brand-social { display:inline-flex; align-items:center; min-height:44px; }
+.info-nav [aria-current],.info-nav a:hover,.info-footer a:hover { color:var(--color-love); text-decoration:underline; text-underline-offset:.3em; }
+.info-footer { justify-content:center; padding-inline:1rem; }
+.brand-info .legal-container { max-width:48rem; background:var(--color-paper); padding:clamp(1.25rem,5vw,4rem); border:1px solid var(--color-blush); border-top:3px solid var(--color-love); border-radius:12px; }
+.brand-info .legal-page { background:#fbf5f1; padding-block:clamp(2rem,6vw,5rem); }
+.brand-info .legal-container h2 { margin-top:2rem; }
+.brand-info #contact-form { display:grid; gap:.65rem; margin-top:2rem; }
+.brand-info #contact-form :is(input,textarea) { width:100%; min-width:0; padding:.8rem; border:1px solid #bda7a8; border-radius:8px; font:inherit; background:white; }
+.brand-info #contact-form textarea { min-height:8rem; resize:vertical; }
+.brand-info #contact-form button { justify-self:start; }
+.brand-social { gap:.55rem; color:var(--color-love); margin-top:.5rem; }
+.instagram-glyph { width:20px;height:20px;border:2px solid currentColor;border-radius:6px;display:grid;place-items:center;position:relative; }
+.instagram-glyph::before { content:"";width:7px;height:7px;border:1.5px solid currentColor;border-radius:50%; }
+.instagram-glyph::after { content:"";width:3px;height:3px;background:currentColor;border-radius:50%;position:absolute;right:2px;top:2px; }
+@media (min-width:861px) and (max-width:1150px) { .nav-links { gap:clamp(.45rem,1vw,1rem); } }
+@media (max-width:420px) { .info-nav { justify-content:space-between; gap:.25rem; } .info-nav .wordmark { margin-right:0; } }
