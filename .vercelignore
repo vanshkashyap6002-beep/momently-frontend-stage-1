@@ -1,0 +1,13 @@
+server/
+tests/
+docs/
+.codex/
+.design-rules/
+.gitmodules
+.env*
+**/.env*
+*.sql
+**/*.sql
+*.md
+**/*.md
+*.zip

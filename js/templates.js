@@ -235,6 +235,22 @@
   // Homepage featured templates
   // ------------------------------------------------------------------
 
+  function updatePriceAnswer(min, max) {
+    const answer = document.getElementById("catalogue-faq-price");
+    const schema = document.getElementById("homepage-schema");
+    if (!answer || !schema) return;
+    const graph = JSON.parse(schema.textContent);
+    const faq = graph["@graph"].find(item => item["@type"] === "FAQPage");
+    const question = faq.mainEntity.find(item => item.name === answer.previousElementSibling.textContent);
+    const amount = n => "₹" + n.toLocaleString("en-IN");
+    const message = min === max
+      ? "Templates currently cost " + amount(min) + " each, paid once."
+      : "Prices currently range from " + amount(min) + " to " + amount(max) + " per template, paid once.";
+    answer.textContent = message;
+    question.acceptedAnswer.text = message;
+    schema.textContent = JSON.stringify(graph);
+  }
+
   async function initFeaturedGrid() {
 
     const grid =
@@ -263,6 +279,7 @@
         const min = Math.min(...prices);
         const max = Math.max(...prices);
         priceLabel.textContent = min === max ? formatCurrency(min) : `${formatCurrency(min)}–${formatCurrency(max)}`;
+        updatePriceAnswer(min, max);
       }
 
       grid.innerHTML =

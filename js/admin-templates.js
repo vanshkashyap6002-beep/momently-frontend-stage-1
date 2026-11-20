@@ -1085,7 +1085,7 @@ const {
       );
 
       window.location.href =
-        "index.html";
+        "/admin/";
     }
   }
 

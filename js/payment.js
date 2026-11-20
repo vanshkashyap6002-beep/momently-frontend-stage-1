@@ -65,7 +65,7 @@
                 razorpaySignature: response.razorpay_signature,
               },
             });
-            window.location.href = `success.html?order=${encodeURIComponent(orderId)}`;
+            window.location.href = `/success?order=${encodeURIComponent(orderId)}`;
           } catch (err) {
             setStatus(err.message, "error");
             resetButton();
@@ -104,7 +104,7 @@
       return;
     }
     if (!orderId) {
-      window.location.href = "templates.html";
+      window.location.href = "/templates";
       return;
     }
 
@@ -113,7 +113,7 @@
       order = o;
 
       if (o.paymentStatus === "PAID") {
-        window.location.href = `success.html?order=${encodeURIComponent(orderId)}`;
+        window.location.href = `/success?order=${encodeURIComponent(orderId)}`;
         return;
       }
 

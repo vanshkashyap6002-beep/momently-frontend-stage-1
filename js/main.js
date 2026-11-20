@@ -130,18 +130,18 @@
     const badge = navInitials(user.fullName) || "?";
 
     desktopSlots.forEach((slot) => {
-      slot.innerHTML = `<a href="profile.html" class="nav-profile-link" title="${escapeHtml(user.fullName)}"><span class="nav-avatar">${escapeHtml(badge)}</span></a>`;
+      slot.innerHTML = `<a href="/profile" class="nav-profile-link" title="${escapeHtml(user.fullName)}"><span class="nav-avatar">${escapeHtml(badge)}</span></a>`;
     });
 
     mobileSlots.forEach((slot) => {
       slot.innerHTML = `
-        <a href="profile.html" class="nav-profile-link"><span class="nav-avatar">${escapeHtml(badge)}</span> ${escapeHtml(user.fullName)}</a>
+        <a href="/profile" class="nav-profile-link"><span class="nav-avatar">${escapeHtml(badge)}</span> ${escapeHtml(user.fullName)}</a>
         <button class="btn btn-ghost btn-sm" type="button" data-nav-signout>Sign out</button>`;
       slot.querySelector("[data-nav-signout]").addEventListener("click", async () => {
         try {
           await apiFetch("/api/auth/logout", { method: "POST" });
         } finally {
-          window.location.href = "index.html";
+          window.location.href = "/";
         }
       });
     });
@@ -188,44 +188,25 @@
   }
 
   // ---------------------------------------------------------------------
-  // Intro overlay — full-bleed "Every Memory / Deserves Its Own Place /
-  // On The Internet" reveal, once per 24h (localStorage-gated), matching
-  // the reference project's IntroOverlay component's timing.
-  // ---------------------------------------------------------------------
+  // Decorative first-visit introduction.
   function initIntroOverlay() {
     const overlay = document.querySelector(".intro-overlay");
-    if (!overlay) return;
-
-    const STORAGE_KEY = "momently_intro_seen_at";
-    const DAY_MS = 24 * 60 * 60 * 1000;
-    const lastSeen = Number(localStorage.getItem(STORAGE_KEY) || 0);
-
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches && Date.now() - lastSeen < DAY_MS) {
-      overlay.remove();
+    if (!overlay || window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+        document.activeElement !== document.body) return;
+    try {
+      const key = "momently_intro_seen_at";
+      if (localStorage.getItem(key)) return;
+      localStorage.setItem(key, String(Date.now()));
+    } catch {
       return;
     }
-    // Reduced-motion visitors still see the intro (it's the homepage's
-    // welcome message, not a decorative flourish) — it just appears
-    // instantly instead of staging in, via the reduced-motion CSS rule.
-
-    const lines = overlay.querySelectorAll(".intro-line");
-    const cta = overlay.querySelector(".intro-cta");
-    const timers = [];
-
-    lines.forEach((line, i) => {
-      timers.push(setTimeout(() => line.classList.add("show"), 600 + i * 600));
-    });
-    timers.push(setTimeout(() => cta && cta.classList.add("show"), 600 + lines.length * 600));
-
+    overlay.hidden = false;
     function dismiss() {
-      timers.forEach(clearTimeout);
-      overlay.classList.add("hidden");
-      localStorage.setItem(STORAGE_KEY, String(Date.now()));
-      setTimeout(() => overlay.remove(), 500);
+      overlay.remove();
+      document.removeEventListener("focusin", dismiss);
     }
-
-    timers.push(setTimeout(dismiss, 3400));
-    overlay.addEventListener("click", dismiss);
+    document.addEventListener("focusin", dismiss);
+    setTimeout(dismiss, 850);
   }
 
   // ---------------------------------------------------------------------

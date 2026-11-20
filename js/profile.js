@@ -102,7 +102,7 @@
   function renderOrders(orders) {
     const wrap = document.getElementById("profile-orders");
     if (!Array.isArray(orders) || orders.length === 0) {
-      wrap.innerHTML = `<div class="empty-state"><p>No orders yet.</p><a href="templates.html" class="btn btn-primary mt-24">Browse Templates</a></div>`;
+      wrap.innerHTML = `<div class="empty-state"><p>No orders yet.</p><a href="/templates" class="btn btn-primary mt-24">Browse Templates</a></div>`;
       return;
     }
 
@@ -119,7 +119,7 @@
         ? `<a href="${escapeHtml(destination)}" class="btn btn-outline btn-sm" target="_blank" rel="noopener">View Memory</a>`
         : "";
       const continueLink = order.status === "PENDING"
-        ? `<a href="create-memory.html?template=${encodeURIComponent(order.templateSlug || "")}" class="btn btn-outline btn-sm">Continue Editing</a>`
+        ? `<a href="/create-memory?template=${encodeURIComponent(order.templateSlug || "")}" class="btn btn-outline btn-sm">Continue Editing</a>`
         : "";
 
       return `
@@ -176,7 +176,7 @@
       try {
         await apiFetch("/api/auth/logout", { method: "POST" });
       } finally {
-        window.location.href = "index.html";
+        window.location.href = "/";
       }
     });
 

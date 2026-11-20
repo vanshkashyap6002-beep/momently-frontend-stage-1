@@ -29,7 +29,7 @@
   const panel = document.createElement('aside');
   panel.setAttribute('aria-label', 'Analytics preferences');
   panel.className = 'container';
-  panel.innerHTML = '<p>Allow optional Google Analytics to measure public page visits and template interactions? <a href="/cookie-policy.html">Cookie policy</a></p><button type="button" class="btn btn-outline btn-sm" data-choice="denied">Reject analytics</button> <button type="button" class="btn btn-primary btn-sm" data-choice="granted">Allow analytics</button>';
+  panel.innerHTML = '<p>Allow optional Google Analytics to measure public page visits and template interactions? <a href="/cookie-policy">Cookie policy</a></p><button type="button" class="btn btn-outline btn-sm" data-choice="denied">Reject analytics</button> <button type="button" class="btn btn-primary btn-sm" data-choice="granted">Allow analytics</button>';
   document.body.appendChild(panel);
   const settings = document.createElement('button');
   settings.type = 'button'; settings.className = 'btn btn-ghost btn-sm'; settings.textContent = 'Analytics preferences';

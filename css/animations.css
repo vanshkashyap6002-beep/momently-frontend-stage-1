@@ -57,20 +57,18 @@
 .intro-overlay {
   position: fixed; inset: 0; z-index: 200; background: var(--color-paper);
   display: flex; align-items: center; justify-content: center; text-align: center;
-  opacity: 1; transition: opacity 0.5s ease;
+  pointer-events: none;
+  animation: intro-dismiss 850ms ease-out forwards;
 }
-.intro-overlay.hidden { opacity: 0; pointer-events: none; }
+.intro-overlay[hidden] { display: none; }
 .intro-overlay-content { padding: 24px; }
 .intro-line {
   font-family: var(--font-display); font-size: clamp(28px, 6vw, 48px); line-height: 1.2;
-  opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.intro-line.show { opacity: 1; transform: translateY(0); }
-.intro-cta {
-  margin-top: 30px; opacity: 0; transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+@keyframes intro-dismiss {
+  0%, 60% { opacity: 1; }
+  100% { opacity: 0; }
 }
-.intro-cta.show { opacity: 1; transform: translateY(0); }
 
 /* -------------------------------- Welcome transition ---------------------------- */
 .welcome-transition {

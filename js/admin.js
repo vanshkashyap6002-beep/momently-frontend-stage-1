@@ -32,7 +32,7 @@
           method: "POST",
           body: { email: form.email.value.trim(), password: form.password.value },
         });
-        window.location.href = "orders.html";
+        window.location.href = "/admin/orders";
        
       } catch (err) {
         showBanner(err.message);
@@ -63,7 +63,7 @@
       if (nameEl) nameEl.textContent = admin.fullName;
       return true;
     } catch {
-      window.location.href = "index.html";
+      window.location.href = "/admin/";
       return false;
     }
   }
@@ -75,7 +75,7 @@
       try {
         await apiFetch("/api/admin/logout", { method: "POST" });
       } finally {
-        window.location.href = "index.html";
+        window.location.href = "/admin/";
       }
     });
   }
@@ -125,7 +125,7 @@
         .join("");
       tbody.querySelectorAll("[data-order-id]").forEach((row) => {
         row.addEventListener("click", () => {
-          window.location.href = `orders.html?order=${encodeURIComponent(row.dataset.orderId)}`;
+          window.location.href = `/admin/orders?order=${encodeURIComponent(row.dataset.orderId)}`;
         });
       });
     } catch (err) {
@@ -226,7 +226,7 @@
   }
 
   function openMemoryPreview() {
-    const preview = window.open("/memory/memory.html?preview=1", "_blank");
+    const preview = window.open("/memory/memory?preview=1", "_blank");
     if (!preview) {
       showBanner("Allow pop-ups to open the memory preview.");
       return;

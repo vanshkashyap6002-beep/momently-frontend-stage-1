@@ -66,7 +66,7 @@
       return;
     }
     if (!slug) {
-      window.location.href = "templates.html";
+      window.location.href = "/templates";
       return;
     }
 
