@@ -1,12 +1,27 @@
 # CHERMO
+> CHERMO prepares personalized digital memory pages for customers in India. Choose a template, submit your story and photos, and share the published page by link. The free Memory Studio makes downloadable photo keepsakes.
 
-CHERMO prepares personalized digital memory pages for customers in India. Memory Studio makes downloadable photo keepsakes for free. Each memory page template has a one-time price in INR. See the marketplace for current prices.
+Vansh Kashyap founded CHERMO in Delhi, India. Memory page templates are one-time purchases in INR. On 20 November 2026, the catalogue ranged from ₹19 to ₹399. Check the marketplace for the current price of a particular design.
 
-- [templates](https://www.chermo.in/templates)
-- [memory-studio/](https://www.chermo.in/memory-studio/)
-- [about.html](https://www.chermo.in/about.html)
-- [contact.html](https://www.chermo.in/contact.html)
-- [anniversary-memory-page](https://www.chermo.in/anniversary-memory-page)
-- [proposal-page](https://www.chermo.in/proposal-page)
-- [birthday-memory-page](https://www.chermo.in/birthday-memory-page)
-- [best-friend-memory-page](https://www.chermo.in/best-friend-memory-page)
+## Main pages
+- [Template marketplace](https://www.chermo.in/templates): Browse designs, preview templates and compare prices in INR.
+- [Memory Studio](https://www.chermo.in/memory-studio/): Make a free Polaroid, photobooth strip or collage.
+- [About CHERMO](https://www.chermo.in/about.html): Meet the founder and learn how a memory page is prepared.
+- [Contact](https://www.chermo.in/contact.html): Email CHERMO about a template, an order or a published page.
+
+## Occasion guides
+- [Anniversary memory page](https://www.chermo.in/anniversary-memory-page): Pair photos across the years and write a dedication.
+- [Proposal page](https://www.chermo.in/proposal-page): Choose photos and words for a personal proposal.
+- [Birthday memory page](https://www.chermo.in/birthday-memory-page): Plan a birthday message and choose a design.
+- [Best friend memory page](https://www.chermo.in/best-friend-memory-page): Turn shared moments into a friendship gift.
+
+## Policies and updates
+- [Privacy Policy](https://www.chermo.in/privacy-policy)
+- [Terms](https://www.chermo.in/terms)
+- [Refund Policy](https://www.chermo.in/refund-policy)
+- [Cookie Policy](https://www.chermo.in/cookie-policy)
+- [Website updates](https://www.chermo.in/updates/)
+
+## Contact
+- Email: chermo18.in@gmail.com
+- Instagram: https://www.instagram.com/chermo.in/
