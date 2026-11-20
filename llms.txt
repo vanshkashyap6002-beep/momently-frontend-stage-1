@@ -1,0 +1,12 @@
+# CHERMO
+
+CHERMO prepares personalized digital memory pages for customers in India. Memory Studio makes downloadable photo keepsakes for free. Each memory page template has a one-time price in INR. See the marketplace for current prices.
+
+- [templates](https://www.chermo.in/templates)
+- [memory-studio/](https://www.chermo.in/memory-studio/)
+- [about.html](https://www.chermo.in/about.html)
+- [contact.html](https://www.chermo.in/contact.html)
+- [anniversary-memory-page](https://www.chermo.in/anniversary-memory-page)
+- [proposal-page](https://www.chermo.in/proposal-page)
+- [birthday-memory-page](https://www.chermo.in/birthday-memory-page)
+- [best-friend-memory-page](https://www.chermo.in/best-friend-memory-page)

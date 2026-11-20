@@ -101,7 +101,7 @@
           <img
             ${templateImageUrl(t) ? `src="${escapeHtml(templateImageUrl(t))}"` : ""}
             data-template-artwork="${escapeHtml(t.slug)}"
-            alt=""
+            alt="Preview of ${escapeHtml(t.name)}" width="600" height="450"
             loading="lazy"
           >
 
@@ -897,6 +897,20 @@
         )
           ? templates
           : [];
+      const products = allTemplates.filter(t => t.name && t.slug &&
+        (typeof t.price === "number" || (typeof t.price === "string" && t.price.trim())) &&
+        Number.isFinite(Number(t.price)) && Number(t.price) >= 0).map(t => ({
+        "@type": "Product", name: t.name,
+        offers: { "@type": "Offer", priceCurrency: "INR", price: Number(t.price),
+          url: "https://www.chermo.in/create-memory?template=" + encodeURIComponent(t.slug) }
+      }));
+      if (products.length) {
+        const schema = document.createElement("script");
+        schema.type = "application/ld+json";
+        schema.textContent = JSON.stringify({ "@context": "https://schema.org", "@graph": products });
+        document.head.appendChild(schema);
+      }
+
 
 
       renderOccasionFilters();

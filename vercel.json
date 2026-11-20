@@ -1,6 +1,22 @@
 {
   "rewrites": [
     {
+      "source": "/best-friend-memory-page",
+      "destination": "/best-friend-memory-page.html"
+    },
+    {
+      "source": "/birthday-memory-page",
+      "destination": "/birthday-memory-page.html"
+    },
+    {
+      "source": "/proposal-page",
+      "destination": "/proposal-page.html"
+    },
+    {
+      "source": "/anniversary-memory-page",
+      "destination": "/anniversary-memory-page.html"
+    },
+    {
       "source": "/admin/admin-templates",
       "destination": "/admin/admin-templates.html"
     },
@@ -71,7 +87,7 @@
         }
       ],
       "destination": "https://www.chermo.in/:path*",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/admin/admin-templates.html",
@@ -186,6 +202,26 @@
     {
       "source": "/terms.html",
       "destination": "/terms",
+      "permanent": true
+    },
+    {
+      "source": "/anniversary-memory-page.html",
+      "destination": "/anniversary-memory-page",
+      "permanent": true
+    },
+    {
+      "source": "/proposal-page.html",
+      "destination": "/proposal-page",
+      "permanent": true
+    },
+    {
+      "source": "/birthday-memory-page.html",
+      "destination": "/birthday-memory-page",
+      "permanent": true
+    },
+    {
+      "source": "/best-friend-memory-page.html",
+      "destination": "/best-friend-memory-page",
       "permanent": true
     }
   ]

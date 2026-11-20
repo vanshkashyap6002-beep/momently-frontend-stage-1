@@ -13,21 +13,101 @@
 <meta property="og:url" content="https://www.chermo.in/">
 <meta property="og:title" content="CHERMO — Personalized Digital Memories &amp; Keepsakes">
 <meta property="og:description" content="Turn your favorite memory into a personal page with CHERMO. Choose a template, add your story and photos, and share your published memory.">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CHERMO — Personalized Digital Memories &amp; Keepsakes">
 <meta name="twitter:description" content="Turn your favorite memory into a personal page with CHERMO. Choose a template, add your story and photos, and share your published memory.">
 <script src="/js/analytics-config.js" defer></script>
 <script src="/js/analytics.js" defer></script>
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "logo": "https://www.chermo.in/assets/brand/chermo-heart.png", "@id": "https://www.chermo.in/#organization", "name": "CHERMO", "url": "https://www.chermo.in/"}, {"@type": "WebSite", "name": "CHERMO", "url": "https://www.chermo.in/", "publisher": {"@id": "https://www.chermo.in/#organization"}}]}</script>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "logo": "https://www.chermo.in/assets/brand/chermo-heart.png",
+      "@id": "https://www.chermo.in/#organization",
+      "name": "CHERMO",
+      "url": "https://www.chermo.in/",
+      "description": "Personalized digital memory pages and a free photo keepsake studio for people in India.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "email": "chermo18.in@gmail.com",
+        "url": "https://www.chermo.in/contact.html"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "name": "CHERMO",
+      "url": "https://www.chermo.in/",
+      "publisher": {
+        "@id": "https://www.chermo.in/#organization"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a digital memory page?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A digital memory page is a website made from your photos, dates and personal messages that you can share with someone by link."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does a personalized memory page cost in India?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Each template has its own one-time price in Indian rupees (₹). Check the template listing for its current price before you order."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I share my memory page on WhatsApp?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Once your page is published, copy its link into a WhatsApp message and send it to your recipient."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How long does it take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CHERMO prepares the page after you submit your details. Contact us before ordering if you need it for a particular date."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my data private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CHERMO uses the photos and details you submit to prepare your memory. People who receive a published link may be able to view and forward it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to my page after publishing?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You can open the published page and share its link with your recipient. For a change or an availability question, contact CHERMO with your order reference."
+          }
+        }
+      ]
+    }
+  ]
+}</script>
+<!-- Organization sameAs: [INSTAGRAM URL] -->
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48 64x64">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/brand/chermo-heart.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/brand/apple-touch-icon.png">
-<meta property="og:image" content="https://www.chermo.in/assets/brand/chermo-heart.png">
-<meta property="og:image:width" content="512">
-<meta property="og:image:height" content="512">
-<meta property="og:image:alt" content="CHERMO heart logo">
-<meta name="twitter:image" content="https://www.chermo.in/assets/brand/chermo-heart.png">
-<meta name="twitter:image:alt" content="CHERMO heart logo">
+<meta property="og:image" content="https://www.chermo.in/assets/brand/chermo-share.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CHERMO wordmark beside a photograph at a train window">
+<meta name="twitter:image" content="https://www.chermo.in/assets/brand/chermo-share.jpg">
+<meta name="twitter:image:alt" content="CHERMO wordmark beside a photograph at a train window">
 </head>
 <body class="chermo-home">
 
@@ -53,6 +133,7 @@
         <a href="/memory-studio/">Memory Studio</a>
         <a href="index.html#pricing">Pricing</a>
         <a href="index.html#how-it-works">How It Works</a>
+        <a href="/about.html">About</a> · <a href="/contact.html">Contact</a>
       </nav>
       <div class="nav-actions">
   <span data-auth-slot>
@@ -75,6 +156,7 @@
   <a href="/memory-studio/">Memory Studio</a>
   <a href="index.html#pricing">Pricing</a>
   <a href="index.html#how-it-works">How It Works</a>
+        <a href="/about.html">About</a> · <a href="/contact.html">Contact</a>
   <span data-auth-slot-mobile><a href="login.html">Login</a></span>
 
   <a href="templates.html" class="btn btn-primary">Create Memory</a>
@@ -97,21 +179,21 @@
           <a href="templates.html" class="btn btn-outline">Explore Templates</a>
         </div>
       </div>
-      <div class="hero-stack" aria-hidden="true">
+      <div class="hero-stack">
         <div class="hero-card">
-          <img src="/assets/homepage/print-1.jpg" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-1.webp" alt="Anniversary keepsake photo" width="300" height="225">
           <p class="hero-card-caption">Happy Anniversary, Love</p>
         </div>
         <div class="hero-card">
-          <img src="/assets/homepage/print-2.jpg" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-2.webp" alt="Best friend keepsake photo" width="300" height="225">
           <p class="hero-card-caption">To My Best Friend</p>
         </div>
         <div class="hero-card">
-          <img src="/assets/homepage/print-3.jpg" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-3.webp" alt="Proposal keepsake photo" width="300" height="225">
           <p class="hero-card-caption">Will You Marry Me?</p>
         </div>
         <div class="hero-card">
-          <img src="/assets/homepage/print-4.jpg" alt="" width="300" height="225">
+          <img src="/assets/homepage/print-4.webp" alt="Forever and Always keepsake photo" width="300" height="225">
           <p class="hero-card-caption">Forever & Always</p>
         </div>
       </div>
@@ -155,7 +237,7 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">How It Works</span>
-        <h2 class="section-title">From an idea to a link, in four steps</h2>
+        <h2 class="section-title">How does a story become a memory page?</h2>
       </div>
       <div class="steps-grid">
         <div class="step-card">
@@ -198,6 +280,7 @@
     </div>
   </section>
 
+<section class="section"><div class="container legal-container"><h2>Which occasion are you celebrating?</h2><ul><li><a href="/anniversary-memory-page">Digital Anniversary Gift Page</a></li><li><a href="/proposal-page">Personalized Digital Proposal Page</a></li><li><a href="/birthday-memory-page">Personalized Birthday Memory Page</a></li><li><a href="/best-friend-memory-page">Best Friend Memory Page</a></li></ul><h2>Memory page examples</h2><p>For an anniversary, use The Receipt of Us to thank someone for the small things. For a birthday, open The Little Box with a note about a favourite day together.</p><!-- [APPROVED EXAMPLE LINK] [REAL TESTIMONIAL AND ATTRIBUTION] --></div></section>
   <!-- Pricing -->
   <section class="section" id="pricing">
     <div class="container">
@@ -208,14 +291,14 @@
       <div class="pricing-grid">
         <div class="pricing-card">
           <p class="pricing-name">Memory Studio</p>
-          <p class="pricing-amount">Free</p>
+          <p class="pricing-amount">Free (₹0)</p>
           <p class="pricing-note">Choose your photos, add a caption and download a Polaroid, strip or collage.</p>
           <a href="/memory-studio/" class="btn btn-outline btn-block">Make a free Polaroid</a>
         </div>
         <div class="pricing-card featured">
           <p class="pricing-name">Personalized memory pages</p>
-          <p class="pricing-amount" id="catalogue-price">Priced per template</p>
-          <p class="pricing-note">Choose a template, add your photos and story, and share the finished page by link. Pay once.</p>
+          <p class="pricing-amount" id="catalogue-price">₹19–₹399</p>
+          <p class="pricing-note">Choose a template, add your photos and story, and share the finished page by link. Pay once in Indian rupees. See available payment methods at checkout.<!-- Confirm supported methods: [PAYMENT METHODS] --></p>
           <a href="templates.html" class="btn btn-primary btn-block">Browse memory templates</a>
         </div>
       </div>
@@ -227,28 +310,9 @@
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">FAQ</span>
-        <h2 class="section-title">Good to know</h2>
+        <h2 class="section-title">What should I know before ordering?</h2>
       </div>
-      <div class="faq-list">
-        <div class="faq-item">
-          <button class="faq-question" type="button">Who actually builds the memory page? <span class="chev">⌄</span></button>
-          <div class="faq-answer">CHERMO prepares the page using the template you choose and the story and photos you provide.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button">How long does it take? <span class="chev">⌄</span></button>
-          <div class="faq-answer">We'll email you when your memory is published.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button">Are my photos private? <span class="chev">⌄</span></button>
-          <div class="faq-answer">Your submitted photos and videos are used to prepare your memory. A memory is shared through its page after it is published; see our <a href="privacy-policy.html">Privacy Policy</a> for details.</div>
-        </div>
-        <div class="faq-item">
-          <button class="faq-question" type="button">Can I choose what goes into the page? <span class="chev">⌄</span></button>
-          <div class="faq-answer">Absolutely — the personal message, photos, and important date you provide are what the page is built around.</div>
-        </div>
-      </div>
-    </div>
-  </section>
+      <div class="faq-list"><details class="faq-item"><summary>What is a digital memory page?</summary><p>A digital memory page is a website made from your photos, dates and personal messages that you can share with someone by link.</p></details><details class="faq-item"><summary>How much does a personalized memory page cost in India?</summary><p>Each template has its own one-time price in Indian rupees (₹). Check the template listing for its current price before you order.</p></details><details class="faq-item"><summary>Can I share my memory page on WhatsApp?</summary><p>Yes. Once your page is published, copy its link into a WhatsApp message and send it to your recipient.</p></details><details class="faq-item"><summary>How long does it take?</summary><p>CHERMO prepares the page after you submit your details. Contact us before ordering if you need it for a particular date.</p></details><details class="faq-item"><summary>Is my data private?</summary><p>CHERMO uses the photos and details you submit to prepare your memory. People who receive a published link may be able to view and forward it.</p></details><details class="faq-item"><summary>What happens to my page after publishing?</summary><p>You can open the published page and share its link with your recipient. For a change or an availability question, contact CHERMO with your order reference.</p></details></div></div></section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -281,6 +345,7 @@
             <li><a href="terms.html">Terms</a></li>
             <li><a href="refund-policy.html">Refund Policy</a></li>
             <li><a href="cookie-policy.html">Cookie Policy</a></li>
+            <li><a href="/about.html">About</a> · <a href="/contact.html">Contact</a></li>
             <li><a href="/updates/">Website updates</a></li>
           </ul>
         </div>

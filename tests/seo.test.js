@@ -9,7 +9,13 @@ const publicPages = ['index.html', 'templates.html', 'privacy-policy.html', 'ter
 test('public metadata and sitemap agree on www host and existing pages', () => {
   const urls = [...read('sitemap.xml').matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
   const landingPages = ['updates', 'memory-studio'];
-  assert.equal(urls.length, publicPages.length + landingPages.length);
+  const guides = ["about.html", "contact.html", "anniversary-memory-page", "proposal-page", "birthday-memory-page", "best-friend-memory-page"];
+  for (const route of guides) {
+    const url = "https://www.chermo.in/" + route;
+    assert.ok(urls.includes(url));
+    assert.ok(read(route.endsWith(".html") ? route : route + ".html").includes('rel="canonical" href="' + url + '"'));
+  }
+  assert.equal(urls.length, publicPages.length + landingPages.length + guides.length);
   assert.equal(new Set(urls).size, urls.length);
   for (const slug of landingPages) {
     const url = `https://www.chermo.in/${slug}/`;

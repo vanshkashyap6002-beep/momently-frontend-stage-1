@@ -18,13 +18,15 @@ test('all frontend scripts and inline scripts parse', () => {
 });
 test('static local HTML resources and navigation targets exist', () => {
   const missing = [];
+  const { rewrites } = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
   for (const page of pages) {
     const html = fs.readFileSync(path.join(root, page), 'utf8');
     for (const match of html.matchAll(/(?:href|src)=["']([^"']+)["']/g)) {
       const target = match[1].split(/[?#]/)[0];
       if (!target || /^(?:[a-z]+:|\/\/)/i.test(target) || target.includes('${')) continue;
       const local = target.startsWith('/') ? path.join(root, target) : path.resolve(root, path.dirname(page), target);
-      if (!fs.existsSync(local)) missing.push(`${page}: ${target}`);
+      const rewrite = rewrites.find(rule => rule.source === target);
+      if (!fs.existsSync(local) && !(rewrite && fs.existsSync(path.join(root, rewrite.destination)))) missing.push(`${page}: ${target}`);
     }
   }
   assert.deepEqual(missing, []);
