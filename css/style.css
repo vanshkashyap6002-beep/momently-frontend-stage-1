@@ -348,6 +348,37 @@ input, textarea, select { font-family: inherit; font-size: inherit; }
 /* ---------------------------------- FAQ --------------------------------------- */
 .faq-list { max-width: 720px; margin: 0 auto; }
 .occasion-guide { background: #fbf6f2; }
+.studio-invite {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: 2rem;
+  padding: 0 clamp(1.25rem, 4vw, 3rem);
+  color: #54232b;
+  background: radial-gradient(ellipse at 47% 60%, #fae9dc, transparent 72%), #efd5c9;
+  border: 1px solid #e4c6b9;
+  border-radius: 12px;
+  text-decoration: none;
+}
+.studio-invite h2 { font-size: clamp(1.5rem, 2.8vw, 2.25rem); padding-right: 1.2rem; border-right: 1px solid #cba89b; }
+.studio-invite-art { position: relative; justify-self: center; width: min(100%, 330px); height: 118px; }
+.studio-invite-print { position: absolute; height: 84%; width: 51%; object-fit: cover; border: 5px solid #fff8ea; border-bottom-width: 10px; box-shadow: 1px 4px 7px #4f2b2638; }
+.studio-invite-print.first { left: 10%; top: 0; transform: rotate(-9deg); filter: sepia(.42) saturate(.68); }
+.studio-invite-print.second { right: 0; top: 18%; transform: rotate(10deg); filter: sepia(.28); }
+.studio-invite-bow { position: absolute; left: -6%; top: 0; width: 32%; height: 85%; object-fit: contain; transform: rotate(-14deg); }
+.studio-invite-link { font: 600 1rem var(--font-display); text-decoration: underline; text-underline-offset: .32em; }
+.studio-invite:hover .studio-invite-link { color: var(--color-love); text-decoration-thickness: 2px; }
+.studio-invite:focus-visible { outline: 3px solid var(--color-love); outline-offset: 4px; }
+@media (max-width: 640px) {
+  .studio-invite { grid-template-columns: 1fr 42%; gap: .5rem; padding: 1.25rem; }
+  .studio-invite h2 { border: 0; padding: 0; align-self: end; }
+  .studio-invite-link { grid-column: 1; align-self: start; font-size: .95rem; }
+  .studio-invite-art { grid-column: 2; grid-row: 1 / 3; height: 76px; }
+}
 .occasion-links { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 1rem; margin: 1.75rem 0; }
 .occasion-links a { overflow: hidden; background: white; border: 1px solid #e6d7d0; border-radius: 12px; color: var(--color-love); font: 1.35rem var(--font-display); text-decoration: none; }
 .occasion-links img { display: block; width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
