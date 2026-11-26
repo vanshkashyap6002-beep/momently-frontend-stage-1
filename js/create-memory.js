@@ -8,7 +8,7 @@
 
 (function () {
   "use strict";
-  const { apiFetch, escapeHtml, formatCurrency, currentUser } = window.Momently;
+  const { apiFetch, escapeHtml, formatCurrency } = window.Momently;
 
   let template = null;
   let order = null;
@@ -32,6 +32,8 @@
       const step = Number(dot.dataset.stepDot);
       dot.classList.toggle("done", step < n);
       dot.classList.toggle("active", step === n);
+      if (step === n) dot.setAttribute("aria-current", "step");
+      else dot.removeAttribute("aria-current");
     });
     clearBanner();
     if (n === 2 && !uploadInitialized) {
@@ -39,7 +41,7 @@
       uploadInitialized = true;
     }
     if (n === 3) renderSummary();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.querySelector(".step-panel.active h2").focus();
   }
 
   function renderSummary() {
@@ -51,12 +53,27 @@
       <div class="summary-row"><span class="label">Title</span><span>${escapeHtml(order.memoryTitle || "—")}</span></div>
       <div class="summary-row"><span class="label">Important date</span><span>${escapeHtml(order.importantDate || "—")}</span></div>
       <div class="summary-row"><span class="label">Photos & media</span><span>${mediaCount} file${mediaCount === 1 ? "" : "s"}</span></div>
-      <div class="summary-total"><span>Total</span><span>${formatCurrency(template.price)}</span></div>
+      <div class="review-message"><strong>Personal message</strong><p>${escapeHtml(order.personalMessage || "No message added")}</p></div>
+      <button type="button" class="btn btn-ghost btn-sm" data-edit="1">Edit message</button>
+      <div class="upload-previews">${window.MomentlyUpload.previewMarkup()}</div>
+      <button type="button" class="btn btn-ghost btn-sm" data-edit="2">Edit photos</button>
+      <div class="summary-total"><span>Total</span><span>${formatCurrency(order.amount ?? template.price)}</span></div>
     `;
   }
 
   async function init() {
-    const user = await currentUser();
+    document.getElementById("retry-order").hidden = true;
+    clearBanner();
+    let user;
+    try {
+      ({ user } = await apiFetch("/api/auth/me"));
+    } catch (error) {
+      if (error.status !== 401) {
+        document.getElementById("retry-order").hidden = false;
+        showBanner("Could not load your session. Your entries are still here. Please retry.");
+        return;
+      }
+    }
     const params = new URLSearchParams(window.location.search);
     const slug = params.get("template");
 
@@ -78,12 +95,14 @@
       const orderRes = await apiFetch("/api/orders", { method: "POST", body: { templateSlug: slug } });
       order = orderRes.order;
 
+      document.getElementById("step1-next").disabled = false;
       // Resume a draft that already has info filled in.
-      if (order.recipientName) document.getElementById("recipientName").value = order.recipientName;
-      if (order.memoryTitle) document.getElementById("memoryTitle").value = order.memoryTitle;
-      if (order.importantDate) document.getElementById("importantDate").value = order.importantDate;
-      if (order.personalMessage) document.getElementById("personalMessage").value = order.personalMessage;
+      if (order.recipientName && !document.getElementById("recipientName").value) document.getElementById("recipientName").value = order.recipientName;
+      if (order.memoryTitle && !document.getElementById("memoryTitle").value) document.getElementById("memoryTitle").value = order.memoryTitle;
+      if (order.importantDate && !document.getElementById("importantDate").value) document.getElementById("importantDate").value = order.importantDate;
+      if (order.personalMessage && !document.getElementById("personalMessage").value) document.getElementById("personalMessage").value = order.personalMessage;
     } catch (err) {
+      document.getElementById("retry-order").hidden = false;
       showBanner(err.message);
     }
   }
@@ -92,6 +111,7 @@
     const form = document.getElementById("info-form");
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (!order) return;
       const btn = document.getElementById("step1-next");
       btn.disabled = true;
       try {
@@ -138,6 +158,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
+    document.getElementById("retry-order").addEventListener("click", init);
+    document.getElementById("summary-content").addEventListener("click", event => {
+      const edit = event.target.closest("[data-edit]");
+      if (edit) goToStep(Number(edit.dataset.edit));
+    });
     initStep1();
     initStep2();
     initStep3();

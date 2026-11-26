@@ -13,94 +13,86 @@
   let orderId = null;
   let files = []; // [{ id, filename, mimeType }]
 
-  function renderPreviews(previewsEl) {
-    previewsEl.innerHTML = files
-      .map((f) => {
-        const src = `/api/media/${f.id}/file`;
-        const media = (f.mimeType || "").startsWith("video/")
-          ? `<video src="${src}" muted playsinline aria-hidden="true" tabindex="-1"></video>`
-          : `<img src="${src}" alt="${escapeHtml(f.filename)}">`;
-        return `<div class="upload-thumb" data-media-id="${f.id}">${media}<button type="button" class="remove-thumb" data-remove="${f.id}" aria-label="Remove ${escapeHtml(f.filename)}">✕</button></div>`;
-      })
-      .join("");
-  }
-
-  async function uploadFiles(fileList, previewsEl, statusEl) {
-    const formData = new FormData();
-    Array.from(fileList).forEach((f) => formData.append("files", f));
-    if (statusEl) statusEl.textContent = "Uploading…";
-    try {
-      const { media } = await apiFetch(`/api/orders/${orderId}/media`, { method: "POST", body: formData });
-      files = files.concat(media);
-      renderPreviews(previewsEl);
-      if (statusEl) statusEl.textContent = "";
-    } catch (err) {
-      if (statusEl) statusEl.textContent = err.message;
-    }
-  }
-
-  async function removeFile(mediaId, previewsEl) {
-    const previous = files;
-    files = files.filter((f) => f.id !== mediaId);
-    renderPreviews(previewsEl);
-    try {
-      await apiFetch(`/api/orders/${orderId}/media/${mediaId}`, { method: "DELETE" });
-    } catch {
-      files = previous; // put it back if the delete actually failed server-side
-      renderPreviews(previewsEl);
-    }
-  }
-
-  async function loadExisting(previewsEl) {
-    try {
-      const { media } = await apiFetch(`/api/orders/${orderId}/media`);
-      files = media;
-      renderPreviews(previewsEl);
-    } catch {
-      /* fine — starts empty */
-    }
+  function previewMarkup(editable = false) {
+    return files.map(f => {
+      const src = window.Momently.apiUrl("/api/media/" + encodeURIComponent(f.id) + "/file");
+      const name = escapeHtml(f.filename).replace(/"/g, "&quot;");
+      const media = (f.mimeType || "").startsWith("video/")
+        ? '<video crossorigin="use-credentials" muted playsinline preload="metadata" aria-label="' + name + '" src="' + src + '"></video>'
+        : '<img crossorigin="use-credentials" alt="' + name + '" src="' + src + '">';
+      const remove = editable ? '<button type="button" class="remove-thumb" data-remove="' + encodeURIComponent(f.id) + '" aria-label="Remove ' + name + '">×</button>' : "";
+      return '<div class="upload-thumb">' + media + remove + '</div>';
+    }).join("");
   }
 
   function init(id) {
     orderId = id;
     const zone = document.getElementById("upload-zone");
     const input = document.getElementById("file-input");
-    const previewsEl = document.getElementById("upload-previews");
-    if (!zone || !input || !previewsEl) return;
+    const previews = document.getElementById("upload-previews");
+    const status = document.getElementById("upload-status");
+    const retry = document.getElementById("retry-media");
+    const next = document.getElementById("step2-next");
+    let busy = false;
 
-    loadExisting(previewsEl);
+    async function run(message, action, failureContext = "") {
+      if (busy) return;
+      busy = true;
+      zone.disabled = next.disabled = true;
+      previews.inert = true;
+      retry.hidden = true;
+      status.textContent = message;
+      try {
+        await action();
+        previews.innerHTML = previewMarkup(true);
+        status.textContent = files.length + (files.length === 1 ? " file ready." : " files ready.");
+      } catch (error) {
+        status.textContent = failureContext + error.message + " Reload the attached files before trying again.";
+        retry.hidden = false;
+      } finally {
+        busy = false;
+        previews.inert = !retry.hidden;
+        zone.disabled = !retry.hidden;
+        next.disabled = !retry.hidden || !files.length;
+      }
+    }
 
+    function reload() {
+      return run("Loading attached files…", async () => {
+        const result = await apiFetch("/api/orders/" + orderId + "/media");
+        files = result.media;
+      });
+    }
+    function upload(selection) {
+      if (!selection.length || zone.disabled) return;
+      const data = new FormData();
+      for (const file of selection) data.append("files", file);
+      const names = Array.from(selection, f => f.name).join(", ");
+      run("Uploading " + names + "…", async () => {
+        const result = await apiFetch("/api/orders/" + orderId + "/media", { method: "POST", body: data });
+        files = files.concat(result.media);
+      }, "Upload of " + names + ": ");
+    }
+    retry.addEventListener("click", reload);
     zone.addEventListener("click", () => input.click());
-    input.addEventListener("change", () => {
-      if (input.files.length) uploadFiles(input.files, previewsEl);
-      input.value = "";
+    input.addEventListener("change", () => { upload(input.files); input.value = ""; });
+    for (const type of ["dragenter", "dragover", "dragleave", "drop"]) {
+      zone.addEventListener(type, event => {
+        event.preventDefault();
+        zone.classList.toggle("dragover", type === "dragenter" || type === "dragover");
+        if (type === "drop") upload(event.dataTransfer.files);
+      });
+    }
+    previews.addEventListener("click", event => {
+      const button = event.target.closest("[data-remove]");
+      if (!button) return;
+      run("Removing file…", async () => {
+        await apiFetch("/api/orders/" + orderId + "/media/" + button.dataset.remove, { method: "DELETE" });
+        files = files.filter(f => String(f.id) !== button.dataset.remove);
+      });
     });
-
-    ["dragover", "dragenter"].forEach((evt) =>
-      zone.addEventListener(evt, (e) => {
-        e.preventDefault();
-        zone.classList.add("dragover");
-      })
-    );
-    ["dragleave", "drop"].forEach((evt) =>
-      zone.addEventListener(evt, (e) => {
-        e.preventDefault();
-        zone.classList.remove("dragover");
-      })
-    );
-    zone.addEventListener("drop", (e) => {
-      if (e.dataTransfer.files.length) uploadFiles(e.dataTransfer.files, previewsEl);
-    });
-
-    previewsEl.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-remove]");
-      if (btn) removeFile(btn.dataset.remove, previewsEl);
-    });
+    reload();
   }
 
-  window.MomentlyUpload = {
-    init,
-    getCount: () => files.length,
-    getFiles: () => files.slice(),
-  };
+  window.MomentlyUpload = { init, previewMarkup, getCount: () => files.length, getFiles: () => files.slice() };
 })();

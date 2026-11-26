@@ -24,17 +24,18 @@
   <main class="step-shell">
     <p class="eyebrow" id="template-context">Loading template…</p>
     <div class="step-progress">
-      <span class="active" data-step-dot="1"></span>
-      <span data-step-dot="2"></span>
-      <span data-step-dot="3"></span>
+      <span class="active" data-step-dot="1" aria-current="step">1 Details</span>
+      <span data-step-dot="2">2 Photos</span>
+      <span data-step-dot="3">3 Review</span>
     </div>
 
     <div id="form-banner" aria-live="polite"></div>
 
+    <button id="retry-order" type="button" hidden>Retry loading order</button>
     <!-- Step 1: Customer information -->
     <section class="step-panel active" data-step="1">
-      <h2>Tell us about this memory</h2>
-      <p class="step-desc">Just enough for us to start building your page.</p>
+      <h2 tabindex="-1">Tell us about this memory</h2>
+      <p class="step-desc">Just enough for us to start building your page. <a href="/contact.html" target="_blank" rel="noopener">Ask about my date (opens in a new tab)</a>.</p>
       <p class="privacy-notice">The details and media you submit are used to prepare this memory. Read the <a href="/privacy-policy">Privacy Policy</a> and <a href="/terms">Terms</a>.</p>
       <form id="info-form">
         <div class="field">
@@ -55,14 +56,14 @@
         </div>
         <div class="step-nav">
           <span></span>
-          <button type="submit" class="btn btn-primary" id="step1-next">Continue →</button>
+          <button type="submit" class="btn btn-primary" id="step1-next" disabled>Continue →</button>
         </div>
       </form>
     </section>
 
     <!-- Step 2: Upload photos/media -->
     <section class="step-panel" data-step="2">
-      <h2>Add your photos & media</h2>
+      <h2 tabindex="-1">Add your photos & media</h2>
       <p class="step-desc">JPEG, PNG, WebP, or short video — up to 10 files.</p>
 
       <button type="button" class="upload-zone" id="upload-zone" aria-label="Choose photos or videos to upload">
@@ -71,6 +72,8 @@
       </button>
       <label for="file-input" class="visually-hidden">Select photos or videos for this memory</label>
       <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm" multiple class="visually-hidden" tabindex="-1">
+      <p id="upload-status" role="status"></p>
+      <button type="button" id="retry-media" hidden>Reload attached files</button>
       <div class="upload-previews" id="upload-previews"></div>
 
       <div class="step-nav">
@@ -81,7 +84,7 @@
 
     <!-- Step 3: Order summary -->
     <section class="step-panel" data-step="3">
-      <h2>Order summary</h2>
+      <h2 tabindex="-1">Order summary</h2>
       <p class="step-desc">Check the details, then head to payment.</p>
       <div id="summary-content"></div>
       <div class="step-nav">

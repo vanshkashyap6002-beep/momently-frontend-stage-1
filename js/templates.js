@@ -416,6 +416,7 @@
         .join("");
 
 
+    document.getElementById("template-count").textContent = filtered.length + (filtered.length === 1 ? " template" : " templates");
     if (empty) {
 
       empty.style.display =
@@ -462,7 +463,7 @@
               ? ""
               : " active"
           }"
-          data-occasion=""
+          aria-pressed="${!activeFilters.occasion}" data-occasion=""
         >
           All
         </button>
@@ -479,7 +480,7 @@
                   ? " active"
                   : ""
               }"
-              data-occasion="${escapeHtml(
+              aria-pressed="${activeFilters.occasion === occasion}" data-occasion="${escapeHtml(
                 occasion
               )}"
             >
@@ -507,7 +508,10 @@
                 chip.dataset.occasion ||
                 null;
 
-              renderOccasionFilters();
+              for (const button of wrap.querySelectorAll("[data-occasion]")) {
+                button.classList.toggle("active", button === chip);
+                button.setAttribute("aria-pressed", String(button === chip));
+              }
 
               renderMarketplaceGrid();
 
@@ -867,6 +871,14 @@
     if (searchInput) {
 
       let debounce;
+      document.getElementById("clear-filters").addEventListener("click", () => {
+        clearTimeout(debounce);
+        activeFilters = { occasion: null, search: "" };
+        searchInput.value = "";
+        renderOccasionFilters();
+        renderMarketplaceGrid();
+        searchInput.focus();
+      });
 
 
       searchInput.addEventListener(
@@ -933,6 +945,12 @@
       renderOccasionFilters();
 
       renderMarketplaceGrid();
+      const previewSlug = new URLSearchParams(location.search).get("preview");
+      if (previewSlug) {
+        const trigger = Array.from(grid.querySelectorAll("[data-preview-template]"))
+          .find(button => button.dataset.previewTemplate === previewSlug);
+        if (trigger) openPreview(previewSlug, trigger);
+      }
 
     } catch (err) {
 

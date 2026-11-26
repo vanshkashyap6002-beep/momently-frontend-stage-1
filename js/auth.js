@@ -15,6 +15,8 @@
   if (!raw) return null;
   if (!raw.startsWith("/") && !/^[a-z0-9_-]+\.html/i.test(raw)) return null;
   if (raw.startsWith("//") || raw.includes("://")) return null;
+  if (/[\\\u0000-\u001f]/.test(raw)) return null;
+  if (new URL(raw, window.location.href).origin !== window.location.origin) return null;
   return raw;
 }
 
@@ -114,6 +116,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const switchLink = document.querySelector(".auth-switch a");
+    const next = getNextUrl(null);
+    if (switchLink && next) switchLink.search = new URLSearchParams({ next }).toString();
     initGoogleButton();
     initLoginForm();
     initSignupForm();
