@@ -17,55 +17,39 @@ const {
     saving: false,
   };
 
-  let localImageUrl = "";
-  let localImagePending = false;
-  let imageSelectionVersion = 0;
+  const artwork = document.getElementById("template-image-url");
+  const preview = document.getElementById("template-image-local-preview");
+  const artworkStatus = document.getElementById("template-image-status");
+  let version = 0;
 
-  function clearLocalImage() {
-    imageSelectionVersion += 1;
-    if (localImageUrl) URL.revokeObjectURL(localImageUrl);
-    localImageUrl = "";
-    localImagePending = false;
-    const input = document.getElementById("template-image-file");
-    const image = document.getElementById("template-image-local-preview");
-    if (input) input.value = "";
-    if (image) { image.hidden = true; image.removeAttribute("src"); }
-    document.getElementById("template-image-clear").hidden = true;
-    document.getElementById("template-image-status").textContent = "";
+  async function showArtwork() {
+    const current = ++version;
+    preview.hidden = true;
+    preview.removeAttribute("src");
+    artwork.setCustomValidity("");
+    artworkStatus.textContent = "";
+    if (!artwork.value.trim()) return;
+    try {
+      const url = new URL(artwork.value.trim());
+      if (url.protocol !== "https:" || url.username || url.password) throw new Error();
+      artwork.setCustomValidity("Wait for the image preview.");
+      artworkStatus.textContent = "Loading artwork…";
+      preview.src = url.href;
+      await preview.decode();
+      if (current !== version) return;
+      preview.hidden = false;
+      artwork.setCustomValidity("");
+      artworkStatus.textContent = "Preview ready.";
+    } catch {
+      if (current !== version) return;
+      artworkStatus.textContent = "Use a public HTTPS image link that opens without signing in.";
+      artwork.setCustomValidity(artworkStatus.textContent);
+    }
   }
 
-  function initLocalImagePreview() {
-    const input = document.getElementById("template-image-file");
-    const image = document.getElementById("template-image-local-preview");
-    const status = document.getElementById("template-image-status");
-    const clear = document.getElementById("template-image-clear");
-    if (!input || !image || !status || !clear) return;
-    clear.addEventListener("click", clearLocalImage);
-    input.addEventListener("change", async () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      clearLocalImage();
-      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 10 * 1024 * 1024) {
-        status.textContent = "Choose a JPEG, PNG or WebP image no larger than 10 MB.";
-        return;
-      }
-      localImagePending = true;
-      clear.hidden = false;
-      const version = imageSelectionVersion;
-      localImageUrl = URL.createObjectURL(file);
-      image.src = localImageUrl;
-      status.textContent = "Preparing local previewâ€¦ Nothing is being uploaded.";
-      try {
-        await image.decode();
-        if (version !== imageSelectionVersion) return;
-        image.hidden = false;
-        status.textContent = `${file.name}: local preview ready. Select another file to replace it, or discard this selection to save template details. Image saving needs backend storage support.`;
-      } catch {
-        if (version !== imageSelectionVersion) return;
-        clearLocalImage();
-        status.textContent = "This file could not be read as an image. Please choose another JPEG, PNG or WebP.";
-      }
-    });
+  function clearLocalImage() {
+    artwork.value = "";
+    showArtwork();
   }
 
   // --------------------------------------------------
@@ -233,6 +217,7 @@ const {
         )
       ),
 
+      previewImageUrl: artwork.value.trim(),
       previewSeed: getValue(
         "template-preview-seed"
       ),
@@ -395,6 +380,8 @@ const {
       return;
     }
 
+    artwork.value = template.previewImageUrl && !template.previewImageUrl.startsWith("https://picsum.photos/seed/") ? template.previewImageUrl : "";
+    showArtwork();
     state.editingId =
       template.id;
 
@@ -717,11 +704,6 @@ const {
 
     clearFormError();
     clearBanner();
-
-    if (localImagePending) {
-      showFormError("The selected image is only a local preview and cannot be saved yet. Discard the local selection to save template details without changing the existing artwork.");
-      return;
-    }
 
     const data =
       getTemplateFormData();
@@ -1094,7 +1076,7 @@ const {
   // --------------------------------------------------
 
   function init() {
-    initLocalImagePreview();
+    artwork.addEventListener("input", showArtwork);
     initEvents();
     startAdminTemplates();
   }
