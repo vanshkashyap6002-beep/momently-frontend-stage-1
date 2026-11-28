@@ -8,7 +8,7 @@ const read = name => fs.readFileSync(path.join(root, name), 'utf8');
 const publicPages = ['index.html', 'templates.html', 'privacy-policy.html', 'terms.html', 'refund-policy.html', 'cookie-policy.html'];
 test('public metadata and sitemap agree on www host and existing pages', () => {
   const urls = [...read('sitemap.xml').matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1]);
-  const landingPages = ['updates', 'memory-studio'];
+  const landingPages = ['updates', 'memory-studio', 'blog/make-a-personalised-digital-gift'];
   const guides = ["about.html", "contact.html", "anniversary-memory-page", "proposal-page", "birthday-memory-page", "best-friend-memory-page"];
   for (const route of guides) {
     const url = "https://www.chermo.in/" + route;
@@ -122,7 +122,7 @@ test('six visible FAQ answers match structured data in reading order', () => {
 
 test('all sitemap entries have the production origin and a modification date', () => {
   const entries = [...read('sitemap.xml').matchAll(/<url>([\s\S]*?)<\/url>/g)];
-  assert.equal(entries.length, 14);
+  assert.equal(entries.length, 15);
   for (const [, entry] of entries) {
     assert.equal(new URL(entry.match(/<loc>(.*?)<\/loc>/)[1]).origin, 'https://www.chermo.in');
     assert.match(entry, /<lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/);
